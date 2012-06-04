@@ -8332,6 +8332,11 @@ public final class Settings {
         public static final String DEVICE_PAIRED = "device_paired";
 
         /**
+         * @hide
+         */
+        public static final String DEVICE_HOSTNAME = "device_hostname";
+
+        /**
          * Integer state indicating whether package verifier is enabled.
          * TODO(b/34259924): Remove this setting.
          *
