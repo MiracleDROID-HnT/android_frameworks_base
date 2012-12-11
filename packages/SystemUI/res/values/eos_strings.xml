@@ -99,4 +99,8 @@
     <string name="accessibility_quick_settings_hwkeys_off">HW keys off</string>
     <string name="quick_settings_hwkeys_label">HW keys</string>
 
+    <!-- Typing virtual buttons -->
+    <string name="accessibility_dpad_left">Cursor left</string>
+    <string name="accessibility_dpad_right">Cursor right</string>
+
 </resources>

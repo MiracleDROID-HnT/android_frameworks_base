@@ -117,4 +117,8 @@
     <string name="accessibility_quick_settings_hwkeys_off">Аппаратные кнопки выключены</string>
     <string name="quick_settings_hwkeys_label">Аппаратные кнопки</string>
 
+    <!-- Navigation bar dpad -->
+    <string name="accessibility_dpad_left">Курсор влево</string>
+    <string name="accessibility_dpad_right">Курсор вправо</string>
+
 </resources>
