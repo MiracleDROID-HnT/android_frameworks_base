@@ -5177,6 +5177,12 @@ public final class Settings {
         public static final String THEME_TILE_ENABLED_MODE = "theme_tile_enabled_mode";
 
         /**
+         * Enable microphone as audio input in screen recording
+         * @hide
+         */
+        public static final String SREC_ENABLE_MIC = "srec_enable_mic";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

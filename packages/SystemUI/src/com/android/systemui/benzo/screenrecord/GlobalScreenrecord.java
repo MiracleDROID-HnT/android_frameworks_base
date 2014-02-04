@@ -131,8 +131,16 @@ class GlobalScreenrecord {
             final boolean higherAspectRatio = Resources.getSystem().getBoolean(
                     com.android.internal.R.bool.config_haveHigherAspectRatioScreen);
 
+            final boolean includeMicrophone = Settings.System.getInt(
+                    mContext.getContentResolver(), Settings.System.SREC_ENABLE_MIC, 0) == 1;
+
             // additional arguments to pass to screenrecord bin
-            final String[] cmds = new String[6];
+            final String[] cmds;
+            if (includeMicrophone) {
+                cmds = new String[7];
+            } else {
+                cmds = new String[6];
+            }
             cmds[0] = "/system/bin/screenrecord";
             cmds[1] = TMP_PATH;
             switch (mMode) {
@@ -142,6 +150,9 @@ class GlobalScreenrecord {
                     cmds[3] = portrait ? (higherAspectRatio ? "480x960" : "480x800") : (higherAspectRatio ? "960x480" : "800x480");
                     cmds[4] = "--bit-rate";
                     cmds[5] = "1500000";
+                    if (includeMicrophone) {
+                        cmds[6] = "--microphone";
+                    }
                     break;
                 case WindowManager.SCREEN_RECORD_MID_QUALITY:
                     // default resolution (720p) and 4Mbps
@@ -149,6 +160,9 @@ class GlobalScreenrecord {
                     cmds[3] = portrait ? (higherAspectRatio ? "720x1440" : "720x1280") : (higherAspectRatio ? "1440x720" : "1280x720");
                     cmds[4] = "--bit-rate";
                     cmds[5] = "4000000";
+                    if (includeMicrophone) {
+                        cmds[6] = "--microphone";
+                    }
                     break;
                 case WindowManager.SCREEN_RECORD_HIGH_QUALITY:
                     // default resolution (720p) and 8Mbps
@@ -156,6 +170,9 @@ class GlobalScreenrecord {
                     cmds[3] = portrait ? (higherAspectRatio ? "720x1440" : "720x1280") : (higherAspectRatio ? "1440x720" : "1280x720");
                     cmds[4] = "--bit-rate";
                     cmds[5] = "8000000";
+                    if (includeMicrophone) {
+                        cmds[6] = "--microphone";
+                    }
                     break;
             }
 
