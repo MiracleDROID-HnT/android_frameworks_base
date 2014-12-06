@@ -51,7 +51,7 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
         mClock = mView.findViewById(R.id.clock);
         mCenterClock = mView.findViewById(R.id.center_clock);
         mLeftClock = mView.findViewById(R.id.left_clock);
-        mNetworkTraffic = mView.findViewById(R.id.networkTraffic);
+        mNetworkTraffic = mView.findViewById(R.id.network_traffic);
         applyModeBackground(-1, getMode(), false /*animate*/);
         applyMode(getMode(), false /*animate*/);
     }

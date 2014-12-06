@@ -34,4 +34,10 @@
     <!-- Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_fakePackageSignature">Дозволити додаткам обходити систему безпеки, видаючи себе за іншу програму. Шкідливі програми можуть використовувати це для доступу до приватних даних. Надавайте цей дозвіл на свій страх і ризик!</string>
 
+    <!-- Status bar network traffic monitor strings -->
+    <string name="kilobitspersecond_short">кб/с</string>
+    <string name="megabitspersecond_short">Мб/с</string>
+    <string name="kilobytespersecond_short">кБ/с</string>
+    <string name="megabytespersecond_short">МБ/с</string>
+
 </resources>

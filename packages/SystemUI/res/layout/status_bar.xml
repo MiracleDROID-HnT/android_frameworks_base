@@ -75,15 +75,20 @@
             android:orientation="horizontal"
             >
 
-            <com.android.systemui.statusbar.policy.NetworkTraffic
-                android:id="@+id/networkTraffic"
-                android:layout_width="wrap_content"
+            <com.android.systemui.statusbar.MDroidStatusBarItemHolder
+                android:id="@+id/network_traffic_holder"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:singleLine="false"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="right|center_vertical"/>
+                >
+
+                <com.android.systemui.statusbar.policy.NetworkTraffic
+                    android:id="@+id/network_traffic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:maxLines="2"
+                    android:gravity="end|center_vertical"/>
+
+            </com.android.systemui.statusbar.MDroidStatusBarItemHolder>
 
             <include layout="@layout/system_icons" />
 

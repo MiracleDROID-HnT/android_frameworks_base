@@ -4140,18 +4140,6 @@ public final class Settings {
         public static final String ALARM_BLOCKING_ENABLED = "alarm_blocking_enabled";
 
         /**
-         * Wheter to show network traffic indicator in statusbar
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_STATE = "network_traffic_state";
-
-        /**
-         * Network traffic inactivity threshold (default is 1 kBs)
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
-
-        /**
          * Three Finger Gesture from Oppo
          * @hide
          */
@@ -8222,6 +8210,34 @@ public final class Settings {
          * @hide
          */
         public static final String LOCK_QS_DISABLED = "lockscreen_qs_disabled";
+
+        /**
+         * Network traffic indicator mode
+         * 0 = Don't show network traffic indicator
+         * 1 = Display up-stream traffic only
+         * 2 = Display down-stream traffic only
+         * 3 = Display both up- and down-stream traffic
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_MODE = "network_traffic_mode";
+
+        /**
+         * Whether or not to hide the network traffic indicator when there is no activity
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
+
+        /**
+         * Measurement unit preference for network traffic
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_UNITS = "network_traffic_units";
+
+        /**
+         * Whether or not to show measurement units in the network traffic indiciator
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_SHOW_UNITS = "network_traffic_show_units";
 
         /**
          * This are the settings to be backed up.
