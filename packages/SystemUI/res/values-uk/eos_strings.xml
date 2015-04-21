@@ -100,4 +100,11 @@
 
     <!-- Recents memory bar -->
     <string name="recents_free_ram">Вільно пам\'яті: %1$d МБ</string>
+
+    <!-- Heads Up QS Tile -->
+    <string name="quick_settings_heads_up_label">Виринаючі повідомлення</string>
+    <string name="accessibility_quick_settings_heads_up_off">Виринаючі повідомлення вимкнені.</string>
+    <string name="accessibility_quick_settings_heads_up_on">Виринаючі повідомлення ввімкнені.</string>
+    <string name="accessibility_quick_settings_heads_up_changed_off">Виринаючі повідомлення вимкнені.</string>
+    <string name="accessibility_quick_settings_heads_up_changed_on">Виринаючі повідомлення ввімкнені.</string>
 </resources>
