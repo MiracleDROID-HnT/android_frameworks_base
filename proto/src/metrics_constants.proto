@@ -4632,5 +4632,8 @@ message MetricsEvent {
   
     // PiP Tile
     QS_PIP_TILE = 1501;
+
+    // Location Tile
+    TILE_LOCATION_DETAIL = 2200;
   }
 }

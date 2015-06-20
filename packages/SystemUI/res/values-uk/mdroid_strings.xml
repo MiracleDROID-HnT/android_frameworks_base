@@ -214,4 +214,23 @@
     <string name="recents_locked_app_kill_warning">Додаток заблоковано. Він буде закритий, але залишиться в списку недавніх додатків.</string>
     <string name="recents_kill_error_warning">Неможливо примусово закрити додаток. Операція перервана.</string>
 
+    <!-- Location Tile -->
+    <string name="accessibility_quick_settings_location_battery_saving">Місцезнаходження: Економія заряду акумулятора.</string>
+    <string name="accessibility_quick_settings_location_gps_only">>Місцезнаходження: Лише датчики пристрою.</string>
+    <string name="accessibility_quick_settings_location_high_accuracy">Місцезнаходження: Висока точність.</string>
+    <string name="quick_settings_location_battery_saving_label">Економія заряду</string>
+    <string name="quick_settings_location_battery_saving_label_twoline">Економія\nзаряду</string>
+    <string name="quick_settings_location_gps_only_label">Датчики пристрою</string>
+    <string name="quick_settings_location_gps_only_label_twoline">Датчики\nпристрою</string>
+    <string name="quick_settings_location_high_accuracy_label">Висока точність</string>
+    <string name="quick_settings_location_high_accuracy_label_twoline">Висока\nточність</string>
+    <string name="quick_settings_location_detail_title">Місцезнаходження</string>
+    <string name="quick_settings_location_detail_menu_title">Режим локації:</string>
+    <string name="quick_settings_location_detail_mode_high_accuracy_title">Висока точність</string>
+    <string name="quick_settings_location_detail_mode_battery_saving_title">Економія заряду акумулятора</string>
+    <string name="quick_settings_location_detail_mode_sensors_only_title">Лише датчики пристрою</string>
+    <string name="quick_settings_location_detail_mode_high_accuracy_description">Визначати місцезнаходження за допомогою GPS, Wi\u2011Fi, Bluetooth і мобільних мереж</string>
+    <string name="quick_settings_location_detail_mode_battery_saving_description">Визначати місцезнаходження за допомогою Wi\u2011Fi, Bluetooth і мобільних мереж</string>
+    <string name="quick_settings_location_detail_mode_sensors_only_description">Визначати місцезнаходження за допомогою GPS для определения местоположения</string>
+
 </resources>

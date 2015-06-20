@@ -214,4 +214,23 @@
     <string name="recents_locked_app_kill_warning">Приложение заблокировано. Оно будет закрыто, но останется в списке недавних приложений.</string>
     <string name="recents_kill_error_warning">Невозможно принудительно закрыть приложение. Операция прервана.</string>
 
+    <!-- Location Tile -->
+    <string name="accessibility_quick_settings_location_battery_saving">Местоположение: экономия батареи.</string>
+    <string name="accessibility_quick_settings_location_gps_only">>Местоположение: по GPS-координатам сети.</string>
+    <string name="accessibility_quick_settings_location_high_accuracy">Местоположение: высокая точность.</string>
+    <string name="quick_settings_location_battery_saving_label">Экономия батареи</string>
+    <string name="quick_settings_location_battery_saving_label_twoline">Экономия\nбатареи</string>
+    <string name="quick_settings_location_gps_only_label">Только GPS</string>
+    <string name="quick_settings_location_gps_only_label_twoline">Только\nGPS</string>
+    <string name="quick_settings_location_high_accuracy_label">Высокая точность</string>
+    <string name="quick_settings_location_high_accuracy_label_twoline">Высокая\nточность</string>
+    <string name="quick_settings_location_detail_title">Местоположение</string>
+    <string name="quick_settings_location_detail_menu_title">Определение местоположения:</string>
+    <string name="quick_settings_location_detail_mode_high_accuracy_title">По всем источникам</string>
+    <string name="quick_settings_location_detail_mode_battery_saving_title">По координатам сети</string>
+    <string name="quick_settings_location_detail_mode_sensors_only_title">По спутникам GPS</string>
+    <string name="quick_settings_location_detail_mode_high_accuracy_description">Использовать GPS, Wi\u2011Fi, Bluetooth и мобильные сети для определения местоположения </string>
+    <string name="quick_settings_location_detail_mode_battery_saving_description">Использовать Wi\u2011Fi, Bluetooth и мобильные сети для определения местоположения</string>
+    <string name="quick_settings_location_detail_mode_sensors_only_description">Использовать GPS и датчики устройства для определения местоположения</string>
+
 </resources>
