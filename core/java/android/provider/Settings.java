@@ -4804,6 +4804,11 @@ public final class Settings {
          */
         public static final String CHOOSER_ACTIVITY_BLACKLIST = "chooser_activity_blacklist";
 
+        /**
+         * Toast icon
+         * @hide
+         */
+        public static final String TOAST_ICON = "toast_icon";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -5060,6 +5065,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(DIALER_OPENCNAM_ACCOUNT_SID);
             PRIVATE_SETTINGS.add(DIALER_OPENCNAM_AUTH_TOKEN);
             PRIVATE_SETTINGS.add(FORCE_SAFE_MEDIA_VOLUME_DISABLED);
+            PRIVATE_SETTINGS.add(TOAST_ICON);
         }
 
         /**
