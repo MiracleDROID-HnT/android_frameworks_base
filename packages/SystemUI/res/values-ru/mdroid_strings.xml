@@ -233,4 +233,18 @@
     <string name="quick_settings_location_detail_mode_battery_saving_description">Использовать Wi\u2011Fi, Bluetooth и мобильные сети для определения местоположения</string>
     <string name="quick_settings_location_detail_mode_sensors_only_description">Использовать GPS и датчики устройства для определения местоположения</string>
 
+    <!-- On The Go -->
+    <string name="onthego_notif_ticker">Режим «На ходу» включен</string>
+    <string name="onthego_notif_title">Режим «На ходу» активен</string>
+    <string name="onthego_notif_stop">Остановить</string>
+    <string name="onthego_notif_options">Опции</string>
+    <string name="onthego_notif_error">Невозможно запустить режим «На ходу»</string>
+    <string name="onthego_notif_restart">Перезапустить режим «На ходу»</string>
+    <string name="onthego_notif_camera_changed">Режим камеры изменён</string>
+    <string name="onthego_transparency">Прозрачность</string>
+    <string name="onthego_front_camera">Использовать фронтальную камеру</string>
+    <string name="onthego_service_toggle">Автоматически перезапускать службу</string>
+    <string name="onthego_channel_name">Основной</string>
+    <string name="global_action_onthego">Режим «На ходу»</string>
+
 </resources>

@@ -24,5 +24,7 @@
     <integer name="recents_animate_fab_exit_duration">125</integer>
     <!-- Allow Opa (Pixel navbar) layout -->
     <bool name="config_allowOpaLayout">true</bool>
-
+    <!-- On-The-Go -->
+    <integer name="quick_settings_onthego_dialog_short_timeout">3000</integer>
+    <integer name="quick_settings_onthego_dialog_long_timeout">6000</integer>
 </resources>

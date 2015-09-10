@@ -159,4 +159,7 @@
     <java-symbol type="array" name="app_ops_labels" />
     <java-symbol type="string" name="status_bar_su" />
 
+    <!-- On-The-Go -->
+    <java-symbol type="drawable" name="ic_lock_onthego" />
+
 </resources>
