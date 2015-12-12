@@ -306,4 +306,7 @@
     <string name="cpuinfo_temp_title">"темп: "</string>
     <string name="cpuinfo_temp">" °C"</string>
 
+    <!-- Ambient display QS tile -->
+    <string name="quick_settings_ambient_display_label">Активація екрана</string>
+
 </resources>
