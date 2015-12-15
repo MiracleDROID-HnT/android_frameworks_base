@@ -261,7 +261,7 @@ public final class SystemServer {
             int adbPort = Settings.Secure.getInt(mContentResolver,
                 Settings.Secure.ADB_PORT, 0);
             // setting this will control whether ADB runs on TCP/IP or USB
-            SystemProperties.set("service.adb.tcp.port", Integer.toString(adbPort));
+            SystemProperties.set("adb.network.port", Integer.toString(adbPort));
         }
     }
 
