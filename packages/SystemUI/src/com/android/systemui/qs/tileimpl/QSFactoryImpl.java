@@ -40,6 +40,7 @@ import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocaleTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.LteTile;
+import com.android.systemui.qs.tiles.NavBarTile;
 import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.NightDisplayTile;
 import com.android.systemui.qs.tiles.PictureInPictureTile;
@@ -93,6 +94,7 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("sound")) return new SoundTile(mHost);
         else if (tileSpec.equals("usb_tether")) return new UsbTetherTile(mHost);
         else if (tileSpec.equals("locale")) return new LocaleTile(mHost);
+        else if (tileSpec.equals("navbar")) return new NavBarTile(mHost);
 
         // Intent tiles.
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(mHost, tileSpec);
