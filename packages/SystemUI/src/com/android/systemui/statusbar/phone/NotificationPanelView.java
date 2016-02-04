@@ -250,6 +250,7 @@ public class NotificationPanelView extends PanelView implements
     private SettingsObserver mSettingsObserver;
 
     private boolean mDoubleTapToSleepEnabled;
+    private boolean mDoubleTapToSleepAnywhere;
     private int mStatusBarHeaderHeight;
     private GestureDetector mDoubleTapGesture;
 
@@ -302,12 +303,14 @@ public class NotificationPanelView extends PanelView implements
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         FragmentHostManager.get(this).addTagListener(QS.TAG, mFragmentListener);
+        mSettingsObserver.observe();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         FragmentHostManager.get(this).removeTagListener(QS.TAG, mFragmentListener);
+        mSettingsObserver.unobserve();
     }
 
     @Override
@@ -438,16 +441,6 @@ public class NotificationPanelView extends PanelView implements
         mIsFullWidth = isFullWidth;
         mNotificationStackScroller.setIsFullWidth(isFullWidth);
     }
-
-    @Override
-     public void onAttachedToWindow() {
-        mSettingsObserver.observe();
-     }
-
-     @Override
-     public void onDetachedFromWindow() {
-        mSettingsObserver.unobserve();
-     }
 
     private void startQsSizeChangeAnimation(int oldHeight, final int newHeight) {
         if (mQsSizeChangeAnimator != null) {
@@ -869,6 +862,9 @@ public class NotificationPanelView extends PanelView implements
         if (mDoubleTapToSleepEnabled
                 && mStatusBarState == StatusBarState.KEYGUARD
                 && event.getY() < mStatusBarHeaderHeight) {
+            mDoubleTapGesture.onTouchEvent(event);
+        } else if (mDoubleTapToSleepAnywhere
+                && mStatusBarState == StatusBarState.KEYGUARD) {
             mDoubleTapGesture.onTouchEvent(event);
         }
         initDownStates(event);
@@ -2584,6 +2580,8 @@ public class NotificationPanelView extends PanelView implements
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.DOUBLE_TAP_SLEEP_GESTURE), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.DOUBLE_TAP_SLEEP_ANYWHERE), false, this);
             update();
         }
 
@@ -2605,6 +2603,8 @@ public class NotificationPanelView extends PanelView implements
             ContentResolver resolver = mContext.getContentResolver();
             mDoubleTapToSleepEnabled = Settings.System.getInt(
                     resolver, Settings.System.DOUBLE_TAP_SLEEP_GESTURE, 1) == 1;
+            mDoubleTapToSleepAnywhere = Settings.System.getInt(
+                    resolver, Settings.System.DOUBLE_TAP_SLEEP_ANYWHERE, 0) == 1;
         }
     }
 
