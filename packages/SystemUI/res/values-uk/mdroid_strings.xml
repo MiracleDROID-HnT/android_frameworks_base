@@ -195,4 +195,8 @@
     <string name="force_stop_dlg_text">Примусове закриття додатка може вплинути на його функціональність.</string>
     <string name="kill">Закрити додаток</string>
 
+    <!-- Heads up snooze toast -->
+    <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> - Виринаючі повідомлення вимкнено на одну хвилину.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%s</xliff:g> - Виринаючі повідомлення вимкнено на <xliff:g id="number">%d</xliff:g> хвилин.</string>
+
 </resources>
