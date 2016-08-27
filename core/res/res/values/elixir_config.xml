@@ -53,23 +53,25 @@
     backgrounds (requires config_allowNotificationIconTextTinting to be true)-->
     <bool name="config_useDarkBgNotificationIconTextTinting">false</bool>
 
-  <!-- Does the device supports multicolor LED -->
-  <bool name="config_multiColorNotificationLed">false</bool>
+    <!-- Does the device supports multicolor LED -->
+    <bool name="config_multiColorNotificationLed">false</bool>
 
-  <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
-  <bool name="config_intrusiveBatteryLed">false</bool>
+    <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
+    <bool name="config_intrusiveBatteryLed">false</bool>
 
-  <!-- Does the battery LED support multiple colors? Used to decide if the user can change the colors -->
-  <bool name="config_multiColorBatteryLed">false</bool>
-
-  <!-- Can the LED pulse ? -->
     <!-- Does the battery LED support multiple colors? Used to decide if the user can change the colors -->
-  <bool name="config_ledCanPulse">true</bool>
+    <bool name="config_multiColorBatteryLed">false</bool>
 
-  <!-- Does the device supports fast charging -->
-  <bool name="config_FastChargingLedSupported">false</bool>
+    <!-- Can the LED pulse ? -->
+    <!-- Does the battery LED support multiple colors? Used to decide if the user can change the colors -->
+    <bool name="config_ledCanPulse">true</bool>
 
-  <!-- Default value for led color when battery is low on charge -->
-  <integer name="config_notificationsFastBatteryARGB">0xFF0000FF</integer>
+    <!-- Does the device supports fast charging -->
+    <bool name="config_FastChargingLedSupported">false</bool>
+
+    <!-- Default value for led color when battery is low on charge -->
+    <integer name="config_notificationsFastBatteryARGB">0xFF0000FF</integer>
+
+    <bool name="config_allowNotificationIconTextTinting">true</bool>
 
 </resources>

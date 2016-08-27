@@ -79,12 +79,19 @@
     <!-- Forcefully tint notification icon text -->
     <java-symbol type="bool" name="config_useDarkBgNotificationIconTextTinting" />
 
-  <!-- LED -->
-  <java-symbol type="bool" name="config_multiColorNotificationLed" />
-  <java-symbol type="bool" name="config_multiColorBatteryLed" />
-  <java-symbol type="bool" name="config_intrusiveBatteryLed" />
-  <java-symbol type="bool" name="config_ledCanPulse" />
-  <java-symbol type="bool" name="config_FastChargingLedSupported" />
-  <java-symbol type="integer" name="config_notificationsFastBatteryARGB" />
+    <!-- LED -->
+    <java-symbol type="bool" name="config_multiColorNotificationLed" />
+    <java-symbol type="bool" name="config_multiColorBatteryLed" />
+    <java-symbol type="bool" name="config_intrusiveBatteryLed" />
+    <java-symbol type="bool" name="config_ledCanPulse" />
+    <java-symbol type="bool" name="config_FastChargingLedSupported" />
+    <java-symbol type="integer" name="config_notificationsFastBatteryARGB" />
+
+    <!-- Notification icon/text dynamic tint -->
+    <java-symbol type="bool" name="config_allowNotificationIconTextTinting" />
+    <java-symbol type="color" name="notification_text_default_color" />
+
+    <!-- Notification sender text color -->
+    <java-symbol type="color" name="sender_text_color" />
 
 </resources>
