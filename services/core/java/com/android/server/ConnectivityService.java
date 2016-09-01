@@ -169,6 +169,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -858,9 +859,27 @@ public class ConnectivityService extends IConnectivityManager.Stub
                 mContext, mHandler, () -> rematchForAvoidBadWifiUpdate());
         mMultinetworkPolicyTracker.start();
 
-        String hostname = Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.DEVICE_HOSTNAME);
-        SystemProperties.set("net.hostname", hostname);
+        // setup our unique device name
+        // either to (in order): current net.hostname
+        //                       DEVICE_HOSTNAME
+        //                       android-ANDROID_ID
+        //                       android-r-RANDOM_NUMBER
+        if (TextUtils.isEmpty(SystemProperties.get("net.hostname"))) {
+            String hostname = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.DEVICE_HOSTNAME);
+            String id = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            if (!TextUtils.isEmpty(hostname)) {
+                SystemProperties.set("net.hostname", hostname);
+            } else if (!TextUtils.isEmpty(id)) {
+                String name = new String("android-").concat(id);
+                SystemProperties.set("net.hostname", name);
+            } else {
+                SystemProperties.set("net.hostname", "android-r-" + new Random().nextInt());
+            }
+        }
+
+
     }
 
     private Tethering makeTethering() {
