@@ -250,4 +250,8 @@
     <!-- OnTheGo Tile -->
     <string name="quick_settings_onthego_label">Режим «На ходу»</string>
 
+    <!-- Volume QS Tile -->
+    <string name="accessibility_quick_settings_volume_panel">Громкость</string>
+    <string name="quick_settings_volume_panel_label">Громкость</string>
+
 </resources>

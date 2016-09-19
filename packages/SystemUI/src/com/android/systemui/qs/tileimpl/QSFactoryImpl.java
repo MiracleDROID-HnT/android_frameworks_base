@@ -55,6 +55,7 @@ import com.android.systemui.qs.tiles.SoundTile;
 import com.android.systemui.qs.tiles.SuspendActionTile;
 import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
+import com.android.systemui.qs.tiles.VolumeTile;
 import com.android.systemui.qs.tiles.UserTile;
 import com.android.systemui.qs.tiles.WifiTile;
 import com.android.systemui.qs.tiles.WorkModeTile;
@@ -105,6 +106,7 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("logtile")) return new LogTile(mHost);
         else if (tileSpec.equals("suspend_action")) return new SuspendActionTile(mHost);
         else if (tileSpec.equals("onthego")) return new OnTheGoTile(mHost);
+        else if (tileSpec.equals("volume")) return new VolumeTile(mHost);
 
         // Intent tiles.
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(mHost, tileSpec);
