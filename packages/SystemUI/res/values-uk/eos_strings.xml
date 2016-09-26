@@ -120,4 +120,11 @@
     <string name="accessibility_dpad_left">Курсор ліворуч</string>
     <string name="accessibility_dpad_right">Курсор праворуч</string>
 
+    <!-- Sync QS Tile -->
+    <string name="quick_settings_sync_label">Синхронізація</string>
+    <string name="accessibility_quick_settings_sync_off">Синхронізація вимк.</string>
+    <string name="accessibility_quick_settings_sync_on">Синхронізація увімк.</string>
+    <string name="accessibility_quick_settings_sync_changed_off">Синхронізацію вимкнено</string>
+    <string name="accessibility_quick_settings_sync_changed_on">Синхронізацію увімкнено</string>
+
 </resources>
