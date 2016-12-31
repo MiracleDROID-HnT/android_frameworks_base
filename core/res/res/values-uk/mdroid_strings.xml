@@ -160,4 +160,9 @@
     <string name="systemui_restart_title">Необхідне перезавантаження інтерфейсу системи</string>
     <string name="systemui_restart_message">Для застосування змін потрібно перезавантажити системний інтерфейс. Перезавантажити його зараз?</string>
 
+    <!-- Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permlab_restartUI">перезавантажувати системний інтерфейс</string>
+    <!-- Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permdesc_restartUI">Перезавантажувати SystemUIService щоб системний інтерфейс міг завантажити ресурси з теми</string>
+
 </resources>

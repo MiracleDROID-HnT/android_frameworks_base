@@ -89,4 +89,5 @@ interface IStatusBarService
     void screenPinningStateChanged(boolean enabled);
     void toggleFlashlight();
     void toggleNavigationBar(boolean enable);
+    void restartUI();
 }
