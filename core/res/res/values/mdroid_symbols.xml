@@ -174,4 +174,9 @@
     <java-symbol type="string" name="profileNameNight" />
     <java-symbol type="string" name="profileNameAutomobile" />
 
+    <!-- Keypress Boost -->
+    <java-symbol type="bool" name="config_enableKeypressBoost" />
+    <java-symbol type="array" name="keypressboost_strong_param_value" />
+    <java-symbol type="array" name="keypressboost_weak_param_value" /> 
+
 </resources>
