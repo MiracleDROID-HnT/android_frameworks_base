@@ -56,7 +56,9 @@ import android.widget.FrameLayout;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardStatusView;
+import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.systemui.DejankUtils;
 import com.android.systemui.Interpolators;
 import com.android.systemui.R;
@@ -228,6 +230,10 @@ public class NotificationPanelView extends PanelView implements
     private FalsingManager mFalsingManager;
     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
 
+    // Omni additions
+    private boolean mQsSecureExpandDisabled;
+    private LockPatternUtils mLockPatternUtils;
+
     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
         @Override
         public void run() {
@@ -260,6 +266,7 @@ public class NotificationPanelView extends PanelView implements
     public NotificationPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(!DEBUG);
+        mLockPatternUtils = new LockPatternUtils(context);
         mFalsingManager = FalsingManager.getInstance(context);
         mPowerManager = context.getSystemService(PowerManager.class);
 
@@ -614,7 +621,7 @@ public class NotificationPanelView extends PanelView implements
     }
 
     public void setQsExpansionEnabled(boolean qsExpansionEnabled) {
-        mQsExpansionEnabled = qsExpansionEnabled;
+        mQsExpansionEnabled = qsExpansionEnabled && !isQsSecureExpandDisabled();
         if (mQs == null) return;
         mQs.setHeaderClickable(qsExpansionEnabled);
     }
@@ -990,7 +997,7 @@ public class NotificationPanelView extends PanelView implements
         }
         showQsOverride &= mStatusBarState == StatusBarState.SHADE;
 
-        return twoFingerDrag || showQsOverride || stylusButtonClickDrag || mouseButtonClickDrag;
+        return !isQsSecureExpandDisabled() && (twoFingerDrag || showQsOverride || stylusButtonClickDrag || mouseButtonClickDrag);
     }
 
     private void handleQsDown(MotionEvent event) {
@@ -1169,6 +1176,7 @@ public class NotificationPanelView extends PanelView implements
         mKeyguardShowing = keyguardShowing;
         if (mQs != null) {
             mQs.setKeyguardShowing(mKeyguardShowing);
+            mQs.setSecureExpandDisabled(isQsSecureExpandDisabled());
         }
 
         if (oldState == StatusBarState.KEYGUARD
@@ -2621,6 +2629,8 @@ public class NotificationPanelView extends PanelView implements
                     Settings.System.DOUBLE_TAP_SLEEP_ANYWHERE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.LOCK_QS_DISABLED), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -2648,6 +2658,9 @@ public class NotificationPanelView extends PanelView implements
             mOneFingerQuickSettingsIntercept = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN, 0,
                     UserHandle.USER_CURRENT);
+            mQsSecureExpandDisabled = Settings.Secure.getIntForUser(
+                    mContext.getContentResolver(), Settings.Secure.LOCK_QS_DISABLED, 0,
+                    UserHandle.USER_CURRENT) != 0;
         }
     }
 
@@ -2776,5 +2789,12 @@ public class NotificationPanelView extends PanelView implements
 
     public LockIcon getLockIcon() {
         return mKeyguardBottomArea.getLockIcon();
+    }
+
+    private boolean isQsSecureExpandDisabled() {
+        final boolean keyguardOrShadeShowing = mStatusBarState == StatusBarState.KEYGUARD
+                || mStatusBarState == StatusBarState.SHADE_LOCKED;
+        return mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mQsSecureExpandDisabled &&
+                keyguardOrShadeShowing;
     }
 }
