@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -133,6 +134,8 @@ public class SignalClusterView extends LinearLayout implements NetworkController
 
     private final IconLogger mIconLogger = Dependency.get(IconLogger.class);
 
+    private DarkReceiver mSignalClusterView;
+
     public SignalClusterView(Context context) {
         this(context, null);
     }
@@ -233,6 +236,7 @@ public class SignalClusterView extends LinearLayout implements NetworkController
         mWifiAirplaneSpacer =         findViewById(R.id.wifi_airplane_spacer);
         mWifiSignalSpacer =           findViewById(R.id.wifi_signal_spacer);
         mMobileSignalGroup =          findViewById(R.id.mobile_signal_group);
+        mSignalClusterView = findViewById(R.id.signal_cluster);
 
         maybeScaleVpnAndNoSimsIcons();
     }
@@ -261,6 +265,8 @@ public class SignalClusterView extends LinearLayout implements NetworkController
         mVpnVisible = mSecurityController.isVpnEnabled() && !mBlockVpn;
         mVpnIconId = currentVpnIconId(mSecurityController.isVpnBranded());
 
+        Dependency.get(DarkIconDispatcher.class).addDarkReceiver(mSignalClusterView);
+
         for (PhoneState state : mPhoneStates) {
             if (state.mMobileGroup.getParent() == null) {
                 mMobileSignalGroup.addView(state.mMobileGroup);
@@ -287,6 +293,8 @@ public class SignalClusterView extends LinearLayout implements NetworkController
         mNetworkController.removeCallback(this);
 
         super.onDetachedFromWindow();
+
+        Dependency.get(DarkIconDispatcher.class).removeDarkReceiver(mSignalClusterView);
     }
 
     @Override
@@ -336,8 +344,9 @@ public class SignalClusterView extends LinearLayout implements NetworkController
         }
         final int slotId = SubscriptionManager.getSlotIndex(subId);
         final int simState = SubscriptionManager.getSimStateForSlotIndex(slotId);
+        final boolean mIsRequired = isNosimRequired() && simState == TelephonyManager.SIM_STATE_NOT_READY;
         state.mMobileVisible = statusIcon.visible && !mBlockMobile &&
-                simState != TelephonyManager.SIM_STATE_NOT_READY;
+              !mIsRequired;
         state.mMobileStrengthId = statusIcon.icon;
         state.mMobileTypeId = statusType;
         state.mMobileDescription = statusIcon.contentDescription;
@@ -781,5 +790,10 @@ public class SignalClusterView extends LinearLayout implements NetworkController
             setTint(mMobileActivityOut,
                     DarkIconDispatcher.getTint(tintArea, mMobileActivityOut, tint));
         }
+    }
+
+    public boolean isNosimRequired() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.NO_SIM_CLUSTER_SWITCH, 0) == 1;
     }
 }

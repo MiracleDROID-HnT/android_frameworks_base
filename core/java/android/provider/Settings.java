@@ -4615,6 +4615,12 @@ public final class Settings {
         public static final String VIBRATE_ON_DISCONNECT = "vibrate_on_disconnect";
 
         /**
+         * Null Signal indicator disabling switch
+         * @hide
+         */
+        public static final String NO_SIM_CLUSTER_SWITCH = "no_sim_cluster_switch";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

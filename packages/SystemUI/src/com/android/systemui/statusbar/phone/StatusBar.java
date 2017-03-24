@@ -6568,6 +6568,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_MEDIA_METADATA),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NO_SIM_CLUSTER_SWITCH),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6586,6 +6589,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             setQsPanelOptions();
             setBrightnessSlider();
             setLockscreenMediaMetadata();
+            trytoinflateclusters();
         }
     }
 
@@ -8457,4 +8461,12 @@ public class StatusBar extends SystemUI implements DemoMode,
             mNavigationBar.getBarTransitions().setAutoDim(true);
         }
     };
+
+    public void trytoinflateclusters() {
+        try {
+            SignalClusterView signalClusterView = reinflateSignalCluster(mStatusBarView);
+            inflateSignalClusters();
+        } catch (Exception e) {
+        }
+    }
 }
