@@ -167,6 +167,8 @@
     <!-- Reboot/Recovery/PowerOff QS Tile -->
     <string name="quick_settings_reboot_label">Перезавантаження</string>
     <string name="quick_settings_reboot_recovery_label">Режим відновлення</string>
+    <string name="quick_settings_soft_reboot_label">М\'яке перезавантаження</string>
+    <string name="quick_settings_systemui_reboot_label">Перезапуск SystemUI</string>
     <string name="quick_settings_poweroff_label">Вимкнення</string>
 
     <!-- SysUI Tuner: Button that controls inversion of layout of navigation bar [CHAR LIMIT=60] -->

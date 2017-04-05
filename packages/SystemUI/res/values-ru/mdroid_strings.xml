@@ -167,6 +167,8 @@
     <!-- Reboot/Recovery/PowerOff QS Tile -->
     <string name="quick_settings_reboot_label">Перезагрузка</string>
     <string name="quick_settings_reboot_recovery_label">Режим восстановления</string>
+    <string name="quick_settings_soft_reboot_label">Мягкая перезагрузка</string>
+    <string name="quick_settings_systemui_reboot_label">Перезапуск SystemUI</string>
     <string name="quick_settings_poweroff_label">Выключение</string>
 
     <!-- SysUI Tuner: Button that controls inversion of layout of navigation bar [CHAR LIMIT=60] -->
