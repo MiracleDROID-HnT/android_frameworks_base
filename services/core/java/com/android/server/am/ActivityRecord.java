@@ -177,6 +177,7 @@ import com.android.server.wm.TaskWindowContainerController;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
+import android.util.BoostFramework;
 
 import java.io.File;
 import java.io.IOException;
@@ -242,6 +243,7 @@ final class ActivityRecord extends ConfigurationContainer implements AppWindowCo
     static final int RECENTS_ACTIVITY_TYPE = 2;
     static final int ASSISTANT_ACTIVITY_TYPE = 3;
     int mActivityType;
+    public BoostFramework mPerf_iop = null;
 
     private CharSequence nonLocalizedLabel;  // the label information from the package mgr.
     private int labelRes;           // the label information from the package mgr.
@@ -1970,6 +1972,13 @@ final class ActivityRecord extends ConfigurationContainer implements AppWindowCo
                 sb.append(")");
             }
             Log.i(TAG, sb.toString());
+        }
+        if (mPerf_iop == null) {
+            mPerf_iop = new BoostFramework();
+        }
+        if (mPerf_iop != null) {
+            String codePath = appInfo.sourceDir.substring(0, appInfo.sourceDir.lastIndexOf('/'));
+            mPerf_iop.perfIOPrefetchStart(app.pid, packageName, codePath);
         }
         mStackSupervisor.reportActivityLaunchedLocked(false, this, thisTime, totalTime);
         if (mPerfFirstDraw == null) {

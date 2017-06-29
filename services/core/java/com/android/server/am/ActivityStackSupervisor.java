@@ -215,7 +215,7 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
     public static boolean mPerfSendTapHint = false;
     public BoostFramework mPerfBoost = null;
     public BoostFramework mPerfPack = null;
-
+    public BoostFramework mPerfIop = null;
     static final int HANDLE_DISPLAY_ADDED = FIRST_SUPERVISOR_STACK_MSG + 5;
     static final int HANDLE_DISPLAY_CHANGED = FIRST_SUPERVISOR_STACK_MSG + 6;
     static final int HANDLE_DISPLAY_REMOVED = FIRST_SUPERVISOR_STACK_MSG + 7;
@@ -3117,6 +3117,13 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
        if (mPerfBoost != null) {
            mPerfBoost.perfHint(BoostFramework.VENDOR_HINT_FIRST_LAUNCH_BOOST, packageName, -1, BoostFramework.Launch.BOOST_V1);
            mPerfSendTapHint = true;
+       }
+       // Start IOP
+       if (mPerfIop == null) {
+           mPerfIop = new BoostFramework();
+       }
+       if (mPerfIop != null) {
+           mPerfIop.perfIOPrefetchStart(-1,packageName,"");
        }
     }
 

@@ -4094,7 +4094,6 @@ public class ActivityManagerService extends IActivityManager.Stub
                 if (mPerf == null) {
                     mPerf = new BoostFramework();
                 }
-
                 if (mPerf != null) {
                     mPerf.perfHint(BoostFramework.VENDOR_HINT_FIRST_LAUNCH_BOOST, app.processName, -1, BoostFramework.Launch.BOOST_V3);
                 }
