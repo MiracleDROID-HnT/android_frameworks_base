@@ -216,6 +216,7 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
     public BoostFramework mPerfBoost = null;
     public BoostFramework mPerfPack = null;
     public BoostFramework mPerfIop = null;
+    public BoostFramework mUxPerf = null;
     static final int HANDLE_DISPLAY_ADDED = FIRST_SUPERVISOR_STACK_MSG + 5;
     static final int HANDLE_DISPLAY_CHANGED = FIRST_SUPERVISOR_STACK_MSG + 6;
     static final int HANDLE_DISPLAY_REMOVED = FIRST_SUPERVISOR_STACK_MSG + 7;
@@ -3127,6 +3128,13 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
        }
     }
 
+    void acquireUxPerfLock(int opcode, String packageName) {
+        mUxPerf = new BoostFramework();
+        if (mUxPerf != null) {
+            mUxPerf.perfUXEngine_events(opcode, 0, packageName, 0);
+        }
+    }
+
     ActivityRecord findTaskLocked(ActivityRecord r, int displayId) {
         mTmpFindTaskResult.r = null;
         mTmpFindTaskResult.matchedByRootAffinity = false;
@@ -3152,6 +3160,10 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
                         if(mTmpFindTaskResult.r.state == ActivityState.DESTROYED ) {
                             /*It's a new app launch */
                             acquireAppLaunchPerfLock(r.packageName);
+                        }
+                        if(mTmpFindTaskResult.r.state == ActivityState.STOPPED) {
+                            /*Warm launch */
+                            acquireUxPerfLock(6, r.packageName);
                         }
                         return mTmpFindTaskResult.r;
                     } else if (mTmpFindTaskResult.r.getDisplayId() == displayId) {
