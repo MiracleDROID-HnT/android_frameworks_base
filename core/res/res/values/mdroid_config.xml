@@ -1,5 +1,5 @@
 <!--
-     Copyright (C) 2017 The LineageOS Project
+     Copyright (C) 2018 The MiracleDROID Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -77,5 +77,17 @@
 
     <!-- Name of that key handler class -->
     <string name="config_deviceKeyHandlerClass" translatable="false"></string>
+
+    <!-- Any package that has one of the package names defined below will be prevented
+           from using specific sensors in order to stop battery drain -->
+    <string-array name="config_blockPackagesSensorDrain">
+        <item>com.whatsapp</item>
+        <item>com.gbwhatsapp</item>
+        <item>com.yowhatsapp</item>
+        <item>com.whatsapp.plus</item>
+        <item>org.telegram.messenger</item>
+        <item>org.telegram.messenger.plus</item>
+        <item>com.snapchat.android</item>
+    </string-array>
 
 </resources>
