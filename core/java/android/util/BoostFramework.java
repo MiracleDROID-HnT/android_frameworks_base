@@ -66,6 +66,9 @@ public class BoostFramework {
     public static final int VENDOR_HINT_ACTIVITY_BOOST = 0x00001084;
     public static final int VENDOR_HINT_TOUCH_BOOST = 0x00001085;
     public static final int VENDOR_HINT_MTP_BOOST = 0x00001086;
+    //perf events
+    public static final int VENDOR_HINT_FIRST_DRAW = 0x00001042;
+
     public class Scroll {
         public static final int VERTICAL = 1;
         public static final int HORIZONTAL = 2;
@@ -77,6 +80,11 @@ public class BoostFramework {
         public static final int BOOST_V1 = 1;
         public static final int BOOST_V2 = 2;
         public static final int BOOST_V3 = 3;
+        public static final int TYPE_SERVICE_START = 100;
+    };
+
+    public class Draw {
+        public static final int EVENT_TYPE_V1 = 1;
     };
 
 /** @hide */
