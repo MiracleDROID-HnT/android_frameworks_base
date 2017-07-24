@@ -19,4 +19,10 @@
     <!-- Floating action button -->
     <color name="fab_color">@*android:color/material_deep_teal_500</color>
     <color name="floating_action_button_icon_color">@android:color/white</color>
+
+    <!-- Screen pinning layout -->
+    <color name="screen_pinning_title_text">@android:color/white</color>
+    <color name="screen_pinning_description_text">@android:color/white</color>
+    <color name="screen_pinning_bg_circ_color">#40FFFFFF</color>
+    <color name="screen_pinning_nav_icon_hightlight_outer_color">@android:color/white</color>
 </resources>
