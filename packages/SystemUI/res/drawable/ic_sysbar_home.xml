@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2018 CarbonROM
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="88"
+    android:viewportWidth="88">
+
+<path android:fillColor="#ffffff"
+      android:pathData=" M 31.06 9.34 C 39.04 6.34 48.06 6.23 56.11 9.04 C 66.40 12.58 74.92 20.92 78.69 31.13 C 81.84 39.53 81.74 49.05 78.54 57.41 C 74.83 66.62 67.44 74.34 58.23 78.13 C 49.24 81.94 38.72 81.94 29.73 78.12 C 20.57 74.34 13.24 66.65 9.50 57.51 C 6.80 50.36 6.21 42.39 8.13 34.98 C 10.96 23.37 19.87 13.49 31.06 9.34 M 16.35 37.42 C 14.49 44.49 15.80 52.30 19.52 58.58 C 25.99 69.81 40.58 75.33 52.85 71.08 C 66.58 66.91 75.45 51.28 71.64 37.38 C 69.00 24.84 56.81 15.29 44.03 15.52 C 31.21 15.27 18.99 24.85 16.35 37.42 Z" />
+</vector>
