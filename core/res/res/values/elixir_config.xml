@@ -78,4 +78,10 @@
 
     <bool name="config_allowNotificationIconTextTinting">true</bool>
 
+    <!-- Path to the library that contains a device specific key handler -->
+    <string name="config_deviceKeyHandlerLib" translatable="false"></string>
+
+    <!-- Name of that key handler class -->
+    <string name="config_deviceKeyHandlerClass" translatable="false"></string>
+
 </resources>

@@ -4262,6 +4262,13 @@ public final class Settings {
          */
         public static final String LOCKSCREEN_ROTATION = "lockscreen_rotation";
 
+        /** some devices have a extra hw button e.g. n3 on the back on the
+         * fingerprint sensor. allow mapping button to key
+         *
+         * @hide
+         */
+        public static final String BUTTON_EXTRA_KEY_MAPPING = "button_extra_mapping";
+
         /**
          * USB mode dialog popup setting
          * @hide
