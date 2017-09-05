@@ -127,4 +127,9 @@
     <string name="accessibility_quick_settings_sync_changed_off">Синхронізацію вимкнено</string>
     <string name="accessibility_quick_settings_sync_changed_on">Синхронізацію увімкнено</string>
 
+    <!-- LTE QS Tile -->
+    <string name="qs_lte_label">LTE</string>
+    <string name="lte_on">LTE УВІМК.</string>
+    <string name="lte_off">LTE ВИМК.</string>
+
 </resources>
