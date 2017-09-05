@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -31,13 +32,51 @@ import android.util.Log;
  */
 public class BootReceiver extends BroadcastReceiver {
     private static final String TAG = "SystemUIBootReceiver";
-
+    private Handler mHandler = new Handler();
+    private SettingsObserver mSettingsObserver;
     private Context mContext;
+
+    private class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            mContext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(
+                    Settings.Global.SHOW_CPU_OVERLAY),
+                    false, this);
+            update();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            update();
+        }
+
+        public void update() {
+            Intent cpuinfo = new Intent(mContext, com.android.systemui.CPUInfoService.class);
+            if (Settings.Global.getInt(mContext.getContentResolver(), Settings.Global.SHOW_CPU_OVERLAY, 0) != 0) {
+                mContext.startService(cpuinfo);
+            } else {
+                mContext.stopService(cpuinfo);
+            }
+        }
+    }
 
     @Override
     public void onReceive(final Context context, Intent intent) {
         try {
             mContext = context;
+            if (mSettingsObserver ==  null) {
+                mSettingsObserver = new SettingsObserver(mHandler);
+                mSettingsObserver.observe();
+            }
+
+            // Start the cpu info overlay, if activated
+            if (Settings.Global.getInt(mContext.getContentResolver(), Settings.Global.SHOW_CPU_OVERLAY, 0) != 0) {
+                Intent cpuinfo = new Intent(mContext, com.android.systemui.CPUInfoService.class);
+                mContext.startService(cpuinfo);
+            }
 
             // start the screen state service if activated
             if (Settings.Secure.getIntForUser(mContext.getContentResolver(),
@@ -46,7 +85,7 @@ public class BootReceiver extends BroadcastReceiver {
                 mContext.startService(screenstate);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Can't start service", e);
+            Log.e(TAG, "Can't start load average service", e);
         }
     }
 }
