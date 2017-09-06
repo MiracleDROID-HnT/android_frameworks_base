@@ -6306,6 +6306,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.HEADS_UP_STOPLIST_VALUES), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.HEADS_UP_BLACKLIST_VALUES), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_FOOTER_WARNINGS),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6320,6 +6323,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             setLockscreenRotation();
             setHeadsUpStoplist();
             setHeadsUpBlacklist();
+            setQsPanelOptions();
         }
     }
 
@@ -6372,6 +6376,12 @@ public class StatusBar extends SystemUI implements DemoMode,
         mTickerEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.STATUS_BAR_SHOW_TICKER, 1,
                 UserHandle.USER_CURRENT);
+    }
+
+    private void setQsPanelOptions() {
+        if (mQSPanel != null) {
+            mQSPanel.updateSettings();
+        }
     }
 
     private RemoteViews.OnClickHandler mOnClickHandler = new RemoteViews.OnClickHandler() {
