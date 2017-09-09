@@ -205,4 +205,9 @@
 
     <string name="suspend_title_tile">Действия в режиме ожидания</string>
 
+    <!-- Advance location quick setting tile -->
+    <string name="accessibility_quick_settings_location_battery_saving">Определение местоположения: По координатам сети.</string>
+    <string name="accessibility_quick_settings_location_gps_only">Определение местоположения: По спутникам GPS.</string>
+    <string name="accessibility_quick_settings_location_high_accuracy">Определение местоположения: По всем источникам.</string>
+
 </resources>

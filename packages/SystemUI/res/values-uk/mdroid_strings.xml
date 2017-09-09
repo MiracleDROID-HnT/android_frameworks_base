@@ -204,4 +204,9 @@
 
     <string name="suspend_title_tile">Дії в режимі очікування</string>
 
+    <!-- Advance location quick setting tile -->
+    <string name="accessibility_quick_settings_location_battery_saving">Режим локації: Економія заряду акумулятора.</string>
+    <string name="accessibility_quick_settings_location_gps_only">Режим локації: Лише датчики пристрою.</string>
+    <string name="accessibility_quick_settings_location_high_accuracy">Режим локації: Висока точність.</string>
+
 </resources>
