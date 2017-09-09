@@ -4580,5 +4580,8 @@ message MetricsEvent {
 
     // Screenshot Tile
     QS_SCREENSHOT_TILE = 1201;
+  
+    // PiP Tile
+    QS_PIP_TILE = 1201;
   }
 }
