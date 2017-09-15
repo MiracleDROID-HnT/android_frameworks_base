@@ -205,4 +205,6 @@
     <!-- Content description of the superuser tile -->
     <string name="accessibility_su_active">Superuser session active</string>
 
+    <string name="recents_app_killed">App killed</string>
+
 </resources>

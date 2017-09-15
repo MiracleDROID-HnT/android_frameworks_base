@@ -215,4 +215,6 @@
     <!-- Content description of the superuser tile -->
     <string name="accessibility_su_active">Сесія Superuser активна</string>
 
+    <string name="recents_app_killed">Додаток зупинено</string>
+
 </resources>
