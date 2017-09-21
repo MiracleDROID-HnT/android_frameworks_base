@@ -498,11 +498,11 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         r.callback = callback;
         r.tileView.init(r.tile);
         r.tile.refreshState();
-        r.tileView.setHideExpand(mTileLayout.getNumColumns() > 4);
         mRecords.add(r);
 
         if (mTileLayout != null) {
             mTileLayout.addTile(r);
+            configureTile(r.tile, r.tileView);
         }
 
         return r;
@@ -685,6 +685,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         boolean updateResources();
         void updateSettings();
         int getNumColumns();
+        boolean isShowTitles();
 
         void setListening(boolean listening);
     }
@@ -714,13 +715,32 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
             Settings.System.putInt(context.getContentResolver(),
             Settings.System.SCREEN_BRIGHTNESS, 255);
 
+    private void configureTile(QSTile t, QSTileView v) {
+        if (mTileLayout != null) {
+            v.setHideExpand(mTileLayout.getNumColumns() > 4);
+            v.setHideLabel(!mTileLayout.isShowTitles());
+            if (t.isDualTarget()) {
+                if (!mTileLayout.isShowTitles()) {
+                    v.setOnLongClickListener(view -> {
+                        t.secondaryClick();
+                        return true;
+                    });
+                } else {
+                    v.setOnLongClickListener(view -> {
+                        t.longClick();
+                        return true;
+                    });
+                }
+            }
+        }
+    }
+
     public void updateSettings() {
         if (mTileLayout != null) {
             mTileLayout.updateSettings();
 
             for (TileRecord r : mRecords) {
-                QSTileView v = r.tileView;
-                v.setHideExpand(mTileLayout.getNumColumns() > 4);
+                configureTile(r.tile, r.tileView);
             }
         }
     }
