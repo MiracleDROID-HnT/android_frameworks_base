@@ -146,4 +146,7 @@
     <string name="accessibility_quick_settings_usb_tether_changed_on">USB-модем увімкнуто</string>
     <string name="quick_settings_usb_tether_label">USB-модем</string>
 
+    <string name="lockscreen_default">За замовчуванням</string>
+    <string name="lockscreen_hidden">Немає</string>
+
 </resources>
