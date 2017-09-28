@@ -149,4 +149,7 @@
     <string name="lockscreen_default">За замовчуванням</string>
     <string name="lockscreen_hidden">Немає</string>
 
+    <!-- Shows when people have clicked on the custom lockscreen shortcut [CHAR LIMIT=60] -->
+    <string name="custom_hint">Проведіть пальцем від іконки в сторону центру екрана</string>
+
 </resources>
