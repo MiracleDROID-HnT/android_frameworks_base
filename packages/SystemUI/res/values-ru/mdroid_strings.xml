@@ -153,4 +153,8 @@
     <!-- Shows when people have clicked on the custom lockscreen shortcut [CHAR LIMIT=60] -->
     <string name="custom_hint">Проведите пальцем от иконки в сторону центра экрана</string>
 
+    <!-- Language toggle tile -->
+    <string name="quick_settings_locale_label">Язык</string>
+    <string name="quick_settings_locale_more_locales_toast">Пожалуйста, настройте несколько языков, чтобы активировать функцию</string>
+
 </resources>

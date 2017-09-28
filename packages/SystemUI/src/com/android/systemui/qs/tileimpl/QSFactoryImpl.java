@@ -37,6 +37,7 @@ import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.HWKeysTile;
 import com.android.systemui.qs.tiles.IntentTile;
+import com.android.systemui.qs.tiles.LocaleTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.LteTile;
 import com.android.systemui.qs.tiles.NfcTile;
@@ -91,6 +92,7 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("sync")) return new SyncTile(mHost);
         else if (tileSpec.equals("sound")) return new SoundTile(mHost);
         else if (tileSpec.equals("usb_tether")) return new UsbTetherTile(mHost);
+        else if (tileSpec.equals("locale")) return new LocaleTile(mHost);
 
         // Intent tiles.
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(mHost, tileSpec);
