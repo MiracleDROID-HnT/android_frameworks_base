@@ -208,6 +208,7 @@ import com.android.systemui.qs.QSPanel;
 import com.android.systemui.qs.QSTileHost;
 import com.android.systemui.qs.QuickStatusBarHeader;
 import com.android.systemui.qs.car.CarQSFragment;
+import com.android.systemui.qs.QuickStatusBarHeader;
 import com.android.systemui.recents.Recents;
 import com.android.systemui.recents.ScreenPinningRequest;
 import com.android.systemui.recents.events.EventBus;
@@ -495,6 +496,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     int mLinger;
     int mInitialTouchX;
     int mInitialTouchY;
+
+    private QuickStatusBarHeader mQuickStatusBarHeaderScroller;
 
     // top bar
     protected KeyguardStatusBarView mKeyguardStatusBar;
@@ -1373,6 +1376,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                     mQSPanel.setBrightnessMirror(mBrightnessMirrorController);
                     mKeyguardStatusBar.setQSPanel(mQSPanel);
                     mQuickStatusBarHeader = ((QSFragment) qs).getQsHeader();
+                    mQuickStatusBarHeaderScroller = ((QSFragment) qs).getQuickStatusBarHeader();
                 }
             });
         }
@@ -5580,6 +5584,9 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     public void onClosingFinished() {
         runPostCollapseRunnables();
+        if (mQuickStatusBarHeader != null) {
+            mQuickStatusBarHeader.onClosingFinished();
+        }
         if (!isPanelFullyCollapsed()) {
             // if we set it not to be focusable when collapsing, we have to undo it when we aborted
             // the closing
@@ -6646,6 +6653,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.RECENTS_ICON_PACK),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_QUICKBAR_SCROLL_ENABLED),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6666,6 +6676,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             setLockscreenMediaMetadata();
             trytoinflateclusters();
             updateRecentsIconPack();
+            setQSTilesScroller();
         }
     }
 
@@ -6676,6 +6687,14 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mAmbientMediaPlaying != 0 && mAmbientIndicationContainer != null) {
             ((AmbientIndicationContainer)mAmbientIndicationContainer).setIndication(mMediaMetadata);
         }
+    }
+
+    public void setQSTilesScroller() {
+
+        if (mQuickStatusBarHeaderScroller != null) {
+            mQuickStatusBarHeaderScroller.updateSettings();
+        }
+
     }
 
     public void updateBatterySettings() {

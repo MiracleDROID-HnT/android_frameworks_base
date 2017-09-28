@@ -42,4 +42,7 @@
 
     <dimen name="crop_buttons">48dp</dimen>
     <dimen name="crop_buttons_inlet">32dp</dimen>
+
+    <!-- Quick QS scroller -->
+    <dimen name="qs_scroller_margin">8dp</dimen>
 </resources>
