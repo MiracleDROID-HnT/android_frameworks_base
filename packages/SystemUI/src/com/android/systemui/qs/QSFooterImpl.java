@@ -132,6 +132,7 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
         mSettingsButton = findViewById(R.id.settings_button);
         mSettingsContainer = findViewById(R.id.settings_button_container);
         mSettingsButton.setOnClickListener(this);
+        mSettingsButton.setOnLongClickListener(this);
 
         mRunningServicesButton = findViewById(R.id.running_services_button);
         mRunningServicesButton.setOnClickListener(this);
@@ -436,6 +437,8 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
                 mActivityStarter.postStartActivityDismissingKeyguard(new Intent(
                         AlarmClock.ACTION_SHOW_ALARMS), 0);
             }
+        } else if (v == mSettingsButton) {
+            startSettingsLongClickActivity();
         }
         return false;
     }
@@ -443,6 +446,13 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
     private void startSettingsActivity() {
         mActivityStarter.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS),
                 true /* dismissShade */);
+    }
+
+    private void startSettingsLongClickActivity() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+	intent.setClassName("com.android.settings",
+            "com.android.settings.Settings$MagicalWorldActivity");
+        mActivityStarter.startActivity(intent, true /* dismissShade */);
     }
 
     @Override
