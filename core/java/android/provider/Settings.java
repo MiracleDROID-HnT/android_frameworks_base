@@ -8753,6 +8753,7 @@ public final class Settings {
         public static final String LOCK_QS_DISABLED = "lockscreen_qs_disabled";
 
         /**
+<<<<<<< HEAD
          * Network traffic indicator mode
          * 0 = Don't show network traffic indicator
          * 1 = Display up-stream traffic only
@@ -8833,6 +8834,13 @@ public final class Settings {
          */
         public static final String THEME_LAST_ACTIVATED_TIME =
                 "theme_last_activated_time";
+
+        /**
+         * Hide lockscreen shortcuts on secure lock screens
+         *
+         * @hide
+         */
+        public static final String HIDE_LOCK_SHORTCUTS = "hide_lock_shortcuts";
 
         /**
          * This are the settings to be backed up.
