@@ -125,12 +125,6 @@ public class ZenModeHelper {
         mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
 
         mDefaultConfig = new ZenModeConfig();
-        mDefaultRuleWeeknightsName = mContext.getResources()
-                .getString(R.string.zen_mode_default_weeknights_name);
-        mDefaultRuleWeekendsName = mContext.getResources()
-                .getString(R.string.zen_mode_default_weekends_name);
-        mDefaultRuleEventsName = mContext.getResources()
-                .getString(R.string.zen_mode_default_events_name);
         setDefaultZenRules(mContext);
         mConfig = mDefaultConfig;
         mConfigs.put(UserHandle.USER_SYSTEM, mConfig);
@@ -435,6 +429,7 @@ public class ZenModeHelper {
     }
 
     private void appendDefaultRules (ZenModeConfig config) {
+        getDefaultRuleNames();
         appendDefaultScheduleRules(config);
         appendDefaultEventRules(config);
     }
@@ -813,6 +808,16 @@ public class ZenModeHelper {
         }
     }
 
+    private void getDefaultRuleNames() {
+        // on locale-change, these values differ
+        mDefaultRuleWeeknightsName = mContext.getResources()
+                .getString(R.string.zen_mode_default_weeknights_name);
+        mDefaultRuleWeekendsName = mContext.getResources()
+                .getString(R.string.zen_mode_default_weekends_name);
+        mDefaultRuleEventsName = mContext.getResources()
+                .getString(R.string.zen_mode_default_events_name);
+    }
+
     private void applyRestrictions() {
         final boolean zen = mZenMode != Global.ZEN_MODE_OFF;
 
@@ -916,6 +921,7 @@ public class ZenModeHelper {
         weeknights.days = ZenModeConfig.WEEKNIGHT_DAYS;
         weeknights.startHour = 22;
         weeknights.endHour = 7;
+        weeknights.exitAtAlarm = true;
         final ZenRule rule1 = new ZenRule();
         rule1.enabled = false;
         rule1.name = mDefaultRuleWeeknightsName;
@@ -931,6 +937,7 @@ public class ZenModeHelper {
         weekends.startHour = 23;
         weekends.startMinute = 30;
         weekends.endHour = 10;
+        weekends.exitAtAlarm = true;
         final ZenRule rule2 = new ZenRule();
         rule2.enabled = false;
         rule2.name = mDefaultRuleWeekendsName;
