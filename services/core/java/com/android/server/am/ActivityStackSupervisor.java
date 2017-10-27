@@ -212,6 +212,7 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
     static final int SLEEP_TIMEOUT_MSG = FIRST_SUPERVISOR_STACK_MSG + 3;
     static final int LAUNCH_TIMEOUT_MSG = FIRST_SUPERVISOR_STACK_MSG + 4;
 
+    public static boolean mPerfSendTapHint = false;
     public BoostFramework mPerfBoost = null;
     public BoostFramework mPerfPack = null;
 
@@ -3115,6 +3116,7 @@ public class ActivityStackSupervisor extends ConfigurationContainer implements D
        }
        if (mPerfBoost != null) {
            mPerfBoost.perfHint(BoostFramework.VENDOR_HINT_FIRST_LAUNCH_BOOST, packageName, -1, BoostFramework.Launch.BOOST_V1);
+           mPerfSendTapHint = true;
        }
     }
 

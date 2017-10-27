@@ -71,6 +71,7 @@ public class BoostFramework {
 
     //perf events
     public static final int VENDOR_HINT_FIRST_DRAW = 0x00001042;
+    public static final int VENDOR_HINT_TAP_EVENT = 0x00001043;
 
     public class Scroll {
         public static final int VERTICAL = 1;
