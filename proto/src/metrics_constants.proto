@@ -4577,5 +4577,8 @@ message MetricsEvent {
     MAGICAL_WORLD = 2000;
 
     //END Elixir Constants
+
+    // Screenshot Tile
+    QS_SCREENSHOT_TILE = 1201;
   }
 }
