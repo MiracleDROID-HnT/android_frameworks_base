@@ -162,4 +162,8 @@
     <string name="quick_settings_navbar">Панель навигации включена</string>
     <string name="quick_settings_navbar_off">Панель навигации отключена</string>
 
+    <!-- Reboot/Recovery QS Tile -->
+    <string name="quick_settings_reboot_label">Перезагрузка</string>
+    <string name="quick_settings_reboot_recovery_label">Режим восстановления</string>
+
 </resources>
