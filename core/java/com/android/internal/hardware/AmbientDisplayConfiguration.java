@@ -47,7 +47,7 @@ public class AmbientDisplayConfiguration {
     }
 
     public boolean pulseOnNotificationEnabled(int user) {
-        return boolSettingDefaultOn(Settings.Secure.DOZE_ENABLED, user) && pulseOnNotificationAvailable();
+        return boolSettingDefaultOff(Settings.Secure.DOZE_ENABLED, user) && pulseOnNotificationAvailable();
     }
 
     public boolean pulseOnMedia(int user) {
@@ -65,7 +65,7 @@ public class AmbientDisplayConfiguration {
     }
 
     public boolean pulseOnPickupEnabled(int user) {
-        boolean settingEnabled = boolSettingDefaultOn(Settings.Secure.DOZE_PULSE_ON_PICK_UP, user);
+        boolean settingEnabled = boolSettingDefaultOff(Settings.Secure.DOZE_PULSE_ON_PICK_UP, user);
         return (settingEnabled || alwaysOnEnabled(user)) && pulseOnPickupAvailable();
     }
 
@@ -79,7 +79,7 @@ public class AmbientDisplayConfiguration {
     }
 
     public boolean pulseOnDoubleTapEnabled(int user) {
-        return boolSettingDefaultOn(Settings.Secure.DOZE_PULSE_ON_DOUBLE_TAP, user)
+        return boolSettingDefaultOff(Settings.Secure.DOZE_PULSE_ON_DOUBLE_TAP, user)
                 && pulseOnDoubleTapAvailable();
     }
 
@@ -105,7 +105,7 @@ public class AmbientDisplayConfiguration {
     }
 
     public boolean alwaysOnEnabled(int user) {
-        return boolSettingDefaultOn(Settings.Secure.DOZE_ALWAYS_ON, user) && alwaysOnAvailable()
+        return boolSettingDefaultOff(Settings.Secure.DOZE_ALWAYS_ON, user) && alwaysOnAvailable()
                 && !accessibilityInversionEnabled(user);
     }
 
