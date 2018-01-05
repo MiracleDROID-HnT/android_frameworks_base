@@ -11380,6 +11380,11 @@ public final class Settings {
                 "location_settings_link_to_permissions_enabled";
 
         /**
+         * @hide
+         */
+        public static final String VOICE_CALL_DEFAULT_CHANGED = "voice_call_default_changed";
+
+        /**
          * Flag to enable use of RefactoredBackupManagerService.
          *
          * @hide
