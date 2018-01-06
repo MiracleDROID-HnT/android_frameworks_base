@@ -82,10 +82,9 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_TOGGLE_PANEL                  = 35 << MSG_SHIFT;
     private static final int MSG_SHOW_SHUTDOWN_UI              = 36 << MSG_SHIFT;
     private static final int MSG_SET_TOP_APP_HIDES_STATUS_BAR  = 37 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_CAMERA_FLASH           = 38 << MSG_SHIFT;
-    private static final int MSG_SCREEN_PINNING_STATE_CHANGED  = 39 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_FLASHLIGHT             = 40 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_NAVIGATION_BAR         = 41 << MSG_SHIFT;
+    private static final int MSG_SCREEN_PINNING_STATE_CHANGED  = 38 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_FLASHLIGHT             = 39 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_NAVIGATION_BAR         = 40 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -147,7 +146,6 @@ public class CommandQueue extends IStatusBar.Stub {
         default void handleShowGlobalActionsMenu() { }
         default void handleShowShutdownUi(boolean isReboot, String reason) { }
         default void handleShowShutdownUi(boolean isReboot, String reason, boolean rebootCustom) { }
-        default void toggleCameraFlash() { }
 
         default void screenPinningStateChanged(boolean enabled) {}
         default void toggleFlashlight() {}
@@ -483,13 +481,6 @@ public class CommandQueue extends IStatusBar.Stub {
         }
     }
 
-    public void toggleCameraFlash() {
-        synchronized (mLock) {
-            mHandler.removeMessages(MSG_TOGGLE_CAMERA_FLASH);
-            mHandler.sendEmptyMessage(MSG_TOGGLE_CAMERA_FLASH);
-        }
-    }
-
     public void toggleNavigationBar(boolean enable) {
         synchronized (mLock) {
             mHandler.removeMessages(MSG_TOGGLE_NAVIGATION_BAR);
@@ -691,11 +682,6 @@ public class CommandQueue extends IStatusBar.Stub {
                 case MSG_SET_TOP_APP_HIDES_STATUS_BAR:
                     for (int i = 0; i < mCallbacks.size(); i++) {
                         mCallbacks.get(i).setTopAppHidesStatusBar(msg.arg1 != 0);
-                    }
-                    break;
-                case MSG_TOGGLE_CAMERA_FLASH:
-                    for (int i = 0; i < mCallbacks.size(); i++) {
-                        mCallbacks.get(i).toggleCameraFlash();
                     }
                     break;
                 case MSG_SCREEN_PINNING_STATE_CHANGED:
