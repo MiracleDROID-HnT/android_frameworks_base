@@ -420,6 +420,10 @@ void CanvasContext::notifyFramePending() {
 }
 
 void CanvasContext::draw() {
+    if (!mRenderPipeline->isSurfaceReady()) {
+        return;
+    }
+
     SkRect dirty;
     mDamageAccumulator.finish(&dirty);
 
