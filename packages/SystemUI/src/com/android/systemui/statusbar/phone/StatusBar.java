@@ -400,6 +400,9 @@ public class StatusBar extends SystemUI implements DemoMode,
      * This affects the status bar UI. */
     private static final boolean FREEFORM_WINDOW_MANAGEMENT;
 
+    private static final String STATUS_BAR_BATTERY_SAVER_COLOR =
+            Settings.Secure.STATUS_BAR_BATTERY_SAVER_COLOR;
+
     /**
      * How long to wait before auto-dismissing a notification that was kept for remote input, and
      * has now sent a remote input. We auto-dismiss, because the app may not see a reason to cancel
@@ -568,6 +571,8 @@ public class StatusBar extends SystemUI implements DemoMode,
         : null;
 
     private ScreenPinningRequest mScreenPinningRequest;
+
+    private int mBatterySaverColor;
 
     Runnable mLongPressBrightnessChange = new Runnable() {
         @Override
@@ -3848,6 +3853,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (powerSave && getBarState() == StatusBarState.SHADE) {
             mode = MODE_POWERSAVE_WARNING;
         }
+        if (mode == MODE_POWERSAVE_WARNING) {
+            transitions.setBatterySaverColor(mBatterySaverColor);
+        }
         transitions.transitionTo(mode, anim);
     }
 
@@ -6656,6 +6664,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_QUICKBAR_SCROLL_ENABLED),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.STATUS_BAR_BATTERY_SAVER_COLOR),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6677,6 +6688,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             trytoinflateclusters();
             updateRecentsIconPack();
             setQSTilesScroller();
+            updateBatterySaverColor();
         }
     }
 
@@ -6732,6 +6744,11 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.HEADS_UP_BLACKLIST_VALUES);
         splitAndAddToArrayList(mBlacklist, blackString, "\\|");
 
+    }
+
+    private void updateBatterySaverColor() {
+        mBatterySaverColor = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.STATUS_BAR_BATTERY_SAVER_COLOR, 0xfff4511e, UserHandle.USER_CURRENT);
     }
 
     private void setBrightnessSlider() {
