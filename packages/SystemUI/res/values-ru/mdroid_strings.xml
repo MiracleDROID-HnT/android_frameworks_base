@@ -15,15 +15,17 @@
     <!-- Content description of the data connection type HSPA+ for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_data_connection_hspap">HSPA+</string>
 
-     <!-- Indication on the keyguard that is shown when the device is charging with a dash charger. Should match keyguard_plugged_in_dash_charging [CHAR LIMIT=40]-->
-     <string name="keyguard_indication_dash_charging_time">Быстрая зарядка (<xliff:g id="charging_time_left" example="4 hours and 2 minutes">%s</xliff:g> до полной)</string>
-     <string name="keyguard_plugged_in_dash_charging">Быстрая зарядка</string>
+    <!-- Battery saver tile -->
+    <string name="battery_saver_qs_tile_fully_charged">Заряжено</string>
 
-     <string name="statusbar_items_title">Редактирование иконок</string>
+    <!-- Indication on the keyguard that is shown when the device is charging with a dash charger. Should match keyguard_plugged_in_dash_charging [CHAR LIMIT=40]-->
+    <string name="keyguard_indication_dash_charging_time">Быстрая зарядка (<xliff:g id="charging_time_left" example="4 hours and 2 minutes">%s</xliff:g> до полной)</string>
+    <string name="keyguard_plugged_in_dash_charging">Быстрая зарядка</string>
 
-     <!-- volte icon switch -->
-     <string name="status_bar_volte">VOLTE</string>
+    <string name="statusbar_items_title">Редактирование иконок</string>
 
+    <!-- volte icon switch -->
+    <string name="status_bar_volte">VOLTE</string>
 
     <!-- Power Menu -->
     <string name="global_action_reboot">Перезагрузка</string>
