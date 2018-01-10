@@ -41,4 +41,6 @@
    <!-- Enable sms authorization framework-->
    <bool name="config_sms_authorization_enabled">false</bool>
 
+   <integer name="config_flashlightProximityTimeout">300</integer>
+
 </resources>
