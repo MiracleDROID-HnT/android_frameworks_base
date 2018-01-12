@@ -27,6 +27,8 @@ import android.hardware.camera2.CameraManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.net.ConnectivityManager;
+import android.view.IWindowManager;
+import android.view.WindowManagerGlobal;
 
 import com.android.internal.statusbar.IStatusBarService;
 
@@ -111,6 +113,15 @@ public class ElixirUtils {
 
     public static void toggleCameraFlash() {
         FireActions.toggleCameraFlash();
+    }
+
+    public static void takeScreenrecord(int mode) {
+        IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
+        try {
+            wm.screenRecordAction(mode);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private static final class FireActions {
