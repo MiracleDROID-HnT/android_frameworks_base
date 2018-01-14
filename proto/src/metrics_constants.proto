@@ -4572,10 +4572,10 @@ message MetricsEvent {
     // Add new aosp constants above this line.
     // END OF AOSP CONSTANTS
 
-    //Initial XPerience Constants
+    //Initial Elixir Constants
 
-    RAINBOW_UNICORN = 2000;
+    MAGICAL_WORLD = 2000;
 
-    //END XPerience Constants
+    //END Elixir Constants
   }
 }
