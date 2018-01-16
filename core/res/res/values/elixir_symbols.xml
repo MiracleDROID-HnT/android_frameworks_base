@@ -27,8 +27,5 @@
    
     <!-- Wether device has dash charging support -->
     <java-symbol type="bool" name="config_hasDashCharger" />    
- 
-    <java-symbol type="integer" name="config_buttonBrightnessSettingDefault" />
-    <java-symbol type="bool" name="config_deviceHasVariableButtonBrightness" />
 
 </resources>
