@@ -4793,6 +4793,12 @@ public final class Settings {
         public static final String FORCE_EXPANDED_SETTINGS = "force_expanded_settings";
 
         /**
+         * @hide
+         */
+        public static final String FORCE_SAFE_MEDIA_VOLUME_DISABLED =
+                "force_safe_media_volume_disabled";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5046,6 +5052,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(REVERSE_LOOKUP_PROVIDER);
             PRIVATE_SETTINGS.add(DIALER_OPENCNAM_ACCOUNT_SID);
             PRIVATE_SETTINGS.add(DIALER_OPENCNAM_AUTH_TOKEN);
+            PRIVATE_SETTINGS.add(FORCE_SAFE_MEDIA_VOLUME_DISABLED);
         }
 
         /**
