@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.VibrationEffect;
@@ -34,7 +33,6 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
@@ -142,8 +140,6 @@ public abstract class PanelView extends FrameLayout {
     private boolean mIgnoreXTouchSlop;
     private boolean mExpandLatencyTracking;
 
-    private GestureDetector mDoubleTapGestureListener;
-
     protected void onExpandingFinished() {
         mBar.onExpandingFinished();
     }
@@ -209,18 +205,6 @@ public abstract class PanelView extends FrameLayout {
         mFlingAnimationUtilsDismissing = new FlingAnimationUtils(context,
                 0.5f /* maxLengthSeconds */, 0.2f /* speedUpFactor */, 0.6f /* x2 */,
                 0.84f /* y2 */);
-
-        mDoubleTapGestureListener = new GestureDetector(context,
-                new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDoubleTap(MotionEvent event) {
-                final PowerManager pm = (PowerManager) context.getSystemService(
-                        Context.POWER_SERVICE);
-                pm.goToSleep(event.getEventTime());
-                return true;
-            }
-        });
-
         mBounceInterpolator = new BounceInterpolator();
         mFalsingManager = FalsingManager.getInstance(context);
         mNotificationsDragEnabled =
@@ -412,11 +396,6 @@ public abstract class PanelView extends FrameLayout {
                 endMotionEvent(event, x, y, false /* forceCancel */);
                 break;
         }
-
-        if (mStatusBar.getBarState() == StatusBarState.KEYGUARD) {
-            mDoubleTapGestureListener.onTouchEvent(event);
-        }
-
         return !mGestureWaitForTouchSlop || mTracking;
     }
 
