@@ -38,4 +38,7 @@
          config to 7. -->
     <integer name="config_deviceHardwareKeys">64</integer>
 
+    <!-- Ambient music -->
+    <bool name="config_canForceDozeNotifications">true</bool>
+
 </resources>
