@@ -33,6 +33,8 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import libcore.util.Objects;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -102,12 +104,14 @@ final class OverlayManagerServiceImpl {
         for (int i = 0; i < overlayPackagesSize; i++) {
             final PackageInfo overlayPackage = overlayPackages.get(i);
             final OverlayInfo oi = storedOverlayInfos.get(overlayPackage.packageName);
-            if (oi == null || !oi.targetPackageName.equals(overlayPackage.overlayTarget)) {
+            if (oi == null || !oi.targetPackageName.equals(overlayPackage.overlayTarget)
+                    || !Objects.equal(oi.category, overlayPackage.overlayCategory)) {
                 // Update the overlay if it didn't exist or had the wrong target package.
                 mSettings.init(overlayPackage.packageName, newUserId,
                         overlayPackage.overlayTarget,
                         overlayPackage.applicationInfo.getBaseCodePath(),
-                        isPackageStaticOverlay(overlayPackage), overlayPackage.overlayPriority);
+                        isPackageStaticOverlay(overlayPackage), overlayPackage.overlayPriority,
+                        overlayPackage.overlayCategory);
 
                 if (oi == null) {
                     // This overlay does not exist in our settings.
@@ -261,7 +265,8 @@ final class OverlayManagerServiceImpl {
 
         mSettings.init(packageName, userId, overlayPackage.overlayTarget,
                 overlayPackage.applicationInfo.getBaseCodePath(),
-                isPackageStaticOverlay(overlayPackage), overlayPackage.overlayPriority);
+                isPackageStaticOverlay(overlayPackage), overlayPackage.overlayPriority,
+                overlayPackage.overlayCategory);
         try {
             if (updateState(targetPackage, overlayPackage, userId)) {
                 mListener.onOverlaysChanged(overlayPackage.overlayTarget, userId);
@@ -290,7 +295,8 @@ final class OverlayManagerServiceImpl {
         mSettings.init(packageName, userId, overlayPackage.overlayTarget,
                 overlayPackage.applicationInfo.getBaseCodePath(),
                 isPackageStaticOverlay(overlayPackage),
-                overlayPackage.overlayPriority);
+                overlayPackage.overlayPriority,
+                overlayPackage.overlayCategory);
         try {
             if (updateState(targetPackage, overlayPackage, userId)) {
                 mListener.onOverlaysChanged(overlayPackage.overlayTarget, userId);
@@ -415,9 +421,11 @@ final class OverlayManagerServiceImpl {
         }
     }
 
-    boolean setEnabledExclusive(@NonNull final String packageName, final int userId) {
+    boolean setEnabledExclusive(@NonNull final String packageName, boolean withinCategory,
+            final int userId) {
         if (DEBUG) {
-            Slog.d(TAG, String.format("setEnabledExclusive packageName=%s userId=%d", packageName, userId));
+            Slog.d(TAG, String.format("setEnabledExclusive packageName=%s"
+                    + " withinCategory=%s userId=%d", packageName, withinCategory, userId));
         }
 
         final PackageInfo overlayPackage = mPackageManager.getPackageInfo(packageName, userId);
@@ -447,6 +455,11 @@ final class OverlayManagerServiceImpl {
 
                 if (isPackageStaticOverlay(disabledOverlayPackageInfo)) {
                     // Don't touch static overlays.
+                    continue;
+                }
+                if (withinCategory && !Objects.equal(disabledOverlayPackageInfo.overlayCategory,
+                        oi.category)) {
+                    // Don't touch overlays from other categories.
                     continue;
                 }
 

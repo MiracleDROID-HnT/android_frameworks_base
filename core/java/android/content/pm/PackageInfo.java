@@ -283,6 +283,13 @@ public class PackageInfo implements Parcelable {
      */
     public String overlayTarget;
 
+    /**
+     * The overlay category, if any, of this package
+     *
+     * @hide
+     */
+    public String overlayCategory;
+
     /** @hide */
     public int overlayPriority;
 
@@ -360,6 +367,7 @@ public class PackageInfo implements Parcelable {
         dest.writeString(restrictedAccountType);
         dest.writeString(requiredAccountType);
         dest.writeString(overlayTarget);
+        dest.writeString(overlayCategory);
         dest.writeInt(overlayPriority);
         dest.writeInt(overlayFlags);
     }
@@ -412,6 +420,7 @@ public class PackageInfo implements Parcelable {
         restrictedAccountType = source.readString();
         requiredAccountType = source.readString();
         overlayTarget = source.readString();
+        overlayCategory = source.readString();
         overlayPriority = source.readInt();
         overlayFlags = source.readInt();
 

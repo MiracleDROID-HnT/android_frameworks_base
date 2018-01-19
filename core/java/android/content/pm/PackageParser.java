@@ -687,6 +687,7 @@ public class PackageParser {
         pi.restrictedAccountType = p.mRestrictedAccountType;
         pi.requiredAccountType = p.mRequiredAccountType;
         pi.overlayTarget = p.mOverlayTarget;
+        pi.overlayCategory = p.mOverlayCategory;
         pi.overlayPriority = p.mOverlayPriority;
 
         if (p.mIsStaticOverlay) {
@@ -2307,6 +2308,8 @@ public class PackageParser {
                         com.android.internal.R.styleable.AndroidManifestResourceOverlay);
                 pkg.mOverlayTarget = sa.getString(
                         com.android.internal.R.styleable.AndroidManifestResourceOverlay_targetPackage);
+                pkg.mOverlayCategory = sa.getString(
+                        com.android.internal.R.styleable.AndroidManifestResourceOverlay_category);
                 pkg.mOverlayPriority = sa.getInt(
                         com.android.internal.R.styleable.AndroidManifestResourceOverlay_priority,
                         0);
@@ -6064,6 +6067,7 @@ public class PackageParser {
         public String mRequiredAccountType;
 
         public String mOverlayTarget;
+        public String mOverlayCategory;
         public int mOverlayPriority;
         public boolean mIsStaticOverlay;
         public boolean mTrustedOverlay;
@@ -6556,6 +6560,7 @@ public class PackageParser {
             mRestrictedAccountType = dest.readString();
             mRequiredAccountType = dest.readString();
             mOverlayTarget = dest.readString();
+            mOverlayCategory = dest.readString();
             mOverlayPriority = dest.readInt();
             mIsStaticOverlay = (dest.readInt() == 1);
             mTrustedOverlay = (dest.readInt() == 1);
@@ -6679,6 +6684,7 @@ public class PackageParser {
             dest.writeString(mRestrictedAccountType);
             dest.writeString(mRequiredAccountType);
             dest.writeString(mOverlayTarget);
+            dest.writeString(mOverlayCategory);
             dest.writeInt(mOverlayPriority);
             dest.writeInt(mIsStaticOverlay ? 1 : 0);
             dest.writeInt(mTrustedOverlay ? 1 : 0);

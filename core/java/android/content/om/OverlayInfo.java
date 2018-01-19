@@ -17,6 +17,7 @@
 package android.content.om;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -49,16 +50,21 @@ public final class OverlayInfo implements Parcelable {
     /**
      * The overlay is currently disabled. It can be enabled.
      *
-     * @see IOverlayManager.setEnabled
+     * @see IOverlayManager#setEnabled
      */
     public static final int STATE_DISABLED = 2;
 
     /**
      * The overlay is currently enabled. It can be disabled.
      *
-     * @see IOverlayManager.setEnabled
+     * @see IOverlayManager#setEnabled
      */
     public static final int STATE_ENABLED = 3;
+
+    /**
+     * Category for theme overlays.
+     */
+    public static final String CATEGORY_THEME = "android.theme";
 
     /**
      * Package name of the overlay package
@@ -69,6 +75,11 @@ public final class OverlayInfo implements Parcelable {
      * Package name of the target package
      */
     public final String targetPackageName;
+
+    /**
+     * Category of the overlay package
+     */
+    public final String category;
 
     /**
      * Full path to the base APK for this overlay package
@@ -97,14 +108,15 @@ public final class OverlayInfo implements Parcelable {
      * @param state the new state for the source OverlayInfo
      */
     public OverlayInfo(@NonNull OverlayInfo source, int state) {
-        this(source.packageName, source.targetPackageName, source.baseCodePath, state,
-                source.userId);
+        this(source.packageName, source.targetPackageName, source.category, source.baseCodePath,
+                state, source.userId);
     }
 
     public OverlayInfo(@NonNull String packageName, @NonNull String targetPackageName,
-            @NonNull String baseCodePath, int state, int userId) {
+            @Nullable String category, @NonNull String baseCodePath, int state, int userId) {
         this.packageName = packageName;
         this.targetPackageName = targetPackageName;
+        this.category = category;
         this.baseCodePath = baseCodePath;
         this.state = state;
         this.userId = userId;
@@ -114,6 +126,7 @@ public final class OverlayInfo implements Parcelable {
     public OverlayInfo(Parcel source) {
         packageName = source.readString();
         targetPackageName = source.readString();
+        category = source.readString();
         baseCodePath = source.readString();
         state = source.readInt();
         userId = source.readInt();
@@ -151,6 +164,7 @@ public final class OverlayInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(packageName);
         dest.writeString(targetPackageName);
+        dest.writeString(category);
         dest.writeString(baseCodePath);
         dest.writeInt(state);
         dest.writeInt(userId);
@@ -247,6 +261,9 @@ public final class OverlayInfo implements Parcelable {
             return false;
         }
         if (!targetPackageName.equals(other.targetPackageName)) {
+            return false;
+        }
+        if (!category.equals(other.category)) {
             return false;
         }
         if (!baseCodePath.equals(other.baseCodePath)) {
