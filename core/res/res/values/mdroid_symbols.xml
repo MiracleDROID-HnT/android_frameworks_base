@@ -174,4 +174,6 @@
     <java-symbol type="string" name="profileNameNight" />
     <java-symbol type="string" name="profileNameAutomobile" />
 
+    <java-symbol type="bool" name="config_canForceDozeNotifications" />
+
 </resources>

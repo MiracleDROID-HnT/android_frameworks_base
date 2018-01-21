@@ -118,4 +118,6 @@
     <!-- Whether to ignore RSSNR for LTE -->
     <bool name="config_ignore_rssnr">false</bool>
 
+    <bool name="config_canForceDozeNotifications">true</bool>
+
 </resources>
