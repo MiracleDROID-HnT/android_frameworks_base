@@ -364,7 +364,6 @@ public class KeyguardStatusView extends GridLayout implements
                         mWeatherClient.getWeatherConditionImage(mWeatherData.conditionCode));
                     mWeatherCurrentTemp.setText(mWeatherData.temp + mWeatherData.tempUnits);
                     mWeatherConditionText.setText(mWeatherData.condition);
-                    mWeatherView.setVisibility(mShowWeather ? View.VISIBLE : View.GONE);
                     updateSettings();
                 } else {
                     mWeatherCity.setText(null);
@@ -475,6 +474,7 @@ public class KeyguardStatusView extends GridLayout implements
         int blendedAlarmColor = ColorUtils.blendARGB(mAlarmTextColor, Color.WHITE, darkAmount);
         mAlarmStatusView.setTextColor(blendedAlarmColor);
         mAlarmStatusView.setCompoundDrawableTintList(ColorStateList.valueOf(blendedAlarmColor));
+        mWeatherView.setAlpha(dark ? 0 : 1);
     }
 
     public void setPulsing(boolean pulsing) {
