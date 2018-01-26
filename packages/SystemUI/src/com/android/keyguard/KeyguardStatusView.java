@@ -29,8 +29,13 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
+import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.service.dreams.DreamService;
+import android.service.dreams.IDreamManager;
 import android.support.v4.graphics.ColorUtils;
 import android.database.ContentObserver;
 import android.net.Uri;
@@ -415,13 +420,25 @@ public class KeyguardStatusView extends GridLayout implements
                 Settings.System.HIDE_LOCKSCREEN_DATE, 1, UserHandle.USER_CURRENT) == 1;
 
         mClockView = (TextClock) findViewById(R.id.clock_view);
-        mClockView.setVisibility(showClock ? View.VISIBLE : View.GONE);
-
-        mDateView.setVisibility(showDate ? View.VISIBLE : View.GONE);
         mDateView = (DateView) findViewById(R.id.date_view);
-
         mAlarmStatusView = (TextView) findViewById(R.id.alarm_status);
-        mAlarmStatusView.setVisibility(showAlarm && nextAlarm != null ? View.VISIBLE : View.GONE);
+
+        if (!isDozeMode()) {
+            mClockView.setVisibility(showClock ? View.VISIBLE : View.GONE);
+        } else {
+            mClockView.setVisibility(View.VISIBLE);
+        }
+
+        if (!isDozeMode()) {
+            mDateView.setVisibility(showDate ? View.VISIBLE : View.GONE);
+        } else {
+            mDateView.setVisibility(View.VISIBLE);
+        }
+
+        if (!isDozeMode()) {
+            mAlarmStatusView.setVisibility(showAlarm && nextAlarm != null ? View.VISIBLE : View.GONE);
+        }
+        updateDozeVisibleViews();
 
         if (mWeatherConditionText != null) {
             ConditionText = mWeatherConditionText.getText().toString() != "";
@@ -517,6 +534,7 @@ public class KeyguardStatusView extends GridLayout implements
         mAlarmStatusView.setTextColor(blendedAlarmColor);
         mAlarmStatusView.setCompoundDrawableTintList(ColorStateList.valueOf(blendedAlarmColor));
         mWeatherView.setAlpha(dark ? 0 : 1);
+        refresh();
     }
 
     public void setPulsing(boolean pulsing) {
@@ -527,6 +545,7 @@ public class KeyguardStatusView extends GridLayout implements
         mForcedMediaDoze =
                 reason == DozeLog.PULSE_REASON_FORCED_MEDIA_NOTIFICATION;
         updateDozeVisibleViews();
+        refresh();
     }
 
     private void updateDozeVisibleViews() {
@@ -540,52 +559,71 @@ public class KeyguardStatusView extends GridLayout implements
     }
 
     class SettingsObserver extends ContentObserver {
-         SettingsObserver(Handler handler) {
-             super(handler);
-         }
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
 
-         void observe() {
-             ContentResolver resolver = mContext.getContentResolver();
-             resolver.registerContentObserver(Settings.System.getUriFor(
-                     Settings.System.LOCK_SCREEN_SHOW_WEATHER), false, this, UserHandle.USER_ALL);
-             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.OMNIJAWS_WEATHER_ICON_PACK), false, this, UserHandle.USER_ALL);
-             resolver.registerContentObserver(Settings.System.getUriFor(
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_SHOW_WEATHER), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                   Settings.System.OMNIJAWS_WEATHER_ICON_PACK), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCK_SCREEN_SHOW_WEATHER_LOCATION), false, this, UserHandle.USER_ALL);
 
-             update();
-         }
+            update();
+        }
 
-         void unobserve() {
-             ContentResolver resolver = mContext.getContentResolver();
-             resolver.unregisterContentObserver(this);
-         }
+        void unobserve() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
+        }
 
-         @Override
-         public void onChange(boolean selfChange, Uri uri) {
-             if (uri.equals(Settings.System.getUriFor(
-                     Settings.System.LOCK_SCREEN_SHOW_WEATHER))) {
-                 queryAndUpdateWeather();
-             } else if (uri.equals(Settings.System.getUriFor(
-                     Settings.System.OMNIJAWS_WEATHER_ICON_PACK))) {
-                 queryAndUpdateWeather();
-             }  else if (uri.equals(Settings.System.getUriFor(
-                     Settings.System.LOCK_SCREEN_SHOW_WEATHER_LOCATION))) {
-                 queryAndUpdateWeather();
-             }
-             update();
-         }
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_SHOW_WEATHER))) {
+                queryAndUpdateWeather();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.OMNIJAWS_WEATHER_ICON_PACK))) {
+                queryAndUpdateWeather();
+            }  else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCK_SCREEN_SHOW_WEATHER_LOCATION))) {
+                queryAndUpdateWeather();
+            }
+            update();
+        }
 
-         public void update() {
-           ContentResolver resolver = mContext.getContentResolver();
-           int currentUserId = ActivityManager.getCurrentUser();
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            int currentUserId = ActivityManager.getCurrentUser();
 
-           mShowWeather = Settings.System.getInt(resolver,
+            mShowWeather = Settings.System.getInt(resolver,
                 Settings.System.LOCK_SCREEN_SHOW_WEATHER, 0) == 1;
-           showLocation = Settings.System.getInt(resolver,
+            showLocation = Settings.System.getInt(resolver,
                 Settings.System.LOCK_SCREEN_SHOW_WEATHER_LOCATION, 1) == 1;
-           mWeatherEnabled = mWeatherClient.isOmniJawsEnabled();
-           queryAndUpdateWeather();
-         }
-     }
+            mWeatherEnabled = mWeatherClient.isOmniJawsEnabled();
+            queryAndUpdateWeather();
+        }
+    }
+
+    private boolean isDozeMode() {
+        IDreamManager dreamManager = getDreamManager();
+        PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+        try {
+            //noinspection deprecation
+            if (dreamManager != null && dreamManager.isDozing() && pm != null && !pm.isScreenOn()) {
+                return true;
+            }
+        } catch (RemoteException e) {
+            return false;
+        }
+        return false;
+    }
+
+    static IDreamManager getDreamManager() {
+        return IDreamManager.Stub.asInterface(
+                ServiceManager.checkService(DreamService.DREAM_SERVICE));
+    }
 }
