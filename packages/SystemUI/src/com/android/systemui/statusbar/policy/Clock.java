@@ -116,6 +116,7 @@ public class Clock extends TextView implements DemoMode, CommandQueue.Callbacks,
     public static final int FONT_NOTOSERIF_ITALIC = 22;
     public static final int FONT_NOTOSERIF_BOLD = 23;
     public static final int FONT_NOTOSERIF_BOLD_ITALIC = 24;
+    public int DEFAULT_CLOCK_SIZE = 14;
 
     public static final int STYLE_CLOCK_RIGHT   = 0;
     public static final int STYLE_CLOCK_CENTER  = 1;
@@ -546,8 +547,11 @@ public class Clock extends TextView implements DemoMode, CommandQueue.Callbacks,
     private void updateClockSize() {
         int size = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.STATUS_BAR_CLOCK_SIZE, 14);
-        setTextSize(size);
-        updateClock();
+        if (size != DEFAULT_CLOCK_SIZE) {
+            DEFAULT_CLOCK_SIZE = size;
+            setTextSize(size);
+            updateClock();
+        }
     }
 
     private void updateClockFontStyle() {
