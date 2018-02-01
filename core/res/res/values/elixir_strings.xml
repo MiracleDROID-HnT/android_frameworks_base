@@ -13,7 +13,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-  <!-- advanced reboot to bootloader. -->
+    <!-- advanced reboot to bootloader. -->
     <string name="reboot_to_bootloader_title">Reboot bootloader</string>
     <string name="reboot_to_bootloader_message">Rebooting to bootloader\u2026</string>
     <!-- advanced reboot to recovery. -->
@@ -25,4 +25,7 @@
 
     <!-- QS Tiles -->
     <string name="quick_settings_screenshot_label">Screenshot</string>
+
+    <!-- Pocket Lock -->
+    <string name="pocket_lock_message_long_press">Long press power button to interact</string>
 </resources>
