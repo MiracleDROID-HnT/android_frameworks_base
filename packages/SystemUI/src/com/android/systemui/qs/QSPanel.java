@@ -714,6 +714,8 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         } else {
             Settings.System.putInt(context.getContentResolver(),
             Settings.System.SCREEN_BRIGHTNESS, 255);
+        }
+    }
 
     private void configureTile(QSTile t, QSTileView v) {
         if (mTileLayout != null) {
