@@ -92,6 +92,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Process;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
@@ -149,6 +150,11 @@ import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.statusbar.NotificationVisibility;
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.util.NotificationMessagingUtil;
+import com.android.internal.util.hwkeys.ActionConstants;
+import com.android.internal.util.hwkeys.ActionUtils;
+import com.android.internal.util.hwkeys.PackageMonitor;
+import com.android.internal.util.hwkeys.PackageMonitor.PackageChangedListener;
+import com.android.internal.util.hwkeys.PackageMonitor.PackageState;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardHostView.OnDismissAction;
 import com.android.keyguard.KeyguardUpdateMonitor;
@@ -271,7 +277,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         ActivatableNotificationView.OnActivatedListener,
         ExpandableNotificationRow.ExpansionLogger, NotificationData.Environment,
         ExpandableNotificationRow.OnExpandClickListener, InflationCallback,
-        ColorExtractor.OnColorsChangedListener, ConfigurationListener {
+        ColorExtractor.OnColorsChangedListener, ConfigurationListener, PackageChangedListener {
     public static final boolean MULTIUSER_DEBUG = false;
 
     public static final boolean ENABLE_REMOTE_INPUT =
@@ -497,6 +503,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     private int mLastDispatchedSystemUiVisibility = ~View.SYSTEM_UI_FLAG_VISIBLE;
 
     DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+
+    private PackageMonitor mPackageMonitor;
 
     // XXX: gesture research
     private final GestureRecorder mGestureRec = DEBUG_GESTURES
@@ -812,6 +820,10 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         mDisplay = mWindowManager.getDefaultDisplay();
         updateDisplaySize();
+
+        mPackageMonitor = new PackageMonitor();
+        mPackageMonitor.register(mContext, mHandler);
+        mPackageMonitor.addListener(this);
 
         Resources res = mContext.getResources();
         mScrimSrcModeEnabled = res.getBoolean(R.bool.config_status_bar_scrim_behind_use_src);
@@ -3331,6 +3343,15 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mask, fullscreenStackBounds, dockedStackBounds, sbModeChanged, mStatusBarMode);
     }
 
+    @Override
+    public void toggleFlashlight() {
+        if (mFlashlightController != null
+                && mFlashlightController.hasFlashlight()
+                && mFlashlightController.isAvailable()) {
+            mFlashlightController.setFlashlight(!mFlashlightController.isEnabled());
+        }
+    }
+
     void touchAutoHide() {
         // update transient bar autohide
         if (mStatusBarMode == MODE_SEMI_TRANSPARENT || (mNavigationBar != null
@@ -4229,9 +4250,33 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mQSPanel != null && mQSPanel.getHost() != null) {
             mQSPanel.getHost().destroy();
         }
+
+        mPackageMonitor.removeListener(this);
+        mPackageMonitor.unregister();
+
         Dependency.get(ActivityStarterDelegate.class).setActivityStarterImpl(null);
         mDeviceProvisionedController.removeCallback(mUserSetupObserver);
         Dependency.get(ConfigurationController.class).removeCallback(this);
+    }
+
+    @Override
+    public void onPackageChanged(String pkg, PackageState state) {
+        if (state == PackageState.PACKAGE_REMOVED
+                || state == PackageState.PACKAGE_CHANGED) {
+            final Context ctx = mContext;
+            final Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!ActionUtils.hasNavbarByDefault(ctx)) {
+                        ActionUtils.resolveAndUpdateButtonActions(ctx,
+                                ActionConstants
+                                        .getDefaults(ActionConstants.HWKEYS));
+                    }
+                }
+            });
+            thread.setPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            thread.start();
+        }
     }
 
     private boolean mDemoModeAllowed;
