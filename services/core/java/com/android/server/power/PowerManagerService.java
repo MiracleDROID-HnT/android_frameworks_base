@@ -535,6 +535,9 @@ public final class PowerManagerService extends SystemService
     // True if we are currently in light device idle mode.
     private boolean mLightDeviceIdleMode;
 
+    // overrule and disable brightness for buttons
+    private boolean mHardwareKeysDisable = false;
+
     // Set of app ids that we will always respect the wake locks for.
     int[] mDeviceIdleWhitelist = new int[0];
 
@@ -819,6 +822,9 @@ public final class PowerManagerService extends SystemService
         resolver.registerContentObserver(Settings.Global.getUriFor(
                 Settings.Global.DEVICE_DEMO_MODE),
                 false, mSettingsObserver, UserHandle.USER_SYSTEM);
+        resolver.registerContentObserver(Settings.Secure.getUriFor(
+                Settings.Secure.HARDWARE_KEYS_DISABLE),
+                false, mSettingsObserver, UserHandle.USER_ALL);
         IVrManager vrManager = (IVrManager) getBinderService(Context.VR_SERVICE);
         if (vrManager != null) {
             try {
@@ -940,6 +946,10 @@ public final class PowerManagerService extends SystemService
         mScreenBrightnessSetting = Settings.System.getIntForUser(resolver,
                 Settings.System.SCREEN_BRIGHTNESS, mScreenBrightnessSettingDefault,
                 UserHandle.USER_CURRENT);
+
+        mHardwareKeysDisable = Settings.Secure.getIntForUser(resolver,
+                Settings.Secure.HARDWARE_KEYS_DISABLE, 0,
+                UserHandle.USER_CURRENT) != 0;
 
         if (oldScreenBrightnessSetting != getCurrentBrightnessSettingLocked()) {
             mTemporaryScreenBrightnessSettingOverride = -1;
@@ -1955,11 +1965,15 @@ public final class PowerManagerService extends SystemService
                     nextTimeout = mLastUserActivityTime
                             + screenOffTimeout - screenDimDuration;
                     if (now < nextTimeout) {
-                        if (now > mLastUserActivityTime + BUTTON_ON_DURATION) {
+                        if (mHardwareKeysDisable) {
                             mButtonsLight.setBrightness(0);
                         } else {
-                            mButtonsLight.setBrightness(mDisplayPowerRequest.screenBrightness);
-                            nextTimeout = now + BUTTON_ON_DURATION;
+                            if (now > mLastUserActivityTime + BUTTON_ON_DURATION) {
+                                mButtonsLight.setBrightness(0);
+                            } else {
+                                mButtonsLight.setBrightness(mDisplayPowerRequest.screenBrightness);
+                                nextTimeout = now + BUTTON_ON_DURATION;
+                            }
                         }
                         mUserActivitySummary = USER_ACTIVITY_SCREEN_BRIGHT;
                     } else {

@@ -94,6 +94,8 @@ oneway interface IStatusBar
 
     void showAssistDisclosure();
     void startAssist(in Bundle args);
+    void screenPinningStateChanged(boolean enabled);
+    void toggleFlashlight();
 
     /**
      * Notifies the status bar that a camera launch gesture has been detected.
@@ -128,4 +130,8 @@ oneway interface IStatusBar
 
     void toggleCameraFlash();
 
+    /**
+     * Custom
+     */
+    void toggleNavigationBar(boolean enable);
 }

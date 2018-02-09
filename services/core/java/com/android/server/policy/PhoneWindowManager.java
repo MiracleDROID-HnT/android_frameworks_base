@@ -118,11 +118,13 @@ import static android.view.WindowManagerPolicy.WindowManagerFuncs.LID_ABSENT;
 import static android.view.WindowManagerPolicy.WindowManagerFuncs.LID_CLOSED;
 import static android.view.WindowManagerPolicy.WindowManagerFuncs.LID_OPEN;
 
+import android.Manifest;
 import android.annotation.Nullable;
 import android.app.ActivityManager;
 import android.app.ActivityManager.StackId;
 import android.app.ActivityManagerInternal;
 import android.app.ActivityManagerInternal.SleepToken;
+import android.app.ActivityManagerNative;
 import android.app.ActivityThread;
 import android.app.AppOpsManager;
 import android.app.IUiModeManager;
@@ -237,11 +239,14 @@ import com.android.internal.R;
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.policy.IKeyguardDismissCallback;
+import com.android.internal.util.custom.CustomUtils;
 import com.android.internal.policy.IShortcutService;
 import com.android.internal.policy.PhoneWindow;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.elixir.ElixirUtils;
 import com.android.internal.util.ScreenShapeHelper;
+import com.android.internal.util.hwkeys.ActionHandler;
+import com.android.internal.util.hwkeys.ActionUtils;
 import com.android.internal.widget.PointerLocationView;
 import com.android.server.GestureLauncherService;
 import com.android.server.LocalServices;
@@ -465,6 +470,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     int[] mNavigationBarWidthForRotationDefault = new int[4];
     int[] mNavigationBarHeightForRotationInCarMode = new int[4];
     int[] mNavigationBarWidthForRotationInCarMode = new int[4];
+    private boolean mNavBarOverride;
 
     private LongSparseArray<IShortcutService> mShortcutKeyServices = new LongSparseArray<>();
 
@@ -830,6 +836,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private SensorEventListener mProximityListener;
     private android.os.PowerManager.WakeLock mProximityWakeLock;
 
+    private HardkeyActionHandler mKeyHandler;
+
     private static final int MSG_ENABLE_POINTER_LOCATION = 1;
     private static final int MSG_DISABLE_POINTER_LOCATION = 2;
     private static final int MSG_DISPATCH_MEDIA_KEY_WITH_WAKE_LOCK = 3;
@@ -967,6 +975,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 case MSG_CLEAR_PROXIMITY:
                     cleanupProximity();
                     break;
+                case HardkeyActionHandler.MSG_FIRE_HOME:
+                    launchHomeFromHotKey();
+                    break;
+//                case HardkeyActionHandler.MSG_UPDATE_MENU_KEY:
+//                    synchronized (mLock) {
+//                        mHasPermanentMenuKey = msg.arg1 == 1;
+//                    }
+//                    break;
+                case HardkeyActionHandler.MSG_DO_HAPTIC_FB:
+                    performHapticFeedbackLw(null,
+                            HapticFeedbackConstants.LONG_PRESS, false);
+                    break;
             }
         }
     }
@@ -1092,6 +1112,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.TORCH_POWER_BUTTON_GESTURE), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.NAVIGATION_BAR_ENABLED), false, this,
                     UserHandle.USER_ALL);
             updateSettings();
         }
@@ -2079,6 +2102,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         try {
             mOrientationListener.setCurrentRotation(windowManager.getDefaultDisplayRotation());
         } catch (RemoteException ex) { }
+
+        // only for hwkey devices
+        if (!mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_showNavigationBar)) {
+            mKeyHandler = new HardkeyActionHandler(mContext, mHandler);
+        }
+
         mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
         mShortcutManager = new ShortcutManager(context);
@@ -2415,16 +2445,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // Allow the navigation bar to move on non-square small devices (phones).
         mNavigationBarCanMove = width != height && shortSizeDp < 600;
 
-        mHasNavigationBar = res.getBoolean(com.android.internal.R.bool.config_showNavigationBar);
-
         // Allow a system property to override this. Used by the emulator.
         // See also hasNavigationBar().
         String navBarOverride = SystemProperties.get("qemu.hw.mainkeys");
         if ("1".equals(navBarOverride)) {
-            mHasNavigationBar = false;
+            mNavBarOverride = true;
         } else if ("0".equals(navBarOverride)) {
-            mHasNavigationBar = true;
+            mNavBarOverride = false;
         }
+        mHasNavigationBar = !mNavBarOverride && Settings.Secure.getIntForUser(
+                mContext.getContentResolver(), Settings.Secure.NAVIGATION_BAR_ENABLED,
+                res.getBoolean(com.android.internal.R.bool.config_showNavigationBar) ? 1 : 0,
+                UserHandle.USER_CURRENT) == 1;
 
         // For demo purposes, allow the rotation of the HDMI display to be controlled.
         // By default, HDMI locks rotation to landscape.
@@ -2558,6 +2590,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mTorchActionMode = Settings.Secure.getIntForUser(resolver,
                     Settings.Secure.TORCH_POWER_BUTTON_GESTURE, 0,
                     UserHandle.USER_CURRENT);
+
+            mHasNavigationBar = !mNavBarOverride && Settings.Secure.getIntForUser(
+                    resolver, Settings.Secure.NAVIGATION_BAR_ENABLED,
+                    mContext.getResources().getBoolean(
+                    com.android.internal.R.bool.config_showNavigationBar) ? 1 : 0,
+                    UserHandle.USER_CURRENT) == 1;
+            IStatusBarService sbar = getStatusBarService();
+            if (sbar != null) {
+                try {
+                    sbar.toggleNavigationBar(mHasNavigationBar);
+                } catch (RemoteException e1) {}
+            }
         }
         synchronized (mWindowManagerFuncs.getWindowManagerLock()) {
             PolicyControl.reloadFromSetting(mContext);
@@ -3532,11 +3576,28 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         final int flags = event.getFlags();
         final boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
         final boolean canceled = event.isCanceled();
+        final boolean longPress = (flags & KeyEvent.FLAG_LONG_PRESS) != 0;
+        final boolean virtualKey = event.getDeviceId() == KeyCharacterMap.VIRTUAL_KEYBOARD;
 
         if (DEBUG_INPUT) {
             Log.d(TAG, "interceptKeyTi keyCode=" + keyCode + " down=" + down + " repeatCount="
                     + repeatCount + " keyguardOn=" + keyguardOn + " mHomePressed=" + mHomePressed
                     + " canceled=" + canceled);
+        }
+
+        // we only handle events from hardware key devices that originate from
+        // real button
+        // pushes. We ignore virtual key events as well since it didn't come
+        // from a hard key or
+        // it's the key handler synthesizing a back or menu key event for
+        // dispatch
+        // if keyguard is showing and secure, don't intercept and let aosp keycode
+        // implementation handle event
+        if (mKeyHandler != null && !keyguardOn && !virtualKey) {
+            boolean handled = mKeyHandler.handleKeyEvent(win, keyCode, repeatCount, down, canceled,
+                    longPress, keyguardOn);
+            if (handled)
+                return -1;
         }
 
         // If we think we might have a volume down & power key chord on the way
@@ -4094,6 +4155,22 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 Slog.e(TAG, "Error taking bugreport", e);
             }
         }
+    }
+
+    private boolean unpinActivity(boolean checkOnly) {
+        if (!hasNavigationBar()) {
+            try {
+                if (ActivityManagerNative.getDefault().isInLockTaskMode()) {
+                    if (!checkOnly) {
+                        ActivityManagerNative.getDefault().stopSystemLockTaskMode();
+                    }
+                    return true;
+                }
+            } catch (RemoteException e) {
+                // ignore
+            }
+        }
+        return false;
     }
 
     /** {@inheritDoc} */
@@ -6119,6 +6196,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mContext.sendBroadcastAsUser(errorIntent, UserHandle.CURRENT);
     }
 
+    private boolean isHwKeysDisabled() {
+        return mKeyHandler != null ? mKeyHandler.isHwKeysDisabled() : false;
+    }
+
     /** {@inheritDoc} */
     @Override
     public int interceptKeyBeforeQueueing(KeyEvent event, int policyFlags) {
@@ -6201,7 +6282,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         boolean useHapticFeedback = down
                 && (policyFlags & WindowManagerPolicy.FLAG_VIRTUAL) != 0
-                && event.getRepeatCount() == 0;
+                && event.getRepeatCount() == 0
+                && !isHwKeysDisabled();
 
         // Handle special keys.
         switch (keyCode) {
@@ -8455,6 +8537,26 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     @Override
     public boolean hasNavigationBar() {
         return mHasNavigationBar;
+    }
+
+    @Override
+    public void sendCustomAction(Intent intent) {
+        String action = intent.getAction();
+        if (action != null) {
+            if (ActionHandler.INTENT_SHOW_POWER_MENU.equals(action)) {
+                showGlobalActions();
+            } else if (CustomUtils.INTENT_SCREENSHOT.equals(action) || ActionHandler.INTENT_SCREENSHOT.equals(action)) {
+                mContext.enforceCallingOrSelfPermission(Manifest.permission.ACCESS_SURFACE_FLINGER, TAG + "sendCustomAction permission denied");
+                mHandler.removeCallbacks(mScreenshotRunnable);
+                mScreenshotRunnable.setScreenshotType(TAKE_SCREENSHOT_FULLSCREEN);
+                mHandler.post(mScreenshotRunnable);
+            } else if (CustomUtils.INTENT_REGION_SCREENSHOT.equals(action) || ActionHandler.INTENT_REGION_SCREENSHOT.equals(action)) {
+                mContext.enforceCallingOrSelfPermission(Manifest.permission.ACCESS_SURFACE_FLINGER, TAG + "sendCustomAction permission denied");
+                mHandler.removeCallbacks(mScreenshotRunnable);
+                mScreenshotRunnable.setScreenshotType(TAKE_SCREENSHOT_SELECTED_REGION);
+                mHandler.post(mScreenshotRunnable);
+            }
+        }
     }
 
     @Override

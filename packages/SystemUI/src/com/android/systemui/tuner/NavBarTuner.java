@@ -53,11 +53,18 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import android.os.SystemProperties;
+import android.content.ContentResolver;
+import android.provider.Settings;
+import android.os.UserHandle;
 
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.NavigationBarInflaterView;
 import com.android.systemui.tuner.TunerService.Tunable;
+
+import android.support.v7.preference.Preference;
+import android.support.v14.preference.SwitchPreference;
 
 import java.util.ArrayList;
 
@@ -70,6 +77,9 @@ public class NavBarTuner extends TunerPreferenceFragment {
     private static final String TYPE = "type";
     private static final String KEYCODE = "keycode";
     private static final String ICON = "icon";
+
+    private static final String SHOW_NAVBAR = "show_nav_bar";
+    private SwitchPreference mShowNavbar;
 
     private static final int[][] ICONS = new int[][]{
             {R.drawable.ic_qs_circle, R.string.tuner_circle},
@@ -98,9 +108,50 @@ public class NavBarTuner extends TunerPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.nav_bar_tuner);
+        mShowNavbar = (SwitchPreference) findPreference(SHOW_NAVBAR);
+        mShowNavbar.setChecked(isNavigationBarEnabled());
         bindLayout((ListPreference) findPreference(LAYOUT));
         bindButton(NAV_BAR_LEFT, NAVSPACE, LEFT);
         bindButton(NAV_BAR_RIGHT, MENU_IME, RIGHT);
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        if  (preference == mShowNavbar && mShowNavbar.isEnabled()) {
+            mShowNavbar.setEnabled(false);
+            boolean checked = ((SwitchPreference)preference).isChecked();
+            Settings.Secure.putIntForUser(getActivity().getContentResolver(),
+                    Settings.Secure.NAVIGATION_BAR_ENABLED, checked ? 1:0, UserHandle.USER_CURRENT);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mShowNavbar != null){
+                        mShowNavbar.setEnabled(true);
+                    }
+                }
+            }, 1000);
+            return true;
+        }
+        return super.onPreferenceTreeClick(preference);
+    }
+
+    private boolean isNavigationBarEnabled(){
+        boolean mHasNavigationBar = false;
+        boolean mNavBarOverride = false;
+
+        // Allow a system property to override this. Used by the emulator.
+        String navBarOverride = SystemProperties.get("qemu.hw.mainkeys");
+        if ("1".equals(navBarOverride)) {
+            mNavBarOverride = true;
+        } else if ("0".equals(navBarOverride)) {
+            mNavBarOverride = false;
+        }
+        mHasNavigationBar = !mNavBarOverride && Settings.Secure.getIntForUser(
+                getActivity().getContentResolver(), Settings.Secure.NAVIGATION_BAR_ENABLED,
+                getActivity().getResources().getBoolean(com.android.internal.R.bool.config_showNavigationBar) ? 1 : 0,
+                UserHandle.USER_CURRENT) == 1;
+
+        return mHasNavigationBar;
     }
 
     @Override
@@ -110,8 +161,11 @@ public class NavBarTuner extends TunerPreferenceFragment {
     }
 
     private void addTunable(Tunable tunable, String... keys) {
-        mTunables.add(tunable);
-        Dependency.get(TunerService.class).addTunable(tunable, keys);
+        try {
+            mTunables.add(tunable);
+            Dependency.get(TunerService.class).addTunable(tunable, keys);
+        }catch (Exception e){
+        }
     }
 
     private void bindLayout(ListPreference preference) {
