@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/* Copyright 2012, The Android Open Source Project
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2006, The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -15,14 +17,7 @@
 ** limitations under the License.
 */
 -->
-<resources>
-
-  <!-- HW keys binding -->
-  <java-symbol type="anim" name="custom_app_in" />
-  <java-symbol type="anim" name="custom_app_out" />
-  <java-symbol type="integer" name="config_deviceHardwareKeys" />
-
-  <!-- Screen unpinning -->
-  <java-symbol type="string" name="lock_to_app_toast_no_navbar" />
-
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Notify user that they are in Lock-to-app (for devices without navbar) -->
+    <string name="lock_to_app_toast_no_navbar">To unpin this screen, touch and hold the Back button.</string>
 </resources>
