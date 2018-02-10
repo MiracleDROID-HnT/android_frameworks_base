@@ -18,6 +18,7 @@ package com.android.internal.util.custom;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.Context;
 import android.hardware.input.InputManager;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
