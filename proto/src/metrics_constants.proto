@@ -4572,6 +4572,9 @@ message MetricsEvent {
     // Add new aosp constants above this line.
     // END OF AOSP CONSTANTS
 
+    //Extensions
+    EXTENSIONS = 1150;
+
     //Initial Elixir Constants
 
     MAGICAL_WORLD = 2000;
