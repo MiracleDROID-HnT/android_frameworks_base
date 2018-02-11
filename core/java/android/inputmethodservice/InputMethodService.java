@@ -723,9 +723,6 @@ public class InputMethodService extends AbstractInputMethodService {
             service.getContentResolver().registerContentObserver(
                     Settings.Secure.getUriFor(Settings.Secure.SHOW_IME_WITH_HARD_KEYBOARD),
                     false, observer);
-            service.getContentResolver().registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.VOLUME_KEY_CURSOR_CONTROL),
-                    false, observer);
             return observer;
         }
 
@@ -765,9 +762,6 @@ public class InputMethodService extends AbstractInputMethodService {
                 // state as if configuration was changed.
                 mService.resetStateForNewConfiguration();
             }
-
-            mService.mVolumeKeyCursorControl = Settings.System.getInt(mService.getContentResolver(),
-                    Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0);
         }
 
         @Override
@@ -828,8 +822,6 @@ public class InputMethodService extends AbstractInputMethodService {
         super.onCreate();
         mImm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         mSettingsObserver = SettingsObserver.createAndRegister(this);
-        mVolumeKeyCursorControl = Settings.System.getInt(getContentResolver(),
-                Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0);
         // If the previous IME has occupied non-empty inset in the screen, we need to decide whether
         // we continue to use the same size of the inset or update it
         mShouldClearInsetOfPreviousIme = (mImm.getInputMethodWindowVisibleHeight() > 0);
@@ -2046,16 +2038,20 @@ public class InputMethodService extends AbstractInputMethodService {
             return false;
         }
         if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
-            if (isInputViewShown() && mVolumeKeyCursorControl != VOLUME_CURSOR_OFF) {
-                sendDownUpKeyEvents(mVolumeKeyCursorControl == VOLUME_CURSOR_ON_REVERSE
+            mVolumeKeyCursorControl = Settings.System.getInt(getContentResolver(),
+                    Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0);
+            if (isInputViewShown() && (mVolumeKeyCursorControl != VOLUME_CURSOR_OFF)) {
+                sendDownUpKeyEvents((mVolumeKeyCursorControl == VOLUME_CURSOR_ON_REVERSE)
                         ? KeyEvent.KEYCODE_DPAD_RIGHT : KeyEvent.KEYCODE_DPAD_LEFT);
                 return true;
             }
             return false;
         }
         if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            if (isInputViewShown() && mVolumeKeyCursorControl != VOLUME_CURSOR_OFF) {
-                sendDownUpKeyEvents(mVolumeKeyCursorControl == VOLUME_CURSOR_ON_REVERSE
+            mVolumeKeyCursorControl = Settings.System.getInt(getContentResolver(),
+                    Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0);
+            if (isInputViewShown() && (mVolumeKeyCursorControl != VOLUME_CURSOR_OFF)) {
+                sendDownUpKeyEvents((mVolumeKeyCursorControl == VOLUME_CURSOR_ON_REVERSE)
                         ? KeyEvent.KEYCODE_DPAD_LEFT : KeyEvent.KEYCODE_DPAD_RIGHT);
                 return true;
             }
@@ -2113,7 +2109,12 @@ public class InputMethodService extends AbstractInputMethodService {
         }
         if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP
                  || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            return isInputViewShown() && mVolumeKeyCursorControl != VOLUME_CURSOR_OFF;
+            mVolumeKeyCursorControl = Settings.System.getInt(getContentResolver(),
+                    Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0);
+            if (isInputViewShown() && (mVolumeKeyCursorControl != VOLUME_CURSOR_OFF)) {
+                return true;
+            }
+            return false;
         }
         return doMovementKey(keyCode, event, MOVEMENT_UP);
     }
