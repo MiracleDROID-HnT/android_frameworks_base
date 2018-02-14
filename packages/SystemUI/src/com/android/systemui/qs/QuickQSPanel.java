@@ -261,10 +261,5 @@ public class QuickQSPanel extends QSPanel {
         public int getNumColumns() {
             return getNumQuickTiles(mContext);
         }
-
-        @Override
-        public boolean isShowTitles() {
-            return false;
-        }
     }
 }
