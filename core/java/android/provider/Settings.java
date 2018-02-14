@@ -4113,19 +4113,7 @@ public final class Settings {
         public static final String SCREENSHOT_DEFAULT_MODE = "screenshot_default_mode";
 
         /**
-         * Number of qs columns on landscape orientation
-         * @hide
-         */
-        public static final String QS_LAYOUT_COLUMNS_LANDSCAPE = "qs_layout_columns_landscape";
-
-        /**
-         * @hide
-         */
-        public static final String QS_LAYOUT_COLUMNS = "qs_layout_columns";
-
-
-        /** Whether to skip music track with volume rocker 
-        /**
+         * Whether to skip music track with volume rocker
          * @hide
          */
         public static final String VOLUME_BUTTON_MUSIC_CONTROL = "volume_button_music_control";

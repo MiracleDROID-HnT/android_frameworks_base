@@ -43,8 +43,6 @@ public class QSTileView extends QSTileBaseView {
     private ViewGroup mLabelContainer;
     private View mExpandIndicator;
     private View mExpandSpace;
-    private boolean mHideEpxand;
-    private boolean mDualTarget;
 
     public QSTileView(Context context, QSIconView icon) {
         this(context, icon, false);
@@ -105,15 +103,14 @@ public class QSTileView extends QSTileBaseView {
             mState = state.state;
             mLabel.setText(state.label);
         }
-        mDualTarget = state.dualTarget;
-        mExpandIndicator.setVisibility((mDualTarget && !mHideEpxand) ? View.VISIBLE : View.GONE);
-        mExpandSpace.setVisibility((mDualTarget && !mHideEpxand) ? View.VISIBLE : View.GONE);
-        mLabelContainer.setContentDescription(mDualTarget ? state.dualLabelContentDescription
+        mExpandIndicator.setVisibility(state.dualTarget ? View.VISIBLE : View.GONE);
+        mExpandSpace.setVisibility(state.dualTarget ? View.VISIBLE : View.GONE);
+        mLabelContainer.setContentDescription(state.dualTarget ? state.dualLabelContentDescription
                 : null);
-        if (mDualTarget != mLabelContainer.isClickable()) {
-            mLabelContainer.setClickable(mDualTarget);
-            mLabelContainer.setLongClickable(mDualTarget);
-            mLabelContainer.setBackground(mDualTarget ? newTileBackground() : null);
+        if (state.dualTarget != mLabelContainer.isClickable()) {
+            mLabelContainer.setClickable(state.dualTarget);
+            mLabelContainer.setLongClickable(state.dualTarget);
+            mLabelContainer.setBackground(state.dualTarget ? newTileBackground() : null);
         }
         mLabel.setEnabled(!state.disabledByPolicy);
         mPadLock.setVisibility(state.disabledByPolicy ? View.VISIBLE : View.GONE);
@@ -127,11 +124,5 @@ public class QSTileView extends QSTileBaseView {
         mLabelContainer.setOnLongClickListener(longClick);
         mLabelContainer.setClickable(false);
         mLabelContainer.setLongClickable(false);
-    }
-
-    public void setHideExpand(boolean value) {
-        mHideEpxand = value;
-        mExpandIndicator.setVisibility((mDualTarget && !mHideEpxand) ? View.VISIBLE : View.GONE);
-        mExpandSpace.setVisibility((mDualTarget && !mHideEpxand) ? View.VISIBLE : View.GONE);
     }
 }
