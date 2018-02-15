@@ -349,5 +349,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         ((Clock)mClock).updateSettings();
         ((Clock)mCenterClock).updateSettings();
         ((Clock)mLeftClock).updateSettings();
+
+        mStatusBarComponent.updateBatterySettings();
     }
 }
