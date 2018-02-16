@@ -222,7 +222,7 @@ public class TileAdapter extends RecyclerView.Adapter<Holder> implements TileSta
         if (holder.getItemViewType() == TYPE_EDIT) {
             ((TextView) holder.itemView.findViewById(android.R.id.title)).setText(
                     mCurrentDrag != null ? R.string.drag_to_remove_tiles
-                    : R.string.drag_to_add_tiles);
+                    : R.string.drag_or_tap_to_add_tiles);
             return;
         }
         if (holder.getItemViewType() == TYPE_ACCESSIBLE_DROP) {
@@ -273,8 +273,16 @@ public class TileAdapter extends RecyclerView.Adapter<Holder> implements TileSta
         holder.mTileView.setShowAppLabel(position > mEditIndex && !info.isSystem);
         holder.mTileView.setHideLabel(mHideLabel);
 
+        final boolean selectable = !mAccessibilityMoving || position < mEditIndex;
+        if (!(mAccessibilityManager.isTouchExplorationEnabled() && selectable)) {
+            holder.mTileView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    move(holder.getAdapterPosition(), mEditIndex, holder.mTileView);
+                }
+            });
+        }
         if (mAccessibilityManager.isTouchExplorationEnabled()) {
-            final boolean selectable = !mAccessibilityMoving || position < mEditIndex;
             holder.mTileView.setClickable(selectable);
             holder.mTileView.setFocusable(selectable);
             holder.mTileView.setImportantForAccessibility(selectable
