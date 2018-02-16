@@ -65,4 +65,10 @@
     <!-- QS customizer -->
     <string name="drag_or_tap_to_add_tiles">Потягніть або натисність, щоб додати плитки</string>
 
+    <!-- ADB over network QS tile -->
+    <string name="quick_settings_network_adb_enabled_label">Увімкнено</string>
+    <string name="quick_settings_network_adb_disabled_label">Вимкнено</string>
+    <string name="quick_settings_network_adb_label">ADB по мережі</string>
+    <string name="quick_settings_network_adb_toast">Налагодження USB не увімкнуто</string>
+
 </resources>
