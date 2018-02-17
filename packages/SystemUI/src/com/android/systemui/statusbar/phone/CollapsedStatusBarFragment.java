@@ -68,8 +68,10 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private DarkIconManager mDarkIconManager;
     private SignalClusterView mSignalClusterView;
     private View mClock;
+    private View mLeftClock;
     private LinearLayout mCenterClockLayout;
     private View mCenterClock;
+    private int mClockStyle;
     private ContentResolver mContentResolver;
     private ElixirSettingsObserver mElixirSettingsObserver;
     private final Handler mHandler = new Handler();
@@ -146,6 +148,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mClock = mStatusBar.findViewById(R.id.clock);
         mCenterClockLayout = (LinearLayout) mStatusBar.findViewById(R.id.center_clock_layout);
         mCenterClock = mStatusBar.findViewById(R.id.center_clock);
+        mLeftClock = mStatusBar.findViewById(R.id.left_clock);
         Dependency.get(DarkIconDispatcher.class).addDarkReceiver(mSignalClusterView);
         // Default to showing until we know otherwise.
         showSystemIconArea(false);
@@ -259,11 +262,17 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     public void hideNotificationIconArea(boolean animate) {
         animateHide(mNotificationIconAreaInner, animate);
         animateHide(mCenterClockLayout, animate);
+        if (((Clock)mLeftClock).isEnabled()) {
+            animateHide(mLeftClock, animate);
+        }
     }
 
     public void showNotificationIconArea(boolean animate) {
         animateShow(mNotificationIconAreaInner, animate);
         animateShow(mCenterClockLayout, animate);
+        if (((Clock)mLeftClock).isEnabled()) {
+            animateShow(mLeftClock, animate);
+        }
     }
 
     /**
@@ -328,8 +337,17 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         }
     }
 
+    private void updateClockStyle(boolean animate) {
+        if (mClockStyle == 0 || mClockStyle == 1) {
+            animateHide(mLeftClock, animate);
+        } else {
+            animateShow(mLeftClock, animate);
+        }
+    }
+
     public void updateSettings() {
         ((Clock)mClock).updateSettings();
         ((Clock)mCenterClock).updateSettings();
+        ((Clock)mLeftClock).updateSettings();
     }
 }
