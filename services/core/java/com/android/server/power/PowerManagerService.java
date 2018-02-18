@@ -2023,7 +2023,7 @@ public final class PowerManagerService extends SystemService
                         if (mWakefulness == WAKEFULNESS_AWAKE) {
                             int buttonBrightness;
                             if (mHardwareKeysDisable) {
-                                mButtonsLight.setBrightness(0);
+                                buttonBrightness = 0;
                             } else {
                                 if (mButtonBrightnessOverrideFromWindowManager >= 0) {
                                     buttonBrightness = mButtonBrightnessOverrideFromWindowManager;
