@@ -30,8 +30,6 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.util.Preconditions;
 import com.android.server.pm.ShortcutService.InvalidFileFormatException;
 
-import libcore.util.Objects;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +40,7 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -455,7 +454,7 @@ class ShortcutUser {
     private void setLauncher(ComponentName launcherComponent, boolean allowPurgeLastKnown) {
         mCachedLauncher = launcherComponent; // Always update the in-memory cache.
 
-        if (Objects.equal(mLastKnownLauncher, launcherComponent)) {
+        if (Objects.equals(mLastKnownLauncher, launcherComponent)) {
             return;
         }
         if (!allowPurgeLastKnown && launcherComponent == null) {

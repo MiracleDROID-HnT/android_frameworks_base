@@ -49,12 +49,12 @@ import android.widget.RemoteViews;
 
 import com.android.internal.R;
 import com.android.server.UiThread;
-import libcore.util.Objects;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 final class FillUi {
     private static final String TAG = "FillUi";
@@ -245,7 +245,7 @@ final class FillUi {
             filterText = filterText.toLowerCase();
         }
 
-        if (Objects.equal(mFilterText, filterText)) {
+        if (Objects.equals(mFilterText, filterText)) {
             return;
         }
         mFilterText = filterText;

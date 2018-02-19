@@ -23,9 +23,8 @@ import android.os.Parcelable;
 import android.util.ArraySet;
 import android.util.DisplayMetrics;
 
-import libcore.util.Objects;
-
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Describes the characteristics of a particular logical display.
@@ -280,8 +279,8 @@ public final class DisplayInfo implements Parcelable {
                 && layerStack == other.layerStack
                 && flags == other.flags
                 && type == other.type
-                && Objects.equal(address, other.address)
-                && Objects.equal(uniqueId, other.uniqueId)
+                && Objects.equals(address, other.address)
+                && Objects.equals(uniqueId, other.uniqueId)
                 && appWidth == other.appWidth
                 && appHeight == other.appHeight
                 && smallestNominalAppWidth == other.smallestNominalAppWidth
@@ -299,7 +298,7 @@ public final class DisplayInfo implements Parcelable {
                 && defaultModeId == other.defaultModeId
                 && colorMode == other.colorMode
                 && Arrays.equals(supportedColorModes, other.supportedColorModes)
-                && Objects.equal(hdrCapabilities, other.hdrCapabilities)
+                && Objects.equals(hdrCapabilities, other.hdrCapabilities)
                 && logicalDensityDpi == other.logicalDensityDpi
                 && physicalXDpi == other.physicalXDpi
                 && physicalYDpi == other.physicalYDpi
@@ -307,7 +306,7 @@ public final class DisplayInfo implements Parcelable {
                 && presentationDeadlineNanos == other.presentationDeadlineNanos
                 && state == other.state
                 && ownerUid == other.ownerUid
-                && Objects.equal(ownerPackageName, other.ownerPackageName)
+                && Objects.equals(ownerPackageName, other.ownerPackageName)
                 && removeMode == other.removeMode;
     }
 

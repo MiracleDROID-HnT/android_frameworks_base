@@ -100,7 +100,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import libcore.util.Objects;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -111,6 +110,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 
 import static android.os.PowerManagerInternal.WAKEFULNESS_ASLEEP;
 import static android.os.PowerManagerInternal.WAKEFULNESS_AWAKE;
@@ -4105,7 +4105,7 @@ public final class PowerManagerService extends SystemService
         }
 
         public boolean hasSameWorkSource(WorkSource workSource) {
-            return Objects.equal(mWorkSource, workSource);
+            return Objects.equals(mWorkSource, workSource);
         }
 
         public void updateWorkSource(WorkSource workSource) {
