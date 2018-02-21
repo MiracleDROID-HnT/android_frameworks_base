@@ -4860,6 +4860,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             try {
                 mOverlayManager.setEnabled("mx.elixir.noct",
                         useDarkTheme, mCurrentUserId);
+                mOverlayManager.setEnabled("mx.elixir.overlay.settingsdark",
+                        useDarkTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
             }
