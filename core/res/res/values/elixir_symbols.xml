@@ -56,8 +56,19 @@
     <java-symbol type="id" name="pocket_hint_image" />
     <java-symbol type="id" name="pocket_hint_message" />
 
+    <!-- Screenrecord -->
+    <java-symbol type="bool" name="config_enableScreenrecordChord" />
 
-  <!-- Screenrecord -->
-  <java-symbol type="bool" name="config_enableScreenrecordChord" />
-
+    <!-- Accent colors -->
+    <java-symbol type="string" name="accent_black" />
+    <java-symbol type="string" name="accent_blue" />
+    <java-symbol type="string" name="accent_brown" />
+    <java-symbol type="string" name="accent_cyan" />
+    <java-symbol type="string" name="accent_green" />
+    <java-symbol type="string" name="accent_orange" />
+    <java-symbol type="string" name="accent_pink" />
+    <java-symbol type="string" name="accent_pixel" />
+    <java-symbol type="string" name="accent_purple" />
+    <java-symbol type="string" name="accent_red" />
+    <java-symbol type="string" name="accent_yellow" />
 </resources>
