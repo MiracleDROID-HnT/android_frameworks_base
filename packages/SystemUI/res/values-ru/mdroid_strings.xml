@@ -261,4 +261,38 @@
     <string name="accessibility_quick_settings_profiles_changed_off">Профили выключены.</string>
     <string name="accessibility_quick_settings_profiles_changed">Профиль изменен на <xliff:g id="profile" example="Default">%s</xliff:g>.</string>
 
+    <!-- Theme tile -->
+    <string name="systemui_theme_style_title">Темы</string>
+    <string name="systemui_theme_style_auto">Автоматически (обои)</string>
+    <string name="systemui_theme_style_time_based">Автоматически (день/ночь)</string>
+    <string name="systemui_theme_style_light">Светлая</string>
+    <string name="systemui_theme_style_dark">Темная</string>
+    <string name="systemui_theme_style_black">Черная</string>
+    <string name="quick_settings_theme_tile_title">Цвет акцента</string>
+    <string name="quick_settings_theme_tile_accent_detail_title">Выбор цвета</string>
+    <string name="quick_settings_theme_tile_style_detail_title">Выбор темы</string>
+    <string name="quick_settings_theme_tile_color_default">По умолчанию</string>
+    <string name="quick_settings_theme_tile_color_red">Красный</string>
+    <string name="quick_settings_theme_tile_color_pink">Розовый</string>
+    <string name="quick_settings_theme_tile_color_purple">Фиолетовый</string>
+    <string name="quick_settings_theme_tile_color_purple_deep">Темно-фиолетовый</string>
+    <string name="quick_settings_theme_tile_color_indigo">Индиго</string>
+    <string name="quick_settings_theme_tile_color_pixel">Pixel</string>
+    <string name="quick_settings_theme_tile_color_blue">Синий</string>
+    <string name="quick_settings_theme_tile_color_blue_light">Светло-синий</string>
+    <string name="quick_settings_theme_tile_color_cyan">Циан</string>
+    <string name="quick_settings_theme_tile_color_teal">Сине-зеленый</string>
+    <string name="quick_settings_theme_tile_color_green">Зеленый</string>
+    <string name="quick_settings_theme_tile_color_green_light">Светло-зеленый</string>
+    <string name="quick_settings_theme_tile_color_lime">Лайм</string>
+    <string name="quick_settings_theme_tile_color_yellow">Желтый</string>
+    <string name="quick_settings_theme_tile_color_amber">Янтарный</string>
+    <string name="quick_settings_theme_tile_color_orange">Оранжевый</string>
+    <string name="quick_settings_theme_tile_color_orange_deep">Темно-оранжевый</string>
+    <string name="quick_settings_theme_tile_color_brown">Коричневый</string>
+    <string name="quick_settings_theme_tile_color_grey">Серый</string>
+    <string name="quick_settings_theme_tile_color_grey_blue">Сине-серый</string>
+    <string name="quick_settings_theme_tile_color_black">Черный</string>
+    <string name="quick_settings_theme_tile_color_white">Белоснежный</string>
+
 </resources>

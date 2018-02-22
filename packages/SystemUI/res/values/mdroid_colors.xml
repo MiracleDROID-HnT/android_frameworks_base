@@ -41,4 +41,29 @@
     <color name="crop_draw_color_8">#FFEB3B</color>
     <color name="ripple_material_light">#40000000</color>
     <color name="ripple_material_dark">#40ffffff</color>
+
+    <!-- Theme tile DO NOT OVERLAY!!! We need the true colors here! -->
+    <color name="quick_settings_theme_tile_default">#009688</color>
+    <color name="quick_settings_theme_tile_red">#F44336</color>
+    <color name="quick_settings_theme_tile_pink">#E91E63</color>
+    <color name="quick_settings_theme_tile_purple">#9C27B0</color>
+    <color name="quick_settings_theme_tile_purple_deep">#673AB7</color>
+    <color name="quick_settings_theme_tile_indigo">#3F51B5</color>
+    <color name="quick_settings_theme_tile_pixel">#3367d6</color>
+    <color name="quick_settings_theme_tile_blue">#2196F3</color>
+    <color name="quick_settings_theme_tile_blue_light">#03A9F4</color>
+    <color name="quick_settings_theme_tile_cyan">#00BCD4</color>
+    <color name="quick_settings_theme_tile_teal">#009688</color>
+    <color name="quick_settings_theme_tile_green">#4CAF50</color>
+    <color name="quick_settings_theme_tile_green_light">#8BC34A</color>
+    <color name="quick_settings_theme_tile_lime">#CDDC39</color>
+    <color name="quick_settings_theme_tile_yellow">#FFEB3B</color>
+    <color name="quick_settings_theme_tile_amber">#FFC107</color>
+    <color name="quick_settings_theme_tile_orange">#FF9800</color>
+    <color name="quick_settings_theme_tile_orange_deep">#FF5722</color>
+    <color name="quick_settings_theme_tile_brown">#795548</color>
+    <color name="quick_settings_theme_tile_grey">#9E9E9E</color>
+    <color name="quick_settings_theme_tile_grey_blue">#607D8B</color>
+    <color name="quick_settings_theme_tile_black">#000000</color>
+    <color name="quick_settings_theme_tile_white">#ffffff</color>
 </resources>
