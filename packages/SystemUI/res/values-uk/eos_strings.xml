@@ -71,4 +71,26 @@
     <string name="quick_settings_network_adb_label">ADB по мережі</string>
     <string name="quick_settings_network_adb_toast">Налагодження USB не увімкнуто</string>
 
+    <!-- Screenrecord Notification Ticker -->
+    <string name="screenrecord_notif_ticker">Екран записується</string>
+    <string name="screenrecord_notif_final_ticker">Екран успішно записано</string>
+    <!-- Screenrecord notification title -->
+    <string name="screenrecord_notif_title">Запис екрану</string>
+    <!-- Screenrecord notification action: Stop -->
+    <string name="screenrecord_notif_stop">Зупинити</string>
+    <string name="screenrecord_notif_completed">Екран успішно записано</string>
+    <!-- Screenrecord notification action: show/hide pointer -->
+    <string name="screenrecord_notif_pointer_on">Показувати вказівник</string>
+    <string name="screenrecord_notif_pointer_off">Приховувати вказівник</string>
+    <!-- Screen record notification error title -->
+    <string name="screenrecord_notif_error">Неможливо записати екран</string>
+    <string name="notification_channel_screenrecord">Записи экрана</string>
+    <!-- Screenrecord QS tile -->
+    <string name="quick_settings_screenrecord_label">Запис екрану</string>
+    <string name="quick_settings_screenrecord_lq_label">Запис екрану в низькій якості</string>
+    <string name="quick_settings_screenrecord_mq_label">Запис екрану в середній якості</string>
+    <string name="quick_settings_screenrecord_hq_label">Запис екрану в високій якості</string>
+    <string name="screenrecord_hide_hint">Приховати підказки</string>
+    <string name="screenrecord_show_hint">Показати підказки</string>
+
 </resources>

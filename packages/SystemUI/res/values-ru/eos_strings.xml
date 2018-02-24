@@ -72,4 +72,26 @@
     <string name="quick_settings_network_adb_label">ADB по сети</string>
     <string name="quick_settings_network_adb_toast">Отладка по USB отключена</string>
 
+    <!-- Screenrecord Notification Ticker -->
+    <string name="screenrecord_notif_ticker">Идёт запись с экрана</string>
+    <string name="screenrecord_notif_final_ticker">Экран записан успешно</string>
+    <!-- Screenrecord notification title -->
+    <string name="screenrecord_notif_title">Запись экрана</string>
+    <!-- Screenrecord notification action: Stop -->
+    <string name="screenrecord_notif_stop">Остановить</string>
+    <string name="screenrecord_notif_completed">Экран записан успешно</string>
+    <!-- Screenrecord notification action: show/hide pointer -->
+    <string name="screenrecord_notif_pointer_on">Показать указатель</string>
+    <string name="screenrecord_notif_pointer_off">Скрыть указатель</string>
+    <!-- Screen record notification error title -->
+    <string name="screenrecord_notif_error">Невозможно записать экран</string>
+    <string name="notification_channel_screenrecord">Записи экрана</string>
+    <!-- Screenrecord QS tile -->
+    <string name="quick_settings_screenrecord_label">Запись экрана</string>
+    <string name="quick_settings_screenrecord_lq_label">Запись экрана в низком качестве</string>
+    <string name="quick_settings_screenrecord_mq_label">Запись экрана в среднем качестве</string>
+    <string name="quick_settings_screenrecord_hq_label">Запись экрана в высоком качестве</string>
+    <string name="screenrecord_hide_hint">Скрыть подсказку</string>
+    <string name="screenrecord_show_hint">Показать подсказку</string>
+
 </resources>
