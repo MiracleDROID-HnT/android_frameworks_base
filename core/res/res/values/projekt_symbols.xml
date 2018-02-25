@@ -33,4 +33,7 @@
   <java-symbol type="color" name="tooltip_text_light" />
   <java-symbol type="color" name="tooltip_text_dark" />
 
+  <!-- Notification info -->
+  <java-symbol type="color" name="notification_info_button_text" />
+
 </resources>
