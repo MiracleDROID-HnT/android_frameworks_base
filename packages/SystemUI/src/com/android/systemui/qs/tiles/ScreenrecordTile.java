@@ -94,6 +94,11 @@ public class ScreenrecordTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
+    protected void handleLongClick() {
+        handleClick();
+    }
+
+    @Override
     public CharSequence getTileLabel() {
         return mContext.getString(R.string.quick_settings_screenrecord_label);
     }
