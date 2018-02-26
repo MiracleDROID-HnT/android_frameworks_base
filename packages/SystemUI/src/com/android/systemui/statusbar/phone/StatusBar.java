@@ -249,6 +249,7 @@ import com.android.systemui.statusbar.ScrimView;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.notification.AboveShelfObserver;
+import com.android.systemui.statusbar.phone.ThemeAccentUtils;
 import com.android.systemui.statusbar.phone.Ticker;
 import com.android.systemui.statusbar.phone.TickerView;
 import com.android.systemui.statusbar.VisualizerView;
@@ -400,16 +401,6 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final int FADE_KEYGUARD_START_DELAY = 100;
     public static final int FADE_KEYGUARD_DURATION = 300;
     public static final int FADE_KEYGUARD_DURATION_PULSING = 96;
-
-    private static final String[] QS_TILE_THEMES = {
-        "default", // 0
-        "mx.mdroid.systemui.qstile.circle", // 1
-        "mx.mdroid.systemui.qstile.circletrim", // 2
-        "mx.mdroid.systemui.qstile.dualtonecircletrim", // 3
-        "mx.mdroid.systemui.qstile.squircle", // 4
-        "mx.mdroid.systemui.qstile.squircletrim", // 5
-        "mx.mdroid.systemui.qstile.teardrop", // 6
-    };
 
     /** If true, the system is in the half-boot-to-decryption-screen state.
      * Prudently disable QS and notifications.  */
@@ -3257,170 +3248,22 @@ public class StatusBar extends SystemUI implements DemoMode,
         updateTheme();
     }
 
-    private boolean isUsingDarkTheme() {
-        OverlayInfo systemuiThemeInfo = null;
-        OverlayInfo settingsThemeInfo = null;
-        try {
-            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.mdroid.system.theme.dark",
-                    mCurrentUserId);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return (systemuiThemeInfo != null && systemuiThemeInfo.isEnabled()) ||
-                (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
+    public boolean isUsingDarkTheme() {
+        return ThemeAccentUtils.isUsingDarkTheme(mOverlayManager, mCurrentUserId);
     }
 
-    private boolean isUsingBlackTheme() {
-        OverlayInfo systemuiThemeInfo = null;
-        OverlayInfo settingsThemeInfo = null;
-        try {
-            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.mdroid.system.theme.black",
-                    mCurrentUserId);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return (systemuiThemeInfo != null && systemuiThemeInfo.isEnabled()) ||
-                (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
-    }
-
-    // Unloads dark notification theme
-    private static void unloadDarkNotificationTheme(IOverlayManager om, int userId) {
-        try {
-            om.setEnabled("mx.mdroid.system.notification.dark", false, userId);
-        } catch (RemoteException e) {
-        }
-    }
-
-    // Unloads black notification theme
-    private static void unloadBlackNotificationTheme(IOverlayManager om, int userId) {
-        try {
-            om.setEnabled("mx.mdroid.system.notification.black", false, userId);
-        } catch (RemoteException e) {
-        }
+    public boolean isUsingBlackTheme() {
+        return ThemeAccentUtils.isUsingBlackTheme(mOverlayManager, mCurrentUserId);
     }
 
     // Check for the dark notification theme
-    public static boolean isUsingDarkNotificationTheme(IOverlayManager om, int userId) {
-        OverlayInfo systemuiThemeInfo = null;
-        try {
-            systemuiThemeInfo = om.getOverlayInfo("mx.mdroid.system.notification.dark", userId);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return systemuiThemeInfo != null && systemuiThemeInfo.isEnabled();
+    public boolean isUsingDarkNotificationTheme() {
+        return ThemeAccentUtils.isUsingDarkNotificationTheme(mOverlayManager, mCurrentUserId);
     }
 
     // Check for the black notification theme
-    public static boolean isUsingBlackNotificationTheme(IOverlayManager om, int userId) {
-        OverlayInfo systemuiThemeInfo = null;
-        try {
-            systemuiThemeInfo = om.getOverlayInfo("mx.mdroid.system.notification.black", userId);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return systemuiThemeInfo != null && systemuiThemeInfo.isEnabled();
-    }
-
-    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme, boolean themeNeedsRefresh) {
-        // We can only use final variables in lambdas
-        final boolean finalUseBlackTheme = useBlackTheme;
-        final boolean finalUseDarkTheme = useDarkTheme;
-        if (!finalUseDarkTheme || !finalUseBlackTheme) {
-            mUiOffloadThread.submit(() -> {
-                setLightThemeState(!finalUseDarkTheme || !finalUseBlackTheme);
-            });
-        }
-        if (themeNeedsRefresh || ((isUsingBlackTheme() != finalUseBlackTheme) ||
-                (isUsingDarkTheme() != finalUseDarkTheme))) {
-            mUiOffloadThread.submit(() -> {
-                setDarkThemeState(finalUseDarkTheme);
-                setBlackThemeState(finalUseBlackTheme);
-                setCommonThemeState(finalUseDarkTheme || finalUseBlackTheme);
-            });
-        }
-    }
-
-    private List<OverlayInfo> getAllOverlays() {
-        Map<String, List<OverlayInfo>> allOverlaysMap = null;
-        List<OverlayInfo> allOverlays = new ArrayList<OverlayInfo>();
-        try {
-            allOverlaysMap = mOverlayManager.getAllOverlays(
-                    mCurrentUserId);
-            for (String key : allOverlaysMap.keySet()) {
-                List<OverlayInfo> stuff = allOverlaysMap.get(key);
-                allOverlays.addAll(stuff);
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return allOverlays;
-    }
-
-    private List<OverlayInfo> getOverlayInfosForCategory(String category) {
-        List<OverlayInfo> allOverlays = getAllOverlays();
-        List<OverlayInfo> ret = new ArrayList<OverlayInfo>();
-        for (OverlayInfo oi : allOverlays) {
-            if (category.equals(oi.category)) {
-                ret.add(oi);
-            }
-        }
-        return ret;
-    }
-
-    private List<String> getThemePkgs(String category) {
-        List<String> pkgs = new ArrayList<>();
-        List<OverlayInfo> oi = getOverlayInfosForCategory(category);
-        for (int i = 0; i < oi.size(); i++)
-            pkgs.add(oi.get(i).packageName);
-        return pkgs;
-    }
-
-    private void setThemeStateFromList(boolean enable, List<String> pkgs) {
-        try {
-            for (String pkg : pkgs) {
-                mOverlayManager.setEnabled(pkg,
-                        enable, mCurrentUserId);
-            }
-        } catch (RemoteException e) {
-            Log.w(TAG, "Can't set dark themes", e);
-        }
-    }
-
-    private void setDarkThemeState(boolean enable) {
-        setThemeStateFromList(enable, getThemePkgs("android.theme.dark"));
-    }
-
-    private void setBlackThemeState(boolean enable) {
-        setThemeStateFromList(enable, getThemePkgs("android.theme.black"));
-    }
-
-    private void setLightThemeState(boolean enable) {
-        setThemeStateFromList(enable, getThemePkgs("android.theme.light"));
-    }
-
-    private void setCommonThemeState(boolean enable) {
-        setThemeStateFromList(enable, getThemePkgs("android.theme.common"));
-    }
-
-    // Set light / dark notification theme
-    public static void setNotificationTheme(IOverlayManager om, int userId,
-                boolean useDarkTheme, boolean useBlackTheme, int notificationStyle) {
-        if (notificationStyle == 1 || (notificationStyle == 0 && !useDarkTheme && !useBlackTheme)) {
-            unloadDarkNotificationTheme(om, userId);
-            unloadBlackNotificationTheme(om, userId);
-        } else if (notificationStyle == 2 || (notificationStyle == 0 && useDarkTheme && !useBlackTheme)) {
-            unloadBlackNotificationTheme(om, userId);
-            try {
-                om.setEnabled("mx.mdroid.system.notification.dark", true, userId);
-            } catch (RemoteException e) {
-            }
-        } else if (notificationStyle == 3 || (notificationStyle == 0 && !useDarkTheme && useBlackTheme)) {
-            unloadDarkNotificationTheme(om, userId);
-            try {
-                om.setEnabled("mx.mdroid.system.notification.black", true, userId);
-            } catch (RemoteException e) {
-            }
-        }
+    public boolean isUsingBlackNotificationTheme() {
+        return ThemeAccentUtils.isUsingBlackNotificationTheme(mOverlayManager, mCurrentUserId);
     }
 
     @Nullable
@@ -5616,17 +5459,22 @@ public class StatusBar extends SystemUI implements DemoMode,
         boolean useDarkNotificationTheme = (mNotificationStyle == 0 && useDarkTheme && !useBlackTheme) || mNotificationStyle == 2;
         boolean useBlackNotificationTheme = (mNotificationStyle == 0 && !useDarkTheme && useBlackTheme) || mNotificationStyle == 3;
 
-        if ((isUsingDarkNotificationTheme(mOverlayManager, mCurrentUserId) != useDarkNotificationTheme) ||
-                (isUsingBlackNotificationTheme(mOverlayManager, mCurrentUserId) != useBlackNotificationTheme)) {
-            final boolean finalUseBlackTheme = useBlackTheme;
-            final boolean finalUseDarkTheme = useDarkTheme;
+        final boolean finalUseBlackTheme = useBlackTheme;
+        final boolean finalUseDarkTheme = useDarkTheme;
+
+        if ((isUsingDarkNotificationTheme() != useDarkNotificationTheme) ||
+                (isUsingBlackNotificationTheme() != useBlackNotificationTheme)) {
             mUiOffloadThread.submit(() -> {
-                setNotificationTheme(mOverlayManager, mCurrentUserId, finalUseDarkTheme, finalUseBlackTheme, mNotificationStyle);
+                ThemeAccentUtils.setNotificationTheme(mOverlayManager, mCurrentUserId,
+                        finalUseBlackTheme, finalUseDarkTheme, mNotificationStyle);
                 onOverlayChanged();
             });
         }
 
-        handleThemeStates(useBlackTheme, useDarkTheme, themeNeedsRefresh);
+        mUiOffloadThread.submit(() -> {
+            ThemeAccentUtils.handleThemeStates(mOverlayManager, mCurrentUserId,
+                    finalUseBlackTheme, finalUseDarkTheme, themeNeedsRefresh);
+        });
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it
         // to set our default theme.
@@ -5662,68 +5510,24 @@ public class StatusBar extends SystemUI implements DemoMode,
     public void updateTileStyle() {
         int qsTileStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.QS_TILE_STYLE, 0, mCurrentUserId);
-        if (qsTileStyle == 0) {
-            unlockQsTileStyles();
-        } else {
-            try {
-                mOverlayManager.setEnabled(QS_TILE_THEMES[qsTileStyle],
-                        true, mCurrentUserId);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Can't change qs tile style", e);
-            }
-        }
+        ThemeAccentUtils.updateTileStyle(mOverlayManager, mCurrentUserId, qsTileStyle);
     }
 
     // Unload all the qs tile styles
     public void unlockQsTileStyles() {
-        // skip index 0
-        for (int i = 1; i < QS_TILE_THEMES.length; i++) {
-            String qstiletheme = QS_TILE_THEMES[i];
-            try {
-                mOverlayManager.setEnabled(qstiletheme,
-                        false /*disable*/, mCurrentUserId);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static final String[] getClocks(Context ctx) {
-        final String list = ctx.getResources().getString(com.android.internal.R.string.custom_clock_styles);
-        return list.split(",");
+        ThemeAccentUtils.unlockQsTileStyles(mOverlayManager, mCurrentUserId);
     }
 
     // Switches the analog clock from one to another or back to stock
     public void updateClocks() {
         int clockSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.LOCKSCREEN_CLOCK_SELECTION, 0, mCurrentUserId);
-
-        // all clock already unloaded due to StatusBar observer unloadClocks call
-        // set the custom analog clock overlay
-        if (clockSetting > 4) {
-            try {
-                final String[] clocks = getClocks(mContext);
-                mOverlayManager.setEnabled(clocks[clockSetting],
-                        true, mCurrentUserId);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Can't change analog clocks", e);
-            }
-        }
+        ThemeAccentUtils.updateClocks(mOverlayManager, mCurrentUserId, clockSetting, mContext);
     }
 
     // Unload all the analog overlays
     public void unloadClocks() {
-        // skip index 0
-        final String[] clocks = getClocks(mContext);
-        for (int i = 1; i < clocks.length; i++) {
-            String clock = clocks[i];
-            try {
-                mOverlayManager.setEnabled(clock,
-                        false /*disable*/, mCurrentUserId);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
+        ThemeAccentUtils.unloadClocks(mOverlayManager, mCurrentUserId, mContext);
     }
 
     private void updateDozingState() {
