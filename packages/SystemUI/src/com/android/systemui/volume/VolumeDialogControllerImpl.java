@@ -847,9 +847,7 @@ public class VolumeDialogControllerImpl implements VolumeDialogController, Dumpa
     }
 
     protected void onStopSoundsW() {
-        int numStreamTypes = AudioSystem.getNumStreamTypes();
-        for (int i = numStreamTypes - 1; i >= 0; i--) {
-            ToneGenerator toneGen = mToneGenerators[i];
+        for (ToneGenerator toneGen : mToneGenerators) {
             if (toneGen != null) {
                 toneGen.stopTone();
             }
