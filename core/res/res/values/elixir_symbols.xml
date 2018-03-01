@@ -70,5 +70,6 @@
     <java-symbol type="string" name="accent_pixel" />
     <java-symbol type="string" name="accent_purple" />
     <java-symbol type="string" name="accent_red" />
+    <java-symbol type="string" name="accent_white" />
     <java-symbol type="string" name="accent_yellow" />
 </resources>

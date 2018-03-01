@@ -40,5 +40,6 @@
     <string name="accent_pixel">Pixel</string>
     <string name="accent_purple">Lavender</string>
     <string name="accent_red">Tomato</string>
+    <string name="accent_white">Snow</string>
     <string name="accent_yellow">Banana</string>
 </resources>

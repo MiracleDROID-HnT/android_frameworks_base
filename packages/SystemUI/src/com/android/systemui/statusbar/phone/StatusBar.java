@@ -2972,7 +2972,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         OverlayInfo systemuiThemeInfo = null;
         OverlayInfo settingsThemeInfo = null;
         try {
-            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.elixir.noct",
+            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.elixir.system.theme.dark",
                     mCurrentUserId);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -4858,9 +4858,9 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         if (isUsingDarkTheme() != useDarkTheme) {
             try {
-                mOverlayManager.setEnabled("mx.elixir.noct",
+                mOverlayManager.setEnabled("mx.elixir.system.theme.dark",
                         useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.overlay.settingsdark",
+                mOverlayManager.setEnabled("mx.elixir.settings.theme.dark",
                         useDarkTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
