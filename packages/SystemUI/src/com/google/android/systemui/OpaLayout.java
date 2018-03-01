@@ -6,10 +6,8 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.graphics.Color;
 import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -31,7 +29,6 @@ import com.android.systemui.Interpolators;
 import com.android.systemui.R;
 import com.android.systemui.plugins.statusbar.phone.NavBarButtonProvider.ButtonInterface;
 import com.android.systemui.statusbar.policy.KeyButtonView;
-import com.android.settingslib.Utils;
 
 public class OpaLayout extends FrameLayout implements ButtonInterface{
 
@@ -76,12 +73,8 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
     private View mBlue;
     private View mGreen;
     private View mYellow;
-    private ImageView mWhite;
+    private View mWhite;
 //    private View mHalo;
-
-    private int mDarkModeFillColor;
-    private int mLightModeFillColor;
-    private int mIconTint = Color.WHITE;
 
     private View mTop;
     private View mRight;
@@ -99,6 +92,10 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
     private final Interpolator mHomeDisappearInterpolator;
 
     private SettingsObserver mSettingsObserver;
+
+    private float mOldDarkIntensity;
+    private int mDarkModeFillColor;
+    private int mLightModeFillColor;
 
     protected class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -121,114 +118,19 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
     }
 
     public OpaLayout(Context context) {
-        super(context);
-        mDarkModeFillColor = context.getColor(android.R.color.black);
-        mLightModeFillColor = context.getColor(android.R.color.white);
-        mFastOutSlowInInterpolator = Interpolators.FAST_OUT_SLOW_IN;
-        mHomeDisappearInterpolator = new PathInterpolator(0.8f, 0f, 1f, 1f);
-        mCollapseInterpolator = Interpolators.FAST_OUT_LINEAR_IN;
-        mDotsFullSizeInterpolator = new PathInterpolator(0.4f, 0f, 0f, 1f);
-        mRetractInterpolator = new PathInterpolator(0.4f, 0f, 0f, 1f);
-        mDiamondInterpolator = new PathInterpolator(0.2f, 0f, 0.2f, 1f);
-        mCheckLongPress = new Runnable() {
-            @Override
-            public void run() {
-                if (OpaLayout.this.mIsPressed) {
-                    OpaLayout.this.mLongClicked = true;
-                }
-            }
-        };
-        mRetract = new Runnable() {
-            @Override
-            public void run() {
-                OpaLayout.this.cancelCurrentAnimation();
-                OpaLayout.this.startRetractAnimation();
-                hideAllOpa();
-            }
-        };
-        mAnimationState = OpaLayout.ANIMATION_STATE_NONE;
-        mCurrentAnimators = new ArraySet<Animator>();
-
-        if (mSettingsObserver == null) {
-            mSettingsObserver = new SettingsObserver(new Handler());
-        }
-        mSettingsObserver.observe();
+        this(context, null);
     }
 
     public OpaLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mDarkModeFillColor = context.getColor(android.R.color.black);
-        mLightModeFillColor = context.getColor(android.R.color.white);
-        mFastOutSlowInInterpolator = Interpolators.FAST_OUT_SLOW_IN;
-        mHomeDisappearInterpolator = new PathInterpolator(0.8f, 0f, 1f, 1f);
-        mCollapseInterpolator = Interpolators.FAST_OUT_LINEAR_IN;
-        mDotsFullSizeInterpolator = new PathInterpolator(0.4f, 0f, 0f, 1f);
-        mRetractInterpolator = new PathInterpolator(0.4f, 0f, 0f, 1f);
-        mDiamondInterpolator = new PathInterpolator(0.2f, 0f, 0.2f, 1f);
-        mCheckLongPress = new Runnable() {
-            @Override
-            public void run() {
-                if (OpaLayout.this.mIsPressed) {
-                    OpaLayout.this.mLongClicked = true;
-                }
-            }
-        };
-        mRetract = new Runnable() {
-            @Override
-            public void run() {
-                OpaLayout.this.cancelCurrentAnimation();
-                OpaLayout.this.startRetractAnimation();
-                hideAllOpa();
-            }
-        };
-        mAnimationState = OpaLayout.ANIMATION_STATE_NONE;
-        mCurrentAnimators = new ArraySet<Animator>();
-
-        if (mSettingsObserver == null) {
-            mSettingsObserver = new SettingsObserver(new Handler());
-        }
-        mSettingsObserver.observe();
+        this(context, attrs, 0);
     }
 
     public OpaLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        mDarkModeFillColor = context.getColor(android.R.color.black);
-        mLightModeFillColor = context.getColor(android.R.color.white);
-        mFastOutSlowInInterpolator = Interpolators.FAST_OUT_SLOW_IN;
-        mHomeDisappearInterpolator = new PathInterpolator(0.8f, 0f, 1f, 1f);
-        mCollapseInterpolator = Interpolators.FAST_OUT_LINEAR_IN;
-        mDotsFullSizeInterpolator = new PathInterpolator(0.4f, 0f, 0f, 1f);
-        mRetractInterpolator = new PathInterpolator(0.4f, 0f, 0f, 1f);
-        mDiamondInterpolator = new PathInterpolator(0.2f, 0f, 0.2f, 1f);
-        mCheckLongPress = new Runnable() {
-            @Override
-            public void run() {
-                if (OpaLayout.this.mIsPressed) {
-                    OpaLayout.this.mLongClicked = true;
-                }
-            }
-        };
-        mRetract = new Runnable() {
-            @Override
-            public void run() {
-                OpaLayout.this.cancelCurrentAnimation();
-                OpaLayout.this.startRetractAnimation();
-                hideAllOpa();
-            }
-        };
-        mAnimationState = OpaLayout.ANIMATION_STATE_NONE;
-        mCurrentAnimators = new ArraySet<Animator>();
-
-        if (mSettingsObserver == null) {
-            mSettingsObserver = new SettingsObserver(new Handler());
-        }
-        mSettingsObserver.observe();
+        this(context, attrs, defStyleAttr, 0);
     }
 
     public OpaLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        mDarkModeFillColor = context.getColor(android.R.color.black);
-        mLightModeFillColor = context.getColor(android.R.color.white);
         mFastOutSlowInInterpolator = Interpolators.FAST_OUT_SLOW_IN;
         mHomeDisappearInterpolator = new PathInterpolator(0.8f, 0f, 1f, 1f);
         mCollapseInterpolator = Interpolators.FAST_OUT_LINEAR_IN;
@@ -258,11 +160,13 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
             mSettingsObserver = new SettingsObserver(new Handler());
         }
         mSettingsObserver.observe();
+        mDarkModeFillColor = context.getColor(R.color.dark_nav_bar);
+        mLightModeFillColor = context.getColor(R.color.light_mode_icon_color_single_tone);
     }
 
     private void startAll(ArraySet<Animator> animators) {
         showAllOpa();
-        for(int i=0; i < animators.size(); i++) {
+        for(int i = 0; i < animators.size(); i++) {
             Animator curAnim = (Animator) mCurrentAnimators.valueAt(i);
             curAnim.start();
         }
@@ -297,9 +201,8 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
     }
 
     private void cancelCurrentAnimation() {
-        if(mCurrentAnimators.isEmpty())
-            return;
-        for(int i=0; i < mCurrentAnimators.size(); i++) {
+        if (mCurrentAnimators.isEmpty()) return;
+        for (int i = 0; i < mCurrentAnimators.size(); i++) {
             Animator curAnim = (Animator) mCurrentAnimators.valueAt(i);
             curAnim.removeAllListeners();
             curAnim.cancel();
@@ -309,9 +212,8 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
     }
 
     private void endCurrentAnimation() {
-        if(mCurrentAnimators.isEmpty())
-            return;
-        for(int i=0; i < mCurrentAnimators.size(); i++) {
+      if (mCurrentAnimators.isEmpty()) return;
+        for(int i = 0; i < mCurrentAnimators.size(); i++) {
             Animator curAnim = (Animator) mCurrentAnimators.valueAt(i);
             curAnim.removeAllListeners();
             curAnim.end();
@@ -370,7 +272,8 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         set.add(scaleAnimatorY);
 //        set.add(scaleAnimatorX2);
 //        set.add(scaleAnimatorY2);
-        getLongestAnim((set)).addListener((Animator.AnimatorListener)new AnimatorListenerAdapter() {
+        getLongestAnim(set).addListener(new AnimatorListenerAdapter() {
+            @Override
             public void onAnimationEnd(final Animator animator) {
                 OpaLayout.this.mCurrentAnimators.clear();
                 OpaLayout.this.mAnimationState = OpaLayout.ANIMATION_STATE_NONE;
@@ -398,11 +301,13 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         set.add(getScaleAnimatorY(mWhite, OpaLayout.DIAMOND_HOME_SCALE_FACTOR, OpaLayout.DIAMOND_ANIMATION_DURATION, mFastOutSlowInInterpolator));
 //        set.add(getScaleAnimatorX(mHalo, OpaLayout.HALO_SCALE_FACTOR, OpaLayout.MIN_DIAMOND_DURATION, mFastOutSlowInInterpolator));
 //        set.add(getScaleAnimatorY(mHalo, OpaLayout.HALO_SCALE_FACTOR, OpaLayout.MIN_DIAMOND_DURATION, mFastOutSlowInInterpolator));
-        getLongestAnim(set).addListener((Animator.AnimatorListener)new AnimatorListenerAdapter() {
+        getLongestAnim(set).addListener(new AnimatorListenerAdapter() {
+            @Override
             public void onAnimationCancel(final Animator animator) {
                 OpaLayout.this.mCurrentAnimators.clear();
             }
 
+            @Override
             public void onAnimationEnd(final Animator animator) {
                 OpaLayout.this.startLineAnimation();
             }
@@ -431,11 +336,13 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         set.add(getScaleAnimatorY(mWhite, 0.0f, OpaLayout.HOME_RESIZE_DURATION, mHomeDisappearInterpolator));
 //        set.add(getScaleAnimatorX(mHalo, 0.0f, OpaLayout.HOME_RESIZE_DURATION, mHomeDisappearInterpolator));
 //        set.add(getScaleAnimatorY(mHalo, 0.0f, OpaLayout.HOME_RESIZE_DURATION, mHomeDisappearInterpolator));
-        getLongestAnim(set).addListener((Animator.AnimatorListener)new AnimatorListenerAdapter() {
+        getLongestAnim(set).addListener(new AnimatorListenerAdapter() {
+            @Override
             public void onAnimationCancel(final Animator animator) {
                 OpaLayout.this.mCurrentAnimators.clear();
             }
 
+            @Override
             public void onAnimationEnd(final Animator animator) {
                 OpaLayout.this.startCollapseAnimation();
             }
@@ -465,7 +372,8 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         set.add(getScaleAnimatorY(mWhite, 1.0f, OpaLayout.RETRACT_ANIMATION_DURATION, mRetractInterpolator));
 //        set.add(getScaleAnimatorX(mHalo, 1.0f, OpaLayout.RETRACT_ANIMATION_DURATION, mFastOutSlowInInterpolator));
 //        set.add(getScaleAnimatorY(mHalo, 1.0f, OpaLayout.RETRACT_ANIMATION_DURATION, mFastOutSlowInInterpolator));
-        getLongestAnim(set).addListener((Animator.AnimatorListener)new AnimatorListenerAdapter() {
+        getLongestAnim(set).addListener(new AnimatorListenerAdapter() {
+            @Override
             public void onAnimationEnd(final Animator animator) {
                 OpaLayout.this.mCurrentAnimators.clear();
                 OpaLayout.this.mAnimationState = OpaLayout.ANIMATION_STATE_NONE;
@@ -530,7 +438,7 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         long longestDuration = -1;
         Animator longestAnim = null;
 
-        for(int i=0; i < animators.size(); i++) {
+        for(int i = 0; i < animators.size(); i++) {
             Animator a = (Animator) animators.valueAt(i);
             if(a.getTotalDuration() > longestDuration) {
                 longestDuration = a.getTotalDuration();
@@ -544,6 +452,7 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         mHome.abortCurrentGesture();
     }
 
+    @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
@@ -551,7 +460,7 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         mBlue = findViewById(R.id.blue);
         mYellow = findViewById(R.id.yellow);
         mGreen = findViewById(R.id.green);
-        mWhite = (ImageView) findViewById(R.id.white);
+        mWhite = findViewById(R.id.white);
 //        mHalo = findViewById(R.id.halo);
         mHome = (KeyButtonView) findViewById(R.id.home_button);
 
@@ -560,6 +469,7 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         hideAllOpa();
     }
 
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (!mOpaEnabled) {
             return false;
@@ -590,14 +500,12 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
                     removeCallbacks(mCheckLongPress);
                     return false;
                 }
-                int n;
+                boolean pressed = true;
                 if (!mIsPressed || mLongClicked) {
-                    n = 0;
-                } else {
-                    n = 1;
+                    pressed = false;
                 }
                 mIsPressed = false;
-                if (n != 0) {
+                if (pressed) {
                     mRetract.run();
                     return false;
                 }
@@ -634,10 +542,12 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         mRight = mGreen;
     }
 
+    @Override
     public void setOnLongClickListener(View.OnLongClickListener l) {
         mHome.setOnLongClickListener(l);
     }
 
+    @Override
     public void setOnTouchListener(View.OnTouchListener l) {
         mHome.setOnTouchListener(l);
     }
@@ -645,11 +555,10 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
     public void setOpaEnabled(boolean enabled) {
         final boolean opaToggle = Settings.System.getIntForUser(this.getContext().getContentResolver(),
             Settings.System.PIXEL_NAV_ANIMATION, 1, UserHandle.USER_CURRENT) == 1;
-        final boolean b1 = this.getContext().getResources().getBoolean(R.bool.config_allowOpaLayout);
-        final boolean b2 = (enabled || UserManager.isDeviceInDemoMode(this.getContext())) && b1 && opaToggle;
-        this.mOpaEnabled = b2;
-        int visibility;
-        if (b2) {
+        final boolean eligible = this.getContext().getResources().getBoolean(R.bool.config_allowOpaLayout);
+        mOpaEnabled = (enabled || UserManager.isDeviceInDemoMode(this.getContext())) && eligible && opaToggle;
+
+        if (mOpaEnabled) {
             // Don't show the OPAs right away, they'll be faded in during first animation
 //            visibility = View.VISIBLE;
         } else {
@@ -669,7 +578,6 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         fadeOutButton(mRed);
         fadeOutButton(mYellow);
         fadeOutButton(mGreen);
-        updateIconColor();
     }
 
     private void showAllOpa(){
@@ -677,9 +585,7 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         fadeInButton(mRed);
         fadeInButton(mYellow);
         fadeInButton(mGreen);
-        updateIconColor();
     }
-
 
     private void fadeInButton(View viewToFade){
         ObjectAnimator animator = ObjectAnimator.ofFloat(viewToFade, View.ALPHA, 0.0f, 1.0f);
@@ -705,26 +611,22 @@ public class OpaLayout extends FrameLayout implements ButtonInterface{
         });
     }
 
-    public void setDarkIntensity(float intensity) {
-        mIconTint = getColorForDarkIntensity(
-                intensity, mLightModeFillColor, mDarkModeFillColor);
-        updateIconColor();
+    public void setDarkIntensity(float darkIntensity) {
+        if (darkIntensity == mOldDarkIntensity) {
+            return;
+        }
+        ((ImageView) mWhite).setColorFilter(getIntensityColor(darkIntensity));
+//        ((ImageView) mHalo).setColorFilter(getIntensityColor(darkIntensity));
+        mOldDarkIntensity = darkIntensity;
     }
 
-    private void updateIconColor() {
-        int mIconColor = mIconTint;
-        updateHomeDrawable(mIconColor);
+    private int getIntensityColor(float darkIntensity) {
+        return getColorForDarkIntensity(
+                darkIntensity, mLightModeFillColor, mDarkModeFillColor);
     }
 
-    private int getColorForDarkIntensity(float intensity, int lightColor, int darkColor) {
-        return (int) ArgbEvaluator.getInstance().evaluate(intensity, lightColor, darkColor);
-    }
-
-    private void updateHomeDrawable(int homeColor) {
-        int intHomeDrawable = R.drawable.ic_sysbar_home;
-        Drawable drawHomeIcon = getResources().getDrawable(intHomeDrawable);
-        drawHomeIcon.setColorFilter(null);
-        drawHomeIcon.setColorFilter(homeColor, PorterDuff.Mode.SRC_IN);
-        setImageDrawable(drawHomeIcon);
-    }
+    private int getColorForDarkIntensity(float darkIntensity, int lightColor, int darkColor) {
+        return (int) ArgbEvaluator.getInstance().evaluate(darkIntensity, lightColor, darkColor);
+     }
 }
+
