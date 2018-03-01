@@ -191,4 +191,9 @@
     <string name="keyguard_plugged_in_turbo_power_charging">Быстрая зарядка активна</string>
     <string name="keyguard_plugged_in_turbo_charging">Быстрая зарядка</string>
 
+    <!-- Kill button in notification guts -->
+    <string name="force_stop_dlg_title">Остановить принудительно?</string>
+    <string name="force_stop_dlg_text">Принудительное закрытие приложения может отразиться на его функциональности.</string>
+    <string name="kill">Закрыть приложение</string>
+
 </resources>
