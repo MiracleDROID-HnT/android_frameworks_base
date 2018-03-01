@@ -3046,18 +3046,6 @@ class StorageManagerService extends IStorageManager.Stub
         }
     }
 
-    @Override
-    public void secdiscard(String path) {
-        enforcePermission(android.Manifest.permission.STORAGE_INTERNAL);
-        waitForReady();
-
-        try {
-            mCryptConnector.execute("cryptfs", "secdiscard", escapeNull(path));
-        } catch (NativeDaemonConnectorException e) {
-            throw e.rethrowAsParcelableException();
-        }
-    }
-
     class AppFuseMountScope extends AppFuseBridge.MountScope {
         boolean opened = false;
 

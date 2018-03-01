@@ -1282,15 +1282,6 @@ public class StorageManager {
     }
 
     /** {@hide} */
-    public void secdiscard(String path) {
-        try {
-            mStorageManager.secdiscard(path);
-        } catch (RemoteException e) {
-            throw e.rethrowFromSystemServer();
-        }
-    }
-
-    /** {@hide} */
     public static boolean isUserKeyUnlocked(int userId) {
         if (sStorageManager == null) {
             sStorageManager = IStorageManager.Stub
