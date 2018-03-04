@@ -94,4 +94,8 @@
     <string name="screenrecord_hide_hint">Скрыть подсказку</string>
     <string name="screenrecord_show_hint">Показать подсказку</string>
 
+    <!-- [CHAR LIMIT=NONE] Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permlab_preventpower">Переопределять кнопку питания</string>
+    <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permdesc_preventpower">Позволять приложению переопределять кнопку питания.</string>
 </resources>
