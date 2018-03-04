@@ -72,4 +72,7 @@
     <java-symbol type="string" name="accent_red" />
     <java-symbol type="string" name="accent_white" />
     <java-symbol type="string" name="accent_yellow" />
+
+    <!-- Whether device supports an alt. ambient display -->
+    <java-symbol type="bool" name="config_alt_ambient_display"/>
 </resources>
