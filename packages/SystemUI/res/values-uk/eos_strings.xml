@@ -97,4 +97,7 @@
     <string name="permlab_preventpower">Змінити функцію клавіши живлення</string>
     <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_preventpower">Дозволити програмі змінити функцію кнопки живлення.</string>
+
+    <!-- Recents memory bar -->
+    <string name="recents_free_ram">Вільно пам\'яті: %1$d МБ</string>
 </resources>

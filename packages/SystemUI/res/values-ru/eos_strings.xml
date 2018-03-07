@@ -98,4 +98,7 @@
     <string name="permlab_preventpower">Переопределять кнопку питания</string>
     <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_preventpower">Позволять приложению переопределять кнопку питания.</string>
+
+    <!-- Recents memory bar -->
+    <string name="recents_free_ram">Свободно памяти: %1$d МБ</string>
 </resources>
