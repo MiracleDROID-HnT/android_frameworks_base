@@ -6084,6 +6084,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_TILE_TITLE_VISIBILITY),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+            	    Settings.System.LOCKSCREEN_ROTATION),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6095,6 +6098,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             updateBatterySettings();
             setForceAmbient();
             updateQsPanelResources();
+            setLockscreenRotation();
         }
     }
 
@@ -6123,6 +6127,12 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mQSPanel != null) {
             mQSPanel.updateResources();
         }
+    }
+
+    private void setLockscreenRotation() {
+    	if (mStatusBarWindowManager != null) {
+    		mStatusBarWindowManager.updateKeyguardScreenRotation();
+    	}
     }
 
     private RemoteViews.OnClickHandler mOnClickHandler = new RemoteViews.OnClickHandler() {
