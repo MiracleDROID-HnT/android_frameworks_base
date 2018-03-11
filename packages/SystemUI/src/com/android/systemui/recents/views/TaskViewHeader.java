@@ -204,6 +204,8 @@ public class TaskViewHeader extends FrameLayout
 
     private CountDownTimer mFocusTimerCountDown;
 
+    private IconsHandler mIconsHandler;
+
     public TaskViewHeader(Context context) {
         this(context, null);
     }
@@ -259,6 +261,10 @@ public class TaskViewHeader extends FrameLayout
      */
     public void reset() {
         hideAppOverlay(true /* immediate */);
+    }
+
+    public void setIconsHandler(IconsHandler ih) {
+        mIconsHandler = ih;
     }
 
     @Override
@@ -805,8 +811,7 @@ public class TaskViewHeader extends FrameLayout
                 mTaskBarViewLightTextColor : mTaskBarViewDarkTextColor);
         Drawable icon = null;
         if (activityInfo != null) {
-            icon = IconsHandler.getInstance(mContext).getIconFromHandler(mContext, activityInfo,
-                    /*scaleFactor*/1.0f, R.dimen.recents_task_view_header_height_tablet_land);
+            icon = mIconsHandler.getIconFromHandler(mContext, activityInfo);
         }
         if (icon == null) {
             icon = ssp.getBadgedApplicationIcon(activityInfo.applicationInfo, userId);
