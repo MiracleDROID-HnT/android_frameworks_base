@@ -295,4 +295,7 @@
     <string name="quick_settings_theme_tile_color_black">Чорний</string>
     <string name="quick_settings_theme_tile_color_white">Білосніжний</string>
 
+    <string name="theme_info_title">Що це?</string>
+    <string name="theme_info_message">Плитка «Теми» - це унікальна, але проста у використанні плитка, яка дозволяє користувачу змінювати системний акцент або стиль.\n\nЩоб переключитися між акцентами і стилями, просто довго утримуйте натиснутою плитку, а потім ще раз натисніть на неї, щоб вибрати із запропонованих варіантів.</string>
+
 </resources>

@@ -295,4 +295,7 @@
     <string name="quick_settings_theme_tile_color_black">Черный</string>
     <string name="quick_settings_theme_tile_color_white">Белоснежный</string>
 
+    <string name="theme_info_title">Что это?</string>
+    <string name="theme_info_message">Плитка \"Темы\" - это уникальная, но простая в использовании плитка, которая позволяет пользователю изменять системный оттенок или стиль.\n\nЧтобы переключиться между оттенками и стилями, просто длительно удерживайте нажатой плитку, а затем ещё раз нажмите на неё, чтобы выбрать из предложенных вариантов.</string>
+
 </resources>
