@@ -78,6 +78,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private ContentResolver mContentResolver;
     private ElixirSettingsObserver mElixirSettingsObserver;
     private final Handler mHandler = new Handler();
+    private int mTickerEnabled;
+    private TickerObserver mTickerObserver;
+    private View mTickerViewFromStub;
 
     private class ElixirSettingsObserver extends ContentObserver {
         ElixirSettingsObserver(Handler handler) {
@@ -113,11 +116,6 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             updateSettings();
         }
     }
-
-    private int mTickerEnabled;
-    private TickerObserver mTickerObserver;
-    private ContentResolver mContentResolver;
-    private View mTickerViewFromStub;
 
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
