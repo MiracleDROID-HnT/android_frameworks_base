@@ -59,7 +59,6 @@ import com.android.systemui.recents.Recents;
 import com.android.systemui.recents.events.EventBus;
 import com.android.systemui.recents.events.activity.LaunchTaskEvent;
 import com.android.systemui.recents.events.ui.ShowApplicationInfoEvent;
-import com.android.systemui.slimrecent.icons.IconsHandler;
 import com.android.systemui.recents.misc.SystemServicesProxy;
 import com.android.systemui.recents.misc.Utilities;
 import com.android.systemui.recents.model.Task;
@@ -204,8 +203,6 @@ public class TaskViewHeader extends FrameLayout
 
     private CountDownTimer mFocusTimerCountDown;
 
-    private IconsHandler mIconsHandler;
-
     public TaskViewHeader(Context context) {
         this(context, null);
     }
@@ -261,10 +258,6 @@ public class TaskViewHeader extends FrameLayout
      */
     public void reset() {
         hideAppOverlay(true /* immediate */);
-    }
-
-    public void setIconsHandler(IconsHandler ih) {
-        mIconsHandler = ih;
     }
 
     @Override
@@ -811,7 +804,7 @@ public class TaskViewHeader extends FrameLayout
                 mTaskBarViewLightTextColor : mTaskBarViewDarkTextColor);
         Drawable icon = null;
         if (activityInfo != null) {
-            icon = mIconsHandler.getIconFromHandler(mContext, activityInfo);
+            icon = Recents.getTaskLoader().getIconsHandler().getIconFromHandler(mContext, activityInfo);
         }
         if (icon == null) {
             icon = ssp.getBadgedApplicationIcon(activityInfo.applicationInfo, userId);
