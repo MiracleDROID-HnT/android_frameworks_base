@@ -134,10 +134,6 @@
     <color name="notification_secondary_text_color_dark">@color/secondary_text_material_dark</color>
 
     <color name="notification_material_background_color">#ffffffff</color>
-    <color name="notification_legacy_background_color">#ff1a1a1a</color>
-    <color name="notification_material_background_dimmed_color">#ccffffff</color>
-    <color name="notification_material_background_dark_color">#ff333333</color>
-    <color name="notification_material_background_low_priority_color">#fff5f5f5</color>
 
     <color name="notification_default_color">#757575</color> <!-- Gray 600 -->
     <color name="notification_icon_default_color">@color/notification_default_color</color>

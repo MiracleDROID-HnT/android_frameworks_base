@@ -68,19 +68,19 @@
     <color name="keyguard_affordance">#ffffffff</color>
 
     <!-- The color of the legacy notification background -->
-    <color name="notification_legacy_background_color">@*android:color/notification_legacy_background_color</color>
+    <color name="notification_legacy_background_color">#ff1a1a1a</color>
 
     <!-- The color of the material notification background -->
     <color name="notification_material_background_color">@*android:color/notification_material_background_color</color>
 
     <!-- The color of the material notification background when dimmed -->
-    <color name="notification_material_background_dimmed_color">@*android:color/notification_material_background_dimmed_color</color>
+    <color name="notification_material_background_dimmed_color">#ccffffff</color>
 
     <!-- The color of the material notification background when dark -->
-    <color name="notification_material_background_dark_color">@*android:color/notification_material_background_dark_color</color>
+    <color name="notification_material_background_dark_color">#ff333333</color>
 
     <!-- The color of the material notification background when low priority -->
-    <color name="notification_material_background_low_priority_color">@*android:color/notification_material_background_low_priority_color</color>
+    <color name="notification_material_background_low_priority_color">#fff5f5f5</color>
 
     <!-- The color of the dividing line between grouped notifications. -->
     <color name="notification_divider_color">#FF616161</color>
