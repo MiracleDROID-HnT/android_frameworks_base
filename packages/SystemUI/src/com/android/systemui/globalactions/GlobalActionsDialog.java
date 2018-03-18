@@ -651,7 +651,7 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     Intent globalActionSettings = new Intent();
-                    globalActionSettings.setClassName("com.android.settings", "com.android.settings.Settings$GlobalActionsSettingsActivity");
+                    globalActionSettings.setClassName("com.android.settings", "com.android.settings.Settings$MagicalWorldSystemActivity");
                     globalActionSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(globalActionSettings);
                 }
