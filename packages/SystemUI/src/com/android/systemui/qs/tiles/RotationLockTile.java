@@ -63,7 +63,6 @@ public class RotationLockTile extends QSTileImpl<BooleanState> {
     }
 
     public void handleSetListening(boolean listening) {
-        if (mController == null) return;
         if (listening) {
             mController.addCallback(mCallback);
         } else {
@@ -78,7 +77,6 @@ public class RotationLockTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick() {
-        if (mController == null) return;
         final boolean newState = !mState.value;
         mController.setRotationLocked(!newState);
         refreshState(newState);
@@ -91,7 +89,6 @@ public class RotationLockTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-        if (mController == null) return;
         final boolean rotationLocked = mController.isRotationLocked();
         // TODO: Handle accessibility rotation lock and whatnot.
 

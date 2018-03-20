@@ -95,7 +95,6 @@ public class CastTile extends QSTileImpl<BooleanState> {
 
     @Override
     public void handleSetListening(boolean listening) {
-        if (mController == null) return;
         if (DEBUG) Log.d(TAG, "handleSetListening " + listening);
         if (listening) {
             mController.addCallback(mCallback);
@@ -110,7 +109,6 @@ public class CastTile extends QSTileImpl<BooleanState> {
     @Override
     protected void handleUserSwitch(int newUserId) {
         super.handleUserSwitch(newUserId);
-        if (mController == null) return;
         mController.setCurrentUserId(newUserId);
     }
 
