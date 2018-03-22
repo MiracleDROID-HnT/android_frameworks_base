@@ -4310,7 +4310,7 @@ public final class Settings {
 
         /** @hide */
         public static final Validator THEME_GLOBAL_STYLE_VALIDATOR =
-                new InclusiveIntegerRangeValidator(0, 3);
+                new InclusiveIntegerRangeValidator(0, 4);
 
         /**
          * The user selected theme accent

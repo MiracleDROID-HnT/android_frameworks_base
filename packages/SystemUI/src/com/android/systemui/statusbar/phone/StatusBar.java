@@ -3119,6 +3119,19 @@ public class StatusBar extends SystemUI implements DemoMode,
                 (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
     }
 
+    public boolean isUsingBlackTheme() {
+        OverlayInfo systemuiThemeInfo = null;
+        OverlayInfo settingsThemeInfo = null;
+        try {
+            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.elixir.system.theme.black",
+                    mCurrentUserId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return (systemuiThemeInfo != null && systemuiThemeInfo.isEnabled()) ||
+                (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
+    }
+
     @Nullable
     public View getAmbientIndicationContainer() {
         return mAmbientIndicationContainer;
@@ -5207,14 +5220,15 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected void updateTheme() {
         final boolean inflated = mStackScroller != null;
 
-        // 0 = auto, 1 = time-based, 2 = light, 3 = dark
+        // 0 = auto, 1 = time-based, 2 = light, 3 = dark, 4 = black
         final int globalStyleSetting = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.THEME_GLOBAL_STYLE, 0);
         final boolean nightMode = Settings.Secure.getIntForUser(mContext.getContentResolver(),
                 Settings.Secure.NIGHT_DISPLAY_ACTIVATED, 0, mCurrentUserId) == 1;
         WallpaperColors systemColors = mColorExtractor
                 .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-        final boolean useDarkTheme;
+        boolean useDarkTheme = false;
+        boolean useBlackTheme = false;
 
         switch (globalStyleSetting) {
             case 1:
@@ -5225,6 +5239,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                 break;
             case 3:
                 useDarkTheme = true;
+                break;
+            case 4:
+                useBlackTheme = true;
                 break;
             default:
                 useDarkTheme = systemColors != null && (systemColors.getColorHints() &
@@ -5240,6 +5257,19 @@ public class StatusBar extends SystemUI implements DemoMode,
                         useDarkTheme, mCurrentUserId);
                 mOverlayManager.setEnabled("mx.elixir.dialer.theme.dark",
                         useDarkTheme, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        }
+
+        if (isUsingBlackTheme() != useBlackTheme) {
+            try {
+                mOverlayManager.setEnabled("mx.elixir.system.theme.black",
+                        useBlackTheme, mCurrentUserId);
+                mOverlayManager.setEnabled("mx.elixir.settings.theme.black",
+                        useBlackTheme, mCurrentUserId);
+                mOverlayManager.setEnabled("mx.elixir.dialer.theme.black",
+                        useBlackTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
             }
