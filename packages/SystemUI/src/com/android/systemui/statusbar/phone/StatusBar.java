@@ -2657,6 +2657,14 @@ public class StatusBar extends SystemUI implements DemoMode,
                 }
             }
 
+            if (mediaNotification != null) {
+                mMediaNotificationKey = mediaNotification.notification.getKey();
+                if (DEBUG_MEDIA) {
+                    Log.v(TAG, "DEBUG_MEDIA: Found new media notification: key="
+                            + mMediaNotificationKey + " controller=" + mMediaController);
+                }
+            }
+
             if (controller != null && !sameSessions(mMediaController, controller)) {
                 // We have a new media session
                 clearCurrentMediaNotification();
@@ -2674,13 +2682,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                             + mMediaMetadata);
                 }
 
-                if (mediaNotification != null) {
-                    mMediaNotificationKey = mediaNotification.notification.getKey();
-                    if (DEBUG_MEDIA) {
-                        Log.v(TAG, "DEBUG_MEDIA: Found new media notification: key="
-                                + mMediaNotificationKey + " controller=" + mMediaController);
-                    }
-                }
                 metaDataChanged = true;
             }
         }
