@@ -444,6 +444,9 @@ public class WallpaperManager {
             synchronized (this) {
                 mCachedWallpaper = null;
                 mCachedWallpaperUserId = 0;
+                if (mDefaultWallpaper != null) {
+                    mDefaultWallpaper.recycle();
+                }
                 mDefaultWallpaper = null;
             }
         }
