@@ -1363,6 +1363,9 @@
     <!-- True if WallpaperService is enabled -->
     <bool name="config_enableWallpaperService">true</bool>
 
+    <!-- True if the device should block turning display on at boot until wallpaper is ready -->
+    <bool name="config_checkWallpaperAtBoot">true</bool>
+
     <!-- Enables the TimeZoneRuleManager service. This is the master switch for the updateable time
          zone update mechanism. -->
     <bool name="config_enableUpdateableTimeZoneRules">false</bool>
