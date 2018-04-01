@@ -107,4 +107,13 @@
     <string name="accessibility_quick_settings_heads_up_on">Виринаючі повідомлення ввімкнені.</string>
     <string name="accessibility_quick_settings_heads_up_changed_off">Виринаючі повідомлення вимкнені.</string>
     <string name="accessibility_quick_settings_heads_up_changed_on">Виринаючі повідомлення ввімкнені.</string>
+
+    <!-- Roaming -->
+    <string name="status_bar_roaming">Роумінг</string>
+
+    <!-- HW Keys Tile -->
+    <string name="accessibility_quick_settings_hwkeys_on">Апаратні кнопки увімкнено</string>
+    <string name="accessibility_quick_settings_hwkeys_off">Апаратні кнопки вимкнено</string>
+    <string name="quick_settings_hwkeys_label">Апаратні кнопки</string>
+
 </resources>
