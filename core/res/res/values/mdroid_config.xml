@@ -94,6 +94,7 @@
         <item>com.Slack</item>
         <item>com.bsb.hike</item>
         <item>com.gbinsta.android</item>
+        <item>org.thunderdog.challegram</item>
     </string-array>
 
     <!-- Settings icon tint color -->
