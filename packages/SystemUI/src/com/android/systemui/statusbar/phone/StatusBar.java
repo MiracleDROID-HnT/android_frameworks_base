@@ -5266,6 +5266,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                         useDarkTheme, mCurrentUserId);
                 mOverlayManager.setEnabled("mx.elixir.dialer.theme.dark",
                         useDarkTheme, mCurrentUserId);
+                mOverlayManager.setEnabled("mx.elixir.systemui.theme.dark",
+                        useDarkTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
             }
@@ -5278,6 +5280,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mOverlayManager.setEnabled("mx.elixir.settings.theme.black",
                         useBlackTheme, mCurrentUserId);
                 mOverlayManager.setEnabled("mx.elixir.dialer.theme.black",
+                        useBlackTheme, mCurrentUserId);
+                mOverlayManager.setEnabled("mx.elixir.systemui.theme.black",
                         useBlackTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
