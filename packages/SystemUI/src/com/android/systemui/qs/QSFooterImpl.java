@@ -109,7 +109,7 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
     private View mDateTimeGroup;
     private boolean mKeyguardShowing;
     private TouchAnimator mAlarmAnimator;
-    private boolean hasRunningServices;
+    private boolean mHasRunningServices;
 
     public QSFooterImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -169,6 +169,11 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
         mAnimator = new Builder()
                 .addFloat(mSettingsContainer, "translationX", -(remaining - defSpace), 0)
                 .addFloat(mSettingsButton, "rotation", -120, 0)
+                .addFloat(mRunningServicesButton, "translationX", - 2 * (remaining - defSpace), 0)
+                .addFloat(mRunningServicesButton, "rotation", -120, 0)
+                .addFloat(mEdit, "translationX", (mHasRunningServices
+                          ? - 3 : - 2) * (remaining - defSpace), 0)
+                .addFloat(mEdit, "rotation", -120, 0)
                 .build();
         if (mAlarmShowing) {
             int translate = isLayoutRtl() ? mDate.getWidth() : -mDate.getWidth();            
@@ -322,14 +327,14 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
     private void updateVisibilities() {
         updateAlarmVisibilities();
         final boolean isDemo = UserManager.isDeviceInDemoMode(mContext);
-        hasRunningServices = !isRunningServicesDisabled();
+        mHasRunningServices = !isRunningServicesDisabled();
 
         mMultiUserSwitch.setVisibility(mExpanded && mMultiUserSwitch.hasMultipleUsers() && !isDemo
                 ? View.VISIBLE : View.INVISIBLE);
 
         mEdit.setVisibility(isDemo || !mExpanded ? View.INVISIBLE : View.VISIBLE);
 
-        mRunningServicesButton.setVisibility(hasRunningServices ? !isDemo && mExpanded ? View.VISIBLE : View.INVISIBLE : View.GONE);
+        mRunningServicesButton.setVisibility(mHasRunningServices ? !isDemo && mExpanded ? View.VISIBLE : View.INVISIBLE : View.GONE);
     }
 
     private void updateListeners() {
