@@ -64,7 +64,7 @@
     <string name="quick_settings_region_screenshot_label">Снимок области экрана</string>
 
     <!-- QS customizer -->
-    <string name="drag_or_tap_to_add_tiles">Поятните или нажмите, чтобы добавить плитки</string>
+    <string name="drag_or_tap_to_add_tiles">Потяните или нажмите, чтобы добавить плитки</string>
 
     <!-- ADB over network QS tile -->
     <string name="quick_settings_network_adb_enabled_label">Включено</string>
