@@ -404,7 +404,8 @@ public class WallpaperManager {
                 }
             }
             synchronized (this) {
-                if (mCachedWallpaper != null && mCachedWallpaperUserId == userId) {
+                if (mCachedWallpaper != null && mCachedWallpaperUserId == userId
+                        && !mCachedWallpaper.isRecycled()) {
                     return mCachedWallpaper;
                 }
                 mCachedWallpaper = null;
