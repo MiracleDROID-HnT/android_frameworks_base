@@ -24,8 +24,6 @@ import android.content.res.Resources.NotFoundException;
 import android.content.res.Resources.Theme;
 import android.content.res.XmlResourceParser;
 import android.os.SystemClock;
-import android.os.UserHandle;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.util.PathParser;
@@ -105,13 +103,8 @@ public class AnimationUtils {
     public static Animation loadAnimation(Context context, @AnimRes int id)
             throws NotFoundException {
 
-        int defStyle = Settings.Global.getInt(context.getContentResolver(),
-                            Settings.Global.SYSTEM_DEFAULT_ANIMATION, 0);
-
-        if (defStyle == 0)
-            return loadAnimationFromXml(context, id);
-
-        switch (context.getResources().getResourceEntryName(id)) {
+        String name = context.getResources().getResourceEntryName(id);
+        switch(name) {
             case "activity_open_enter" : return getActivityOpenEnterAnim();
             case "activity_open_exit" : return getActivityOpenExitAnim();
             case "activity_close_enter" : return getActivityCloseEnterAnim();
@@ -120,7 +113,7 @@ public class AnimationUtils {
             case "task_open_exit" : return getTaskOpenExitAnim();
             case "task_close_enter" : return getTaskCloseEnterAnim();
             case "task_close_exit" : return getTaskCloseExitAnim();
-            default: return loadAnimationFromXml(context, id);
+            default: return loadAnimationFromXml(context,id);
         }
     }
 
