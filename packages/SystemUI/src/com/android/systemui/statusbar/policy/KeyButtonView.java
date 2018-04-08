@@ -80,13 +80,13 @@ public class KeyButtonView extends ImageView implements ButtonInterface {
                     sendEvent(KeyEvent.ACTION_DOWN, CURSOR_REPEAT_FLAGS,
                             System.currentTimeMillis(), false);
                     postDelayed(mCheckLongPress, ViewConfiguration.getKeyRepeatDelay());
-                } else if (mCode != 0) {
-                    sendEvent(KeyEvent.ACTION_DOWN, KeyEvent.FLAG_LONG_PRESS);
-                    sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
-                    mLongClicked = true;
                 } else if (isLongClickable()) {
                     // Just an old-fashioned ImageView
                     performLongClick();
+                    mLongClicked = true;
+                } else if (mSupportsLongpress) {
+                    sendEvent(KeyEvent.ACTION_DOWN, KeyEvent.FLAG_LONG_PRESS);
+                    sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
                     mLongClicked = true;
                 }
             }
