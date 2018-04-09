@@ -51,6 +51,7 @@ import com.android.systemui.statusbar.policy.EncryptionHelper;
 import com.android.systemui.statusbar.policy.KeyguardMonitor;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NetworkController.SignalCallback;
+import com.android.systemui.statusbar.policy.NetworkTraffic;
 
 /**
  * Contains the collapsed status bar and handles hiding/showing based on disable flags
@@ -82,6 +83,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private TickerObserver mTickerObserver;
     private View mTickerViewFromStub;
 
+    private NetworkTraffic mNetworkTraffic;
+
     private class ElixirSettingsObserver extends ContentObserver {
         ElixirSettingsObserver(Handler handler) {
             super(handler);
@@ -109,11 +112,19 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             mContentResolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUSBAR_CLOCK_DATE_FORMAT),
                     false, this, UserHandle.USER_ALL);
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NETWORK_TRAFFIC_STATE),
+                    false, this, UserHandle.USER_ALL);
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange) {
             updateSettings();
+            mNetworkTraffic.setMode();
+            mNetworkTraffic.updateSettings();
         }
     }
 
@@ -190,6 +201,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         initEmergencyCryptkeeperText();
         mElixirSettingsObserver.observe();
         updateSettings();
+        mNetworkTraffic = mStatusBar.findViewById(R.id.networkTraffic);
 
         mTickerObserver.observe();
         mTickerObserver.update();
