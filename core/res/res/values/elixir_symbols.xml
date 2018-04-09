@@ -76,9 +76,6 @@
     <!-- Whether device supports an alt. ambient display -->
     <java-symbol type="bool" name="config_alt_ambient_display"/>
 
-    <!-- Forcefully tint notification icon text -->
-    <java-symbol type="bool" name="config_useDarkBgNotificationIconTextTinting" />
-
     <java-symbol type="bool" name="config_useDarkBgNotificationTinting_override" />
     <java-symbol type="bool" name="config_notificationTinting_override" />
 

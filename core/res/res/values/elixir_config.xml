@@ -49,10 +49,6 @@
     <!-- If this is true, key chords can be used to take a screen record on the device. -->
     <bool name="config_enableScreenrecordChord">true</bool>
 
-    <!-- True if the notification's dynamic app icon/title tint should be optimised for dark
-    backgrounds (requires config_allowNotificationIconTextTinting to be true)-->
-    <bool name="config_useDarkBgNotificationIconTextTinting">false</bool>
-
     <!-- for notification overlays to force what they need -->
     <bool name="config_useDarkBgNotificationTinting_override">false</bool>
     <bool name="config_notificationTinting_override">false</bool>
@@ -75,8 +71,6 @@
 
     <!-- Default value for led color when battery is low on charge -->
     <integer name="config_notificationsFastBatteryARGB">0xFF0000FF</integer>
-
-    <bool name="config_allowNotificationIconTextTinting">true</bool>
 
     <!-- Path to the library that contains a device specific key handler -->
     <string name="config_deviceKeyHandlerLib" translatable="false"></string>
