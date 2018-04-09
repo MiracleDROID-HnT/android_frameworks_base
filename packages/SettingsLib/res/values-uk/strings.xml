@@ -377,6 +377,7 @@
     <string name="screen_zoom_summary_small" msgid="5867245310241621570">"Малі елементи"</string>
     <string name="screen_zoom_summary_default" msgid="2247006805614056507">"За умовчанням"</string>
     <string name="screen_zoom_summary_large" msgid="4835294730065424084">"Великі елементи"</string>
+    <string name="screen_zoom_summary_largest">"Найбільші елементи"</string>
     <string name="screen_zoom_summary_very_large" msgid="7108563375663670067">"Більші елементи"</string>
     <string name="screen_zoom_summary_extremely_large" msgid="7427320168263276227">"Найбільші елементи"</string>
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"Спеціальний масштаб (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
