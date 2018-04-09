@@ -90,10 +90,6 @@
     <java-symbol type="bool" name="config_FastChargingLedSupported" />
     <java-symbol type="integer" name="config_notificationsFastBatteryARGB" />
 
-    <!-- Notification icon/text dynamic tint -->
-    <java-symbol type="bool" name="config_allowNotificationIconTextTinting" />
-    <java-symbol type="color" name="notification_text_default_color" />
-
     <!-- Notification sender text color -->
     <java-symbol type="color" name="sender_text_color" />
 
