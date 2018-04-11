@@ -4036,8 +4036,6 @@ public final class Settings {
 
         public static final String IMMERSIVE_RECENTS = "immersive_recents";
 
-        public static final String SCREENSHOT_SHUTTER_SOUND = "screenshot_shutter_sound";
-
         /**
          * @hide
          */
