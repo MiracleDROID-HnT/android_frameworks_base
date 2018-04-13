@@ -85,6 +85,7 @@ public class NightDisplayTile extends QSTileImpl<BooleanState>
             state.slash = new SlashState();
         }
         state.icon = mIcon;
+        if (mController == null) return;
         final boolean isActivated = mController.isActivated();
         state.value = isActivated;
         state.label = state.contentDescription =

@@ -63,6 +63,7 @@ public class SoundTile extends QSTileImpl<BooleanState> {
     public void handleSetListening(boolean listening) {
         if (mListening == listening) return;
         mListening = listening;
+        if (mReceiver == null) return;
         if (listening) {
             final IntentFilter filter = new IntentFilter();
             filter.addAction(AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION);
