@@ -4608,11 +4608,11 @@ message MetricsEvent {
     //Extensions
     EXTENSIONS = 1150;
 
-    //Initial Elixir Constants
+    //Initial MDroid Constants
 
     MAGICAL_WORLD = 2000;
 
-    //END Elixir Constants
+    //END MDroid Constants
 
     // Screenshot Tile
     QS_SCREENSHOT_TILE = 1201;

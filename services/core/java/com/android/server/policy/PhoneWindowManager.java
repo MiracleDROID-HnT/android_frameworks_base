@@ -253,7 +253,7 @@ import com.android.internal.util.custom.CustomUtils;
 import com.android.internal.policy.IShortcutService;
 import com.android.internal.policy.PhoneWindow;
 import com.android.internal.statusbar.IStatusBarService;
-import com.android.internal.util.elixir.ElixirUtils;
+import com.android.internal.util.mdroid.MDroidUtils;
 import com.android.internal.util.ScreenShapeHelper;
 import com.android.internal.util.hwkeys.ActionHandler;
 import com.android.internal.util.hwkeys.ActionUtils;
@@ -1110,7 +1110,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
     private void toggleFlashLight() {
         performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, true);
-        ElixirUtils.toggleCameraFlash();
+        MDroidUtils.toggleCameraFlash();
     }
 
     private UEventObserver mHDMIObserver = new UEventObserver() {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-package com.android.internal.util.elixir;
+package com.android.internal.util.mdroid;
 
 import android.app.ActivityManagerNative;
 import android.app.IUserSwitchObserver;

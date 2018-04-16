@@ -36,7 +36,7 @@ import android.view.ViewStub;
 import android.widget.ImageSwitcher;
 import android.widget.LinearLayout;
 
-import com.android.internal.util.elixir.UserContentObserver;
+import com.android.internal.util.mdroid.UserContentObserver;
 import com.android.systemui.Dependency;
 import com.android.systemui.Interpolators;
 import com.android.systemui.R;
@@ -77,7 +77,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private View mCenterClock;
     private int mClockStyle;
     private ContentResolver mContentResolver;
-    private ElixirSettingsObserver mElixirSettingsObserver;
+    private MDroidSettingsObserver mMDroidSettingsObserver;
     private final Handler mHandler = new Handler();
     private int mTickerEnabled;
     private TickerObserver mTickerObserver;
@@ -85,8 +85,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     private NetworkTraffic mNetworkTraffic;
 
-    private class ElixirSettingsObserver extends ContentObserver {
-        ElixirSettingsObserver(Handler handler) {
+    private class MDroidSettingsObserver extends ContentObserver {
+        MDroidSettingsObserver(Handler handler) {
             super(handler);
         }
 
@@ -142,7 +142,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mKeyguardMonitor = Dependency.get(KeyguardMonitor.class);
         mNetworkController = Dependency.get(NetworkController.class);
         mStatusBarComponent = SysUiServiceProvider.getComponent(getContext(), StatusBar.class);
-        mElixirSettingsObserver = new ElixirSettingsObserver(mHandler);
+        mMDroidSettingsObserver = new MDroidSettingsObserver(mHandler);
 
         mTickerObserver = new TickerObserver(new Handler());
     }
@@ -199,7 +199,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         // Default to showing until we know otherwise.
         showSystemIconArea(false);
         initEmergencyCryptkeeperText();
-        mElixirSettingsObserver.observe();
+        mMDroidSettingsObserver.observe();
         updateSettings();
         mNetworkTraffic = mStatusBar.findViewById(R.id.networkTraffic);
 

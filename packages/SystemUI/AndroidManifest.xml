@@ -325,7 +325,7 @@
                   android:theme="@style/ExTunerSettings"
                   android:label="@string/statusbar_items_title"
                   android:process=":tuner"
-                  android:parentActivityName="mx.elixir.magicalworld.fragments.StatusBarSettings"
+                  android:parentActivityName="mx.mdroid.magicalworld.fragments.StatusBarSettings"
                   android:exported="true">
         </activity>
 
@@ -333,7 +333,7 @@
                   android:theme="@style/ExTunerSettings"
                   android:label="@string/nav_bar"
                   android:process=":tuner"
-                  android:parentActivityName="mx.elixir.magicalworld.fragments.ButtonSettings"
+                  android:parentActivityName="mx.mdroid.magicalworld.fragments.ButtonSettings"
                   android:exported="true">
         </activity>
 

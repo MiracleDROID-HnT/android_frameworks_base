@@ -1045,8 +1045,8 @@ public class StatusBar extends SystemUI implements DemoMode,
         createAndAddWindows();
 
         mSettingsObserver.onChange(false); // set up
-        mElixirSettingsObserver.observe();
-        mElixirSettingsObserver.update();
+        mMDroidSettingsObserver.observe();
+        mMDroidSettingsObserver.update();
         mCommandQueue.disable(switches[0], switches[6], false /* animate */);
         setSystemUiVisibility(switches[1], switches[7], switches[8], 0xffffffff,
                 fullscreenStackBounds, dockedStackBounds);
@@ -3137,7 +3137,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         OverlayInfo systemuiThemeInfo = null;
         OverlayInfo settingsThemeInfo = null;
         try {
-            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.elixir.system.theme.dark",
+            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.mdroid.system.theme.dark",
                     mCurrentUserId);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -3150,7 +3150,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         OverlayInfo systemuiThemeInfo = null;
         OverlayInfo settingsThemeInfo = null;
         try {
-            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.elixir.system.theme.black",
+            systemuiThemeInfo = mOverlayManager.getOverlayInfo("mx.mdroid.system.theme.black",
                     mCurrentUserId);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -5290,13 +5290,13 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         if (isUsingDarkTheme() != useDarkTheme) {
             try {
-                mOverlayManager.setEnabled("mx.elixir.system.theme.dark",
+                mOverlayManager.setEnabled("mx.mdroid.system.theme.dark",
                         useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.settings.theme.dark",
+                mOverlayManager.setEnabled("mx.mdroid.settings.theme.dark",
                         useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.dialer.theme.dark",
+                mOverlayManager.setEnabled("mx.mdroid.dialer.theme.dark",
                         useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.systemui.theme.dark",
+                mOverlayManager.setEnabled("mx.mdroid.systemui.theme.dark",
                         useDarkTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
@@ -5305,13 +5305,13 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         if (isUsingBlackTheme() != useBlackTheme) {
             try {
-                mOverlayManager.setEnabled("mx.elixir.system.theme.black",
+                mOverlayManager.setEnabled("mx.mdroid.system.theme.black",
                         useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.settings.theme.black",
+                mOverlayManager.setEnabled("mx.mdroid.settings.theme.black",
                         useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.dialer.theme.black",
+                mOverlayManager.setEnabled("mx.mdroid.dialer.theme.black",
                         useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.elixir.systemui.theme.black",
+                mOverlayManager.setEnabled("mx.mdroid.systemui.theme.black",
                         useBlackTheme, mCurrentUserId);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't change theme", e);
@@ -6514,9 +6514,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     };
 
-    private ElixirSettingsObserver mElixirSettingsObserver = new ElixirSettingsObserver(mHandler);
-    private class ElixirSettingsObserver extends ContentObserver {
-        ElixirSettingsObserver(Handler handler) {
+    private MDroidSettingsObserver mMDroidSettingsObserver = new MDroidSettingsObserver(mHandler);
+    private class MDroidSettingsObserver extends ContentObserver {
+        MDroidSettingsObserver(Handler handler) {
             super(handler);
         }
 

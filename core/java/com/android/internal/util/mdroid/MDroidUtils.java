@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.elixir;
+package com.android.internal.util.mdroid;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -34,7 +34,7 @@ import com.android.internal.statusbar.IStatusBarService;
 
 import java.util.Locale;
 
-public class ElixirUtils {
+public class MDroidUtils {
 
     public static boolean isChineseLanguage() {
        return Resources.getSystem().getConfiguration().locale.getLanguage().startsWith(
