@@ -115,13 +115,13 @@
     <string name="lte_on">LTE ON</string>
     <string name="lte_off">LTE OFF</string>
 
-     <!-- Sound QS Tile -->
-     <string name="quick_settings_sound_label">Sound</string>
-     <string name="quick_settings_sound_ring">Ring</string>
-     <string name="quick_settings_sound_vibrate">Vibrate</string>
-     <string name="quick_settings_sound_dnd">Do not disturb</string>
+    <!-- Sound QS Tile -->
+    <string name="quick_settings_sound_label">Sound</string>
+    <string name="quick_settings_sound_ring">Ring</string>
+    <string name="quick_settings_sound_vibrate">Vibrate</string>
+    <string name="quick_settings_sound_dnd">Do not disturb</string>
 
-     <string name="status_bar_vpn">VPN</string>
+    <string name="status_bar_vpn">VPN</string>
 
     <!-- USB Tethering tile -->
     <string name="accessibility_quick_settings_usb_tether_off">USB tethering off</string>

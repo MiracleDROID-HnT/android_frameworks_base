@@ -133,10 +133,17 @@
     <string name="lte_on">LTE ВКЛ.</string>
     <string name="lte_off">LTE ВЫКЛ.</string>
 
-     <!-- Sound QS Tile -->
-     <string name="quick_settings_sound_label">Звук</string>
-     <string name="quick_settings_sound_ring">Звук вкл.</string>
-     <string name="quick_settings_sound_vibrate">Вибрация</string>
-     <string name="quick_settings_sound_dnd">Без звука</string>
+    <!-- Sound QS Tile -->
+    <string name="quick_settings_sound_label">Звук</string>
+    <string name="quick_settings_sound_ring">Звук вкл.</string>
+    <string name="quick_settings_sound_vibrate">Вибрация</string>
+    <string name="quick_settings_sound_dnd">Без звука</string>
+
+    <!-- USB Tethering tile -->
+    <string name="accessibility_quick_settings_usb_tether_off">USB-модем выкл.</string>
+    <string name="accessibility_quick_settings_usb_tether_on">USB-модем вкл.</string>
+    <string name="accessibility_quick_settings_usb_tether_changed_off">USB-модем выключен</string>
+    <string name="accessibility_quick_settings_usb_tether_changed_on">USB-модем включен</string>
+    <string name="quick_settings_usb_tether_label">USB-модем</string>
 
 </resources>
