@@ -30,6 +30,7 @@
     <string name="global_action_reboot_sub">Система</string>
     <string name="global_action_reboot_recovery">Восстановление</string>
     <string name="global_action_reboot_bootloader">Загрузчик</string>
+    <string name="global_action_reboot_soft">Мягкая перезагрузка</string>
     <string name="global_action_dismissable_dialog_text">Расширенная перезагрузка отключена.\nЖелаете перезагрузить\u003f</string>
     <string name="global_action_dnaa">Не показывать снова</string>
     <string name="global_action_settings">Настройки</string>

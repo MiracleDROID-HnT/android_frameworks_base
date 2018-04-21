@@ -29,6 +29,7 @@
     <string name="global_action_reboot_sub">Система</string>
     <string name="global_action_reboot_recovery">Відновлення</string>
     <string name="global_action_reboot_bootloader">Завантажувач</string>
+    <string name="global_action_reboot_soft">М\'яке перезавантаження</string>
     <string name="global_action_dismissable_dialog_text">Розширене перезавантаження вимкнено.\nБажаєте перезавантажити\u003f</string>
     <string name="global_action_dnaa">Не показувати знову</string>
     <string name="global_action_settings">Налаштування</string>

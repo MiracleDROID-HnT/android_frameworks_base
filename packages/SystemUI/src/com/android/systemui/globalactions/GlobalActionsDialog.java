@@ -36,8 +36,10 @@ import com.android.systemui.volume.VolumeDialogMotion.LogDecelerateInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.ActivityManager;
+import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.IActivityManager;
 import android.app.KeyguardManager;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
@@ -132,6 +134,7 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
     private static final String GLOBAL_ACTION_KEY_VOICEASSIST = "voiceassist";
     private static final String GLOBAL_ACTION_KEY_ASSIST = "assist";
     private static final String GLOBAL_ACTION_KEY_RESTART = "restart";
+    private static final String GLOBAL_ACTION_KEY_REBOOT_SOFT = "reboot_soft";
     private static final String GLOBAL_ACTION_KEY_REBOOT_RECOVERY = "reboot_recovery";
     private static final String GLOBAL_ACTION_KEY_REBOOT_BOOTLOADER = "reboot_bootloader";
     private static final String GLOBAL_ACTION_KEY_SCREENSHOT = "screenshot";
@@ -374,6 +377,11 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
                 if (isActionVisible(a)) {
                     items.add(a);
                 }
+            } else if (advancedRebootEnabled(mContext) && GLOBAL_ACTION_KEY_REBOOT_SOFT.equals(actionKey)) {
+                RebootSoftAction a = new RebootSoftAction();
+                if (isActionVisible(a)) {
+                    items.add(a);
+                }
             }
         }
         return items;
@@ -437,6 +445,8 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
                 mItems.add(new RebootRecoveryAction());
             } else if (advancedRebootEnabled(mContext) && GLOBAL_ACTION_KEY_REBOOT_BOOTLOADER.equals(actionKey)) {
                 mItems.add(new RebootBootloaderAction());
+            } else if (advancedRebootEnabled(mContext) && GLOBAL_ACTION_KEY_REBOOT_SOFT.equals(actionKey)) {
+                mItems.add(new RebootSoftAction());
             } else if (GLOBAL_ACTION_KEY_SCREENSHOT.equals(actionKey)) {
                 if (Settings.System.getInt(mContext.getContentResolver(),
                         Settings.System.GLOBAL_ACTIONS_SCREENSHOT, 0) == 1) {
@@ -715,6 +725,40 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
         @Override
         public void onPress() {
             mWindowManagerFuncs.reboot(false, PowerManager.REBOOT_BOOTLOADER);
+        }
+    }
+
+    private final class RebootSoftAction extends SinglePressAction {
+        private RebootSoftAction() {
+            super(com.android.systemui.R.drawable.ic_restart_soft, com.android.systemui.R.string.global_action_reboot_soft);
+        }
+
+        @Override
+        public boolean showDuringKeyguard() {
+            return true;
+        }
+
+        @Override
+        public boolean showDuringRestrictedKeyguard() {
+            return false;
+        }
+
+        @Override
+        public boolean showBeforeProvisioning() {
+            return true;
+        }
+
+        @Override
+        public void onPress() {
+            try {
+                final IActivityManager am =
+                      IActivityManager.Stub.asInterface(ServiceManager.checkService("activity"));
+                if (am != null) {
+                    am.restart();
+                }
+            } catch (RemoteException e) {
+                Log.e(TAG, "failure trying to perform soft reboot", e);
+            }
         }
     }
 
