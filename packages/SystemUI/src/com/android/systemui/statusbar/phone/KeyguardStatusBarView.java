@@ -352,7 +352,9 @@ public class KeyguardStatusBarView extends RelativeLayout
         float intensity = textColor == Color.WHITE ? 0 : 1;
         mCarrierLabel.setTextColor(iconColor);
         mBatteryView.setFillColor(iconColor);
-        mIconManager.setTint(iconColor);
+        if (mIconManager != null) {
+            mIconManager.setTint(iconColor);
+        }
         Rect tintArea = new Rect(0, 0, 0, 0);
 
         applyDarkness(R.id.signal_cluster, tintArea, intensity, iconColor);
