@@ -147,4 +147,13 @@
     <string name="app_ops_write_mms">створити MMS-повідомлення</string>
     <string name="app_ops_write_sms">створити SMS-повідомлення</string>
 
+    <!-- Profiles -->
+    <!-- Names of default profiles. -->
+    <string name="profileNameDefault">За замовчуванням</string>
+    <string name="profileNameWork">Робота</string>
+    <string name="profileNameHome">Дім</string>
+    <string name="profileNameSilent">Без звуку</string>
+    <string name="profileNameNight">Ніч</string>
+    <string name="profileNameAutomobile">За кермом</string>
+
 </resources>

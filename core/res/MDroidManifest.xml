@@ -25,4 +25,17 @@
     <permission android:name="android.permission.PREVENT_POWER_KEY"
         android:protectionLevel="signature|privileged" />
 
+
+    <!-- Allows an application to modify system profiles -->
+    <permission android:name="android.permission.MODIFY_PROFILES"
+        android:protectionLevel="normal" />
+    <permission android:name="android.permission.MANAGE_REMOTE_PREFERENCES"
+        android:protectionLevel="normal" />
+
+    <protected-broadcast android:name="lineageos.intent.action.UPDATE_PREFERENCE" />
+    <protected-broadcast android:name="lineageos.intent.action.REFRESH_PREFERENCE" />
+
+    <protected-broadcast android:name="lineageos.platform.intent.action.PROFILE_SELECTED" />
+    <protected-broadcast android:name="lineageos.platform.intent.action.PROFILE_UPDATED" />
+    <protected-broadcast android:name="lineageos.platform.intent.action.INTENT_ACTION_PROFILE_TRIGGER_STATE_CHANGED" />
 </manifest>

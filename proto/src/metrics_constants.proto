@@ -4635,5 +4635,7 @@ message MetricsEvent {
 
     // Location Tile
     TILE_LOCATION_DETAIL = 2200;
+
+    SYSTEM_PROFILES = 1503;
   }
 }

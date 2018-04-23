@@ -11181,4 +11181,28 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     new ArrayList<>(getUserData(userId).mOwnerInstalledCaCerts));
         }
     }
+
+    /**
+     * @hide
+     */
+    @Override
+    public boolean requireSecureKeyguard(int userHandle) {
+        if (!mHasFeature) {
+            return false;
+        }
+
+        int passwordQuality = getPasswordQuality(null, userHandle, false);
+        if (passwordQuality > DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED) {
+            return true;
+        }
+
+        int encryptionStatus = getStorageEncryptionStatus(null, userHandle);
+        if (encryptionStatus == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE
+                || encryptionStatus == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVATING) {
+            return true;
+        }
+
+        final int keyguardDisabledFeatures = getKeyguardDisabledFeatures(null, userHandle, false);
+        return (keyguardDisabledFeatures & DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS) != 0;
+    }
 }
