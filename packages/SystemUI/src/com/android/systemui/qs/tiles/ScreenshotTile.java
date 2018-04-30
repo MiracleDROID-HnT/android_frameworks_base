@@ -38,6 +38,8 @@ import com.android.systemui.qs.tileimpl.QSTileImpl;
 import com.android.systemui.screenshot.TakeScreenshotService;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 
+import android.provider.Settings;
+
 /** Quick settings tile: Screenshot **/
 public class ScreenshotTile extends QSTileImpl<BooleanState> {
 
@@ -46,6 +48,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
     private boolean mListening;
     private final Object mScreenshotLock = new Object();
     private ServiceConnection mScreenshotConnection = null;
+    private int mScreenshotDelay;
 
     public ScreenshotTile(QSHost host) {
         super(host);
@@ -76,9 +79,10 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
     @Override
     public void handleLongClick() {
         mHost.collapsePanels();
+        checkSettings();
         /* wait for the panel to close */
         try {
-             Thread.sleep(1500);
+             Thread.sleep(mScreenshotDelay);
         } catch (InterruptedException ie) {
              // Do nothing
         }
@@ -178,5 +182,10 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
                 mHandler.postDelayed(mScreenshotTimeout, 10000);
             }
         }
+    }
+
+    private void checkSettings() {
+        mScreenshotDelay = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SCREENSHOT_DELAY, 1500);
     }
 }
