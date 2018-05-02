@@ -47,4 +47,6 @@
     <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_readOverlays">Дозволяє додатку читати поточний стан накладень.</string>
 
+    <string name="app_blacklist">Чорний список додатків</string>
+
 </resources>

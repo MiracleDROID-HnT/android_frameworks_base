@@ -47,4 +47,6 @@
     <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_readOverlays">Разрешает приложению читать текущее состояние наложений.</string>
 
+    <string name="app_blacklist">Черный список приложений</string>
+
 </resources>

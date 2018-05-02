@@ -75,4 +75,6 @@
     <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_readOverlays">Allows an application to read current state of overlays.</string>
 
+    <string name="app_blacklist">Blacklist app</string>
+
 </resources>
