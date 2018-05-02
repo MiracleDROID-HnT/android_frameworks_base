@@ -9377,16 +9377,18 @@ public class PackageManagerService extends IPackageManager.Stub
         }
     }
 
-    private void checkVersionForProfileLI(PackageSetting ps, PackageParser.Package pkg) {
-        if (isUpgrade() && ps != null && pkg != null) {
-            if (ps.versionCode != pkg.mVersionCode) {
-                Slog.d(TAG, ps.name + " clear profile due to version change " +
-                    ps.versionCode + " != " + pkg.mVersionCode);
-                clearAppProfilesLIF(pkg, UserHandle.USER_ALL);
-            } else if (DEBUG_INSTALL) {
-              Slog.d(TAG, "Package " + ps.name + " keep profile");
-            }
+    private void checkVersionForProfileLI(@Nullable PackageSetting ps,
+            @NonNull PackageParser.Package pkg) {
+        if (ps == null || !isUpgrade()) {
+          return;
         }
+        if (ps.versionCode != pkg.mVersionCode) {
+          clearAppProfilesLIF(pkg, UserHandle.USER_ALL);
+          if (DEBUG_INSTALL) {
+            Slog.d(TAG, ps.name + " clear profile due to version change " +
+                    ps.versionCode + " != " + pkg.mVersionCode);
+          }
+        };
     }
 
     /**
