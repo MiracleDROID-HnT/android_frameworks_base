@@ -122,6 +122,8 @@ public class NavBarTuner extends TunerPreferenceFragment {
             boolean checked = ((SwitchPreference)preference).isChecked();
             Settings.Secure.putIntForUser(getActivity().getContentResolver(),
                     Settings.Secure.NAVIGATION_BAR_ENABLED, checked ? 1:0, UserHandle.USER_CURRENT);
+            Settings.Secure.putInt(getActivity().getContentResolver(),
+                    Settings.Secure.HARDWARE_KEYS_DISABLE, checked ? 1:0);
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
