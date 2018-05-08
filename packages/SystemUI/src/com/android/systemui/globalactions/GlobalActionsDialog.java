@@ -767,7 +767,7 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
         public void onPress() {
             try {
                 final IActivityManager am =
-                      IActivityManager.Stub.asInterface(ServiceManager.checkService("activity"));
+                      ActivityManagerNative.asInterface(ServiceManager.checkService("activity"));
                 if (am != null) {
                     am.restart();
                 }
