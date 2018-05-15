@@ -46,7 +46,6 @@
     <uses-permission android:name="android.permission.MANAGE_USERS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.CONFIGURE_WIFI_DISPLAY" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
     <uses-permission android:name="android.permission.GET_APP_OPS_STATS" />
 
@@ -203,7 +202,7 @@
     <!-- to change themes - light or dark -->
     <uses-permission android:name="android.permission.CHANGE_OVERLAY_PACKAGES" />
 
-    <!-- Screenshots -->
+    <!-- Screenshots and screenrecord -->
     <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
 
     <!-- Custom permissions -->
@@ -212,9 +211,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
-
-    <!-- screenrecord -->
-    <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
 
     <!-- Sync tile -->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
