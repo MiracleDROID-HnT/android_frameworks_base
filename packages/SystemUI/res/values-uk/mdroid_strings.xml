@@ -168,4 +168,18 @@
     <!-- SysUI Tuner: Button that controls inversion of layout of navigation bar [CHAR LIMIT=60] -->
     <string name="nav_bar_layout_inverse">Інвертувати розташування кнопок</string>
 
+    <!-- Screenshot Crop & Share -->
+    <string name="action_delete_success">Видалено</string>
+    <string name="action_delete_fault">Не вдалося видалити</string>
+    <string name="action_save_success">Збережено</string>
+    <string name="action_save_fault">Не вдалося зберегти</string>
+    <string name="pref_action_color_title">Колір кнопок дій</string>
+    <string name="pref_action_color_summary">Виберіть свій улюблений колір для кнопок дій</string>
+    <string name="pref_category_main">Основні налаштування</string>
+    <string name="pref_category_user">Налаштування користувача</string>
+    <string name="pref_crop_behavior_title">Поведінка обтинання</string>
+    <string name="pref_crop_behavior_summary">Використовувати обрізане зображення, навіть якщо оригінальне не було обрізано</string>
+    <string name="action_ok">OK</string>
+    <string name="action_edit">Редагувати</string>
+
 </resources>
