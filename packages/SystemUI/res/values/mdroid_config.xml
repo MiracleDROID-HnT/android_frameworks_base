@@ -30,4 +30,7 @@
 
     <!-- CPUInfoService temperature sysfs path -->
     <string name="config_cpuinfoSysTemp" translatable="false">/sys/class/thermal/thermal_zone0/temp</string>
+
+    <!-- Config to enable/diaable qs tile tinting -->
+    <bool name="config_enable_qs_tile_tinting">false</bool>
 </resources>
