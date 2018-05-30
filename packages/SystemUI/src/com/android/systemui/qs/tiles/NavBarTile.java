@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.provider.Settings;
+import android.service.quicksettings.Tile;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,8 @@ import java.util.UUID;
 public class NavBarTile extends QSTileImpl<BooleanState> {
     private boolean mListening;
     private NavBarObserver mObserver;
+
+    private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_navbar_on);
 
     public NavBarTile(QSHost host) {
         super(host);
@@ -90,13 +93,20 @@ public class NavBarTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-	if (NavBarEnabled()) {
-           state.icon = ResourceIcon.get(R.drawable.ic_qs_navbar);
-           state.label = mContext.getString(R.string.quick_settings_navbar);
-	} else {
-           state.icon = ResourceIcon.get(R.drawable.ic_qs_navbar_off);
-           state.label = mContext.getString(R.string.quick_settings_navbar_off);
-	}
+        if (state.slash == null) {
+            state.slash = new SlashState();
+        }
+        state.icon = mIcon;
+        state.value = NavBarEnabled();
+        if (state.value) {
+            state.slash.isSlashed = false;
+            state.state = Tile.STATE_ACTIVE;
+            state.label = mContext.getString(R.string.quick_settings_navbar);
+        } else {
+            state.slash.isSlashed = true;
+            state.state = Tile.STATE_INACTIVE;
+            state.label = mContext.getString(R.string.quick_settings_navbar_off);
+        }
     }
 
     private boolean NavBarEnabled() {
