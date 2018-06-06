@@ -128,4 +128,10 @@
     <java-symbol type="string" name="kilobytespersecond_short" />
     <java-symbol type="string" name="megabytespersecond_short" />
 
+    <!-- Disabled Tint Colors -->
+    <java-symbol type="color" name="lockscreen_wallpaper_tint_off_color" />
+    <java-symbol type="color" name="status_bar_wallpaper_tint_off_color" />
+    <java-symbol type="color" name="recents_wallpaper_tint_off_color" />
+    <java-symbol type="color" name="power_menu_wallpaper_tint_off_color" />
+
 </resources>

@@ -67,7 +67,6 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
             = new PathInterpolator(0.3f, 0f, 0.8f, 1f);
     // Default alpha value for most scrims, if unsure use this constant
     public static final float GRADIENT_SCRIM_ALPHA = 0.45f;
-    public static final float CUSTOM_GRADIENT_SCRIM_ALPHA = 0.00f;
     // A scrim varies its opacity based on a busyness factor, for example
     // how many notifications are currently visible.
     public static final float GRADIENT_SCRIM_ALPHA_BUSY = 0.70f;
@@ -91,6 +90,8 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
     private final SysuiColorExtractor mColorExtractor;
     private GradientColors mLockColors;
     private GradientColors mSystemColors;
+    private GradientColors mLockscreenNoTintColors;
+    private GradientColors mNotificationNoTintColors;
     private boolean mNeedsDrawableColorUpdate;
 
     protected float mScrimBehindAlpha;
@@ -160,6 +161,10 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
                 ColorExtractor.TYPE_DARK, true /* ignoreVisibility */);
         mSystemColors = mColorExtractor.getColors(WallpaperManager.FLAG_SYSTEM,
                 ColorExtractor.TYPE_DARK, true /* ignoreVisibility */);
+
+        mLockscreenNoTintColors = mColorExtractor.getColors(3);
+        mNotificationNoTintColors = mColorExtractor.getColors(5);
+
         mNeedsDrawableColorUpdate = true;
 
         updateHeadsUpScrim(false);
@@ -319,7 +324,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
         final float maxNotificationDensity = 3;
         float notificationDensity = Math.min(notificationCount / maxNotificationDensity, 1f);
         float newAlpha = MathUtils.map(0, 1,
-                showWallpaperTintKeyguard() ? GRADIENT_SCRIM_ALPHA : CUSTOM_GRADIENT_SCRIM_ALPHA, GRADIENT_SCRIM_ALPHA_BUSY,
+                GRADIENT_SCRIM_ALPHA, GRADIENT_SCRIM_ALPHA_BUSY,
                 notificationDensity);
         if (mScrimBehindAlphaKeyguard != newAlpha) {
             mScrimBehindAlphaKeyguard = newAlpha;
@@ -330,8 +335,8 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
 
     private float getScrimInFrontAlpha() {
         return mKeyguardUpdateMonitor.needsSlowUnlockTransition()
-                ? showWallpaperTintKeyguard() ? SCRIM_IN_FRONT_ALPHA_LOCKED : CUSTOM_GRADIENT_SCRIM_ALPHA
-                : showWallpaperTintKeyguard() ? SCRIM_IN_FRONT_ALPHA : CUSTOM_GRADIENT_SCRIM_ALPHA;
+                ? SCRIM_IN_FRONT_ALPHA_LOCKED
+                : SCRIM_IN_FRONT_ALPHA;
     }
 
     /**
@@ -358,16 +363,16 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
             final GradientColors currentScrimColors;
             if (mKeyguardShowing) {
                 // Always animate color changes if we're seeing the keyguard
-                mScrimInFront.setColors(mLockColors, true /* animated */);
-                mScrimBehind.setColors(mLockColors, true /* animated */);
-                currentScrimColors = mLockColors;
+                mScrimInFront.setColors(showWallpaperTintKeyguard() ? mLockColors : mLockscreenNoTintColors, true /* animated */);
+                mScrimBehind.setColors(showWallpaperTintKeyguard() ? mLockColors : mLockscreenNoTintColors, true /* animated */);
+                currentScrimColors = showWallpaperTintKeyguard() ? mLockColors : mLockscreenNoTintColors;
             } else {
                 // Only animate scrim color if the scrim view is actually visible
                 boolean animateScrimInFront = mScrimInFront.getViewAlpha() != 0;
                 boolean animateScrimBehind = mScrimBehind.getViewAlpha() != 0;
-                mScrimInFront.setColors(mSystemColors, animateScrimInFront);
-                mScrimBehind.setColors(mSystemColors, animateScrimBehind);
-                currentScrimColors = mSystemColors;
+                mScrimInFront.setColors(showWallpaperTintNotificationShade() ? mSystemColors : mNotificationNoTintColors, animateScrimInFront);
+                mScrimBehind.setColors(showWallpaperTintNotificationShade() ? mSystemColors : mNotificationNoTintColors, animateScrimBehind);
+                currentScrimColors = showWallpaperTintNotificationShade() ? mSystemColors : mNotificationNoTintColors;
             }
 
             // Calculate minimum scrim opacity for white or black text.
@@ -442,13 +447,11 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener,
 
     private void updateScrimNormal() {
         float frac = mFraction;
-        float customfrac = mFraction;
 
         // let's start this 20% of the way down the screen
         frac = frac * 1.2f - 0.2f;
-        customfrac = frac * 0.0f - 0.0f;
 
-        if (showWallpaperTintNotificationShade() ? frac <= 0 : customfrac <= 0) {
+        if (frac <= 0) {
             setScrimBehindAlpha(0);
         } else {
             // woo, special effects
