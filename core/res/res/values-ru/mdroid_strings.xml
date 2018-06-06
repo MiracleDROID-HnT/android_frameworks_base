@@ -42,4 +42,9 @@
 
     <string name="cannot_get_su">Действие не выполнено из-за отсутствия прав суперпользователя</string>
 
+    <!-- [CHAR LIMIT=NONE] Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permlab_readOverlays">чтение наложений</string>
+    <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permdesc_readOverlays">Разрешает приложению читать текущее состояние наложений.</string>
+
 </resources>

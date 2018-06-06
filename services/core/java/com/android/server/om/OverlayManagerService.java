@@ -36,6 +36,7 @@ import android.content.om.IOverlayManager;
 import android.content.om.OverlayInfo;
 import android.content.pm.IPackageManager;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManagerInternal;
 import android.content.pm.UserInfo;
 import android.net.Uri;
@@ -480,7 +481,11 @@ public final class OverlayManagerService extends SystemService {
     private final IBinder mService = new IOverlayManager.Stub() {
         @Override
         public Map<String, List<OverlayInfo>> getAllOverlays(int userId) throws RemoteException {
-            userId = handleIncomingUser(userId, "getAllOverlays");
+            if (hasReadOverlayPermission()) {
+                userId = getUserId(userId);
+            } else {
+                userId = handleIncomingUser(userId, "getAllOverlays");
+            }
 
             synchronized (mLock) {
                 return mImpl.getOverlaysForUser(userId);
@@ -490,7 +495,11 @@ public final class OverlayManagerService extends SystemService {
         @Override
         public List<OverlayInfo> getOverlayInfosForTarget(@Nullable final String targetPackageName,
                 int userId) throws RemoteException {
-            userId = handleIncomingUser(userId, "getOverlayInfosForTarget");
+            if (hasReadOverlayPermission()) {
+                userId = getUserId(userId);
+            } else {
+                userId = handleIncomingUser(userId, "getOverlayInfosForTarget");
+            }
             if (targetPackageName == null) {
                 return Collections.emptyList();
             }
@@ -503,7 +512,11 @@ public final class OverlayManagerService extends SystemService {
         @Override
         public OverlayInfo getOverlayInfo(@Nullable final String packageName,
                 int userId) throws RemoteException {
-            userId = handleIncomingUser(userId, "getOverlayInfo");
+            if (hasReadOverlayPermission()) {
+                userId = getUserId(userId);
+            } else {
+                userId = handleIncomingUser(userId, "getOverlayInfo");
+            }
             if (packageName == null) {
                 return null;
             }
@@ -654,6 +667,28 @@ public final class OverlayManagerService extends SystemService {
         private void enforceChangeOverlayPackagesPermission(@NonNull final String message) {
             getContext().enforceCallingOrSelfPermission(
                     android.Manifest.permission.CHANGE_OVERLAY_PACKAGES, message);
+        }
+
+        /**
+         * Check if the caller has the READ_OVERLAYS permission. If not, fall back to standard
+         * permission checking
+         *
+         * @return true if caller has READ_OVERLAYS permission, false if otherwise
+         */
+        private boolean hasReadOverlayPermission() {
+            return getContext().checkCallingOrSelfPermission(
+                    android.Manifest.permission.READ_OVERLAYS) == PackageManager.PERMISSION_GRANTED;
+        }
+
+        private int getUserId(int userId) {
+            int uid = Binder.getCallingUid();
+            int thisUserId = UserHandle.getUserId(uid);
+            Slog.i(TAG, "READ OVERLAYS calling UID = " + userId + " UserHandle ID = " + thisUserId);
+            if (thisUserId == userId) {
+                return userId;
+            } else {
+                return uid;
+            }
         }
 
         /**
