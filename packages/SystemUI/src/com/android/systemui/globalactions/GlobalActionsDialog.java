@@ -770,7 +770,12 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
                 com.android.systemui.R.string.global_action_screenshot) {
             @Override
             public void onPress() {
-                takeScreenshot();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        takeScreenshot();
+                    }
+                }, 500);
             }
 
             @Override
