@@ -297,8 +297,8 @@ public class TaskViewHeader extends FrameLayout
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.START | Gravity.CENTER_VERTICAL);
         lp.setMarginStart(mHeaderBarHeight);
         lp.setMarginEnd(mMoveTaskButton != null
-                ? 4 * mHeaderBarHeight
-                : 3 *mHeaderBarHeight);
+                ? (int) (3.3 * mHeaderBarHeight)
+                : (int) (2.3 * mHeaderBarHeight));
         title.setLayoutParams(lp);
         title.setTextDirection(View.TEXT_DIRECTION_LOCALE);
         //move task button
