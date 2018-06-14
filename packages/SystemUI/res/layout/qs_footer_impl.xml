@@ -80,6 +80,8 @@
             android:layout_height="48dp"
             android:clickable="true"
             android:focusable="true"
+            android:clipToPadding="false"
+            android:padding="15dp"
             android:background="@drawable/ripple_drawable"
             android:src="@drawable/ic_settings_memory"
             android:tint="?android:attr/colorForeground"
