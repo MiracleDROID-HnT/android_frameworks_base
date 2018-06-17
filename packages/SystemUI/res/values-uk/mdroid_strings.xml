@@ -216,5 +216,7 @@
     <string name="accessibility_su_active">Сесія Superuser активна</string>
 
     <string name="recents_app_killed">Додаток зупинено</string>
+    <string name="recents_locked_app_kill_warning">Додаток заблоковано. Він буде закритий, але залишиться в списку недавніх додатків.</string>
+    <string name="recents_kill_error_warning">Неможливо примусово закрити додаток. Операція перервана.</string>
 
 </resources>

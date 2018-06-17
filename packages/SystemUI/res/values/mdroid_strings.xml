@@ -206,5 +206,7 @@
     <string name="accessibility_su_active">Superuser session active</string>
 
     <string name="recents_app_killed">App killed</string>
+    <string name="recents_locked_app_kill_warning">App is locked. Force stopping but not dismissing it.</string>
+    <string name="recents_kill_error_warning">Couldn\'t kill or force stop this app. Operation aborted.</string>
 
 </resources>
