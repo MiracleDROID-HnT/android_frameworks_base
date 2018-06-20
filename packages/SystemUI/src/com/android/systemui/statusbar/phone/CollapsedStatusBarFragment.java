@@ -76,18 +76,43 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private View mCenterClock;
     private int mClockStyle;
     private ContentResolver mContentResolver;
-    private MDroidSettingsObserver mMDroidSettingsObserver;
-    private final Handler mHandler = new Handler();
     private int mTickerEnabled;
     private TickerObserver mTickerObserver;
     private View mTickerViewFromStub;
 
-    private class MDroidSettingsObserver extends ContentObserver {
-        MDroidSettingsObserver(Handler handler) {
+    private SignalCallback mSignalCallback = new SignalCallback() {
+        @Override
+        public void setIsAirplaneMode(NetworkController.IconState icon) {
+            mStatusBarComponent.recomputeDisableFlags(true /* animate */);
+        }
+    };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContentResolver = getContext().getContentResolver();
+        mKeyguardMonitor = Dependency.get(KeyguardMonitor.class);
+        mNetworkController = Dependency.get(NetworkController.class);
+        mStatusBarComponent = SysUiServiceProvider.getComponent(getContext(), StatusBar.class);
+        mTickerObserver = new TickerObserver(new Handler());
+    }
+
+    class TickerObserver extends UserContentObserver {
+
+        TickerObserver(Handler handler) {
             super(handler);
         }
 
-        void observe() {
+        protected void unobserve() {
+            super.unobserve();
+            getContext().getContentResolver().unregisterContentObserver(this);
+        }
+
+        protected void observe() {
+            super.observe();
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_SHOW_TICKER),
+                    false, this, UserHandle.USER_ALL);
             mContentResolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CLOCK),
                     false, this, UserHandle.USER_ALL);
@@ -121,54 +146,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         }
 
         @Override
-        public void onChange(boolean selfChange) {
-            updateSettings();
-        }
-    }
-
-    private SignalCallback mSignalCallback = new SignalCallback() {
-        @Override
-        public void setIsAirplaneMode(NetworkController.IconState icon) {
-            mStatusBarComponent.recomputeDisableFlags(true /* animate */);
-        }
-    };
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContentResolver = getContext().getContentResolver();
-        mKeyguardMonitor = Dependency.get(KeyguardMonitor.class);
-        mNetworkController = Dependency.get(NetworkController.class);
-        mStatusBarComponent = SysUiServiceProvider.getComponent(getContext(), StatusBar.class);
-        mMDroidSettingsObserver = new MDroidSettingsObserver(mHandler);
-
-        mTickerObserver = new TickerObserver(new Handler());
-    }
-
-    class TickerObserver extends UserContentObserver {
-
-        TickerObserver(Handler handler) {
-            super(handler);
-        }
-
-        protected void unobserve() {
-            super.unobserve();
-            getContext().getContentResolver().unregisterContentObserver(this);
-        }
-
-        protected void observe() {
-            super.observe();
-            getContext().getContentResolver().registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.STATUS_BAR_SHOW_TICKER), false, this,
-                    UserHandle.USER_ALL);
-        }
-
-        @Override
         protected void update() {
-            mTickerEnabled = Settings.System.getIntForUser(mContentResolver,
-                    Settings.System.STATUS_BAR_SHOW_TICKER, 0,
-                    UserHandle.USER_CURRENT);
-            initTickerView();
+            updateSettings();
         }
     }
 
@@ -197,7 +176,6 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         // Default to showing until we know otherwise.
         showSystemIconArea(false);
         initEmergencyCryptkeeperText();
-        mMDroidSettingsObserver.observe();
         updateSettings();
 
         mTickerObserver.observe();
@@ -394,6 +372,10 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     public void updateSettings() {
+        mTickerEnabled = Settings.System.getIntForUser(mContentResolver,
+                Settings.System.STATUS_BAR_SHOW_TICKER, 0,
+                UserHandle.USER_CURRENT);
+        initTickerView();
         ((Clock)mClock).updateSettings();
         ((Clock)mCenterClock).updateSettings();
         ((Clock)mLeftClock).updateSettings();
