@@ -8228,6 +8228,12 @@ public final class Settings {
         public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
 
         /**
+         * Network traffic refresh interval
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_FREQUENCY = "network_traffic_frequency";
+
+        /**
          * Measurement unit preference for network traffic
          * @hide
          */

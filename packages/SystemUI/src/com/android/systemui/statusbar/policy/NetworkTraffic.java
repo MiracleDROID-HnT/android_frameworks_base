@@ -78,6 +78,7 @@ public class NetworkTraffic extends TextView {
     private int mTextSizeSingle;
     private int mTextSizeMulti;
     private long mAutoHideThreshold;
+    private long mFrequency;
     private int mUnits;
     private boolean mShowUnits;
     private int mDarkModeFillColor;
@@ -158,7 +159,7 @@ public class NetworkTraffic extends TextView {
             long now = SystemClock.elapsedRealtime();
             long timeDelta = now - mLastUpdateTime;
             if (msg.what == MESSAGE_TYPE_PERIODIC_REFRESH
-                    && timeDelta >= REFRESH_INTERVAL * 0.95f) {
+                    && timeDelta >= mFrequency * 0.95f) {
                 // Update counters
                 mLastUpdateTime = now;
                 long txBytes = TrafficStats.getTotalTxBytes() - mLastTxBytesTotal;
@@ -213,7 +214,7 @@ public class NetworkTraffic extends TextView {
             mTrafficHandler.removeMessages(MESSAGE_TYPE_PERIODIC_REFRESH);
             if (enabled && mNetworkTrafficIsVisible) {
                 mTrafficHandler.sendEmptyMessageDelayed(MESSAGE_TYPE_PERIODIC_REFRESH,
-                        REFRESH_INTERVAL);
+                        mFrequency);
             }
         }
 
@@ -275,6 +276,9 @@ public class NetworkTraffic extends TextView {
                     Settings.Secure.NETWORK_TRAFFIC_AUTOHIDE),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.NETWORK_TRAFFIC_FREQUENCY),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.NETWORK_TRAFFIC_UNITS),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
@@ -305,6 +309,8 @@ public class NetworkTraffic extends TextView {
                 Settings.Secure.NETWORK_TRAFFIC_MODE, 0, UserHandle.USER_CURRENT);
         mAutoHideThreshold = Settings.Secure.getIntForUser(resolver,
                 Settings.Secure.NETWORK_TRAFFIC_AUTOHIDE, 0, UserHandle.USER_CURRENT);
+        mFrequency = Settings.Secure.getIntForUser(resolver,
+                Settings.Secure.NETWORK_TRAFFIC_FREQUENCY, /* 1000 ms */ 1000, UserHandle.USER_CURRENT);
         mUnits = Settings.Secure.getIntForUser(resolver,
                 Settings.Secure.NETWORK_TRAFFIC_UNITS, /* Mbps */ 1,
                 UserHandle.USER_CURRENT);
