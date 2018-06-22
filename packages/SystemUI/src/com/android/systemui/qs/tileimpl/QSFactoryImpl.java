@@ -35,6 +35,7 @@ import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
+import com.android.systemui.qs.tiles.ImmersiveTile;
 import com.android.systemui.qs.tiles.HWKeysTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocaleTile;
@@ -97,6 +98,7 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("locale")) return new LocaleTile(mHost);
         else if (tileSpec.equals("navbar")) return new NavBarTile(mHost);
         else if (tileSpec.equals("reboot")) return new RebootTile(mHost);
+        else if (tileSpec.equals("immersive")) return new ImmersiveTile(mHost);
 
         // Intent tiles.
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(mHost, tileSpec);
