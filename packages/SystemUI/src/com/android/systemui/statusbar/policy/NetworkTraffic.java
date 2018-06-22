@@ -308,7 +308,7 @@ public class NetworkTraffic extends TextView {
         mMode = Settings.Secure.getIntForUser(resolver,
                 Settings.Secure.NETWORK_TRAFFIC_MODE, 0, UserHandle.USER_CURRENT);
         mAutoHideThreshold = Settings.Secure.getIntForUser(resolver,
-                Settings.Secure.NETWORK_TRAFFIC_AUTOHIDE, 0, UserHandle.USER_CURRENT);
+                Settings.Secure.NETWORK_TRAFFIC_AUTOHIDE, /* kbps */ 10, UserHandle.USER_CURRENT);
         mFrequency = Settings.Secure.getIntForUser(resolver,
                 Settings.Secure.NETWORK_TRAFFIC_FREQUENCY, /* 1000 ms */ 1000, UserHandle.USER_CURRENT);
         mUnits = Settings.Secure.getIntForUser(resolver,
