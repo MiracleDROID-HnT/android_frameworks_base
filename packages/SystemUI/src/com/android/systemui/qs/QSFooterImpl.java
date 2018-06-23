@@ -38,6 +38,7 @@ import android.support.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,7 +72,7 @@ import com.android.systemui.statusbar.policy.UserInfoController.OnUserInfoChange
 import com.android.systemui.tuner.TunerService;
 
 public class QSFooterImpl extends FrameLayout implements QSFooter,
-        NextAlarmChangeCallback, OnClickListener, OnUserInfoChangedListener, EmergencyListener,
+        NextAlarmChangeCallback, OnClickListener, OnLongClickListener, OnUserInfoChangedListener, EmergencyListener,
         SignalCallback {
     private static final float EXPAND_INDICATOR_THRESHOLD = .93f;
 
@@ -138,6 +139,7 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
         mAlarmStatusCollapsed = findViewById(R.id.alarm_status_collapsed);
         mAlarmStatus = findViewById(R.id.alarm_status);
         mDateTimeGroup.setOnClickListener(this);
+        mDateTimeGroup.setOnLongClickListener(this);
 
         mMultiUserSwitch = findViewById(R.id.multi_user_switch);
         mMultiUserAvatar = mMultiUserSwitch.findViewById(R.id.multi_user_avatar);
@@ -414,6 +416,23 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
         intent.setClassName("com.android.settings",
                 "com.android.settings.Settings$DevRunningServicesActivity");
         mActivityStarter.startActivity(intent, true /* dismissShade */);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v == mDateTimeGroup) {
+            if (mAlarmShowing) {
+                Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+                builder.appendPath("time");
+                builder.appendPath(Long.toString(System.currentTimeMillis()));
+                Intent todayIntent = new Intent(Intent.ACTION_VIEW, builder.build());
+                mActivityStarter.postStartActivityDismissingKeyguard(todayIntent, 0);
+            } else {
+                mActivityStarter.postStartActivityDismissingKeyguard(new Intent(
+                        AlarmClock.ACTION_SHOW_ALARMS), 0);
+            }
+        }
+        return false;
     }
 
     private void startSettingsActivity() {
