@@ -18,7 +18,9 @@ package com.android.systemui.volume;
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.provider.Settings;
 import android.provider.Settings.Global;
+import android.os.UserHandle;
 import android.service.notification.ZenModeConfig;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -67,14 +69,29 @@ public class ZenFooter extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mIcon = findViewById(R.id.volume_zen_icon);
-        mSummaryLine1 = findViewById(R.id.volume_zen_summary_line_1);
-        mSummaryLine2 = findViewById(R.id.volume_zen_summary_line_2);
-        mEndNowButton = findViewById(R.id.volume_zen_end_now);
-        mZenIntroduction = findViewById(R.id.zen_introduction);
-        mZenIntroductionMessage = findViewById(R.id.zen_introduction_message);
+        boolean pieVolumeDialog = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.PIE_VOLUME_DIALOG, 0, UserHandle.USER_CURRENT) == 1;
+        if (!pieVolumeDialog) {
+            mIcon = findViewById(R.id.volume_zen_icon);
+            mSummaryLine1 = findViewById(R.id.volume_zen_summary_line_1);
+            mSummaryLine2 = findViewById(R.id.volume_zen_summary_line_2);
+            mEndNowButton = findViewById(R.id.volume_zen_end_now);
+            mZenIntroduction = findViewById(R.id.zen_introduction);
+            mZenIntroductionMessage = findViewById(R.id.zen_introduction_message);
+        } else {
+            mIcon = findViewById(R.id.volume_zen_icon_custom);
+            mSummaryLine1 = findViewById(R.id.volume_zen_summary_line_1_custom);
+            mSummaryLine2 = findViewById(R.id.volume_zen_summary_line_2_custom);
+            mEndNowButton = findViewById(R.id.volume_zen_end_now_custom);
+            mZenIntroduction = findViewById(R.id.zen_introduction_custom);
+            mZenIntroductionMessage = findViewById(R.id.zen_introduction_message_custom);
+        }
         mConfigurableTexts.add(mZenIntroductionMessage, R.string.zen_alarms_introduction);
-        mZenIntroductionConfirm = findViewById(R.id.zen_introduction_confirm);
+        if (!pieVolumeDialog) {
+            mZenIntroductionConfirm = findViewById(R.id.zen_introduction_confirm);
+        } else {
+            mZenIntroductionConfirm = findViewById(R.id.zen_introduction_confirm_custom);
+        }
         mZenIntroductionConfirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

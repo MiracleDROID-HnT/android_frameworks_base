@@ -51,13 +51,16 @@ public class VolumeDialogMotion {
     private ValueAnimator mChevronPositionAnimator;
     private ValueAnimator mContentsPositionAnimator;
 
-    public VolumeDialogMotion(Dialog dialog, View dialogView, ViewGroup contents, View chevron,
+    private boolean mPieVolumeDialog;
+
+    public VolumeDialogMotion(Dialog dialog, boolean ispiedialog, View dialogView, ViewGroup contents, View chevron,
             Callback callback) {
         mDialog = dialog;
         mDialogView = dialogView;
         mContents = contents;
         mChevron = chevron;
         mCallback = callback;
+        mPieVolumeDialog = ispiedialog;
         mDialog.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -69,7 +72,9 @@ public class VolumeDialogMotion {
             public void onShow(DialogInterface dialog) {
                 if (D.BUG) Log.d(TAG, "mDialog.onShow");
                 final int h = mDialogView.getHeight();
-                mDialogView.setTranslationY(-h);
+                if (!mPieVolumeDialog) {
+                    mDialogView.setTranslationY(-h);
+                }
                 startShowAnimation();
             }
         });
@@ -128,30 +133,51 @@ public class VolumeDialogMotion {
 
     private void startShowAnimation() {
         if (D.BUG) Log.d(TAG, "startShowAnimation");
-        mDialogView.animate()
-                .translationY(0)
-                .setDuration(scaledDuration(300))
-                .setInterpolator(new LogDecelerateInterpolator())
-                .setListener(null)
-                .setUpdateListener(animation -> {
-                    if (mChevronPositionAnimator != null) {
-                        final float v = (Float) mChevronPositionAnimator.getAnimatedValue();
-                        if (mChevronPositionAnimator == null) return;
-                        // reposition chevron
-                        final int posY = chevronPosY();
-                        mChevron.setTranslationY(posY + v + -mDialogView.getTranslationY());
-                    }
-                })
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mChevronPositionAnimator == null) return;
-                        // reposition chevron
-                        final int posY = chevronPosY();
-                        mChevron.setTranslationY(posY + -mDialogView.getTranslationY());
-                    }
-                })
-                .start();
+        if (!mPieVolumeDialog) {
+            mDialogView.animate()
+                    .translationY(0)
+                    .setDuration(scaledDuration(300))
+                    .setInterpolator(new LogDecelerateInterpolator())
+                    .setListener(null)
+                    .setUpdateListener(animation -> {
+                        if (mChevronPositionAnimator != null) {
+                            final float v = (Float) mChevronPositionAnimator.getAnimatedValue();
+                            if (mChevronPositionAnimator == null) return;
+                            // reposition chevron
+                            final int posY = chevronPosY();
+                            mChevron.setTranslationY(posY + v + -mDialogView.getTranslationY());
+                        }
+                    })
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mChevronPositionAnimator == null) return;
+                            // reposition chevron
+                            final int posY = chevronPosY();
+                            mChevron.setTranslationY(posY + -mDialogView.getTranslationY());
+                        }
+                    })
+                    .start();
+        } else {
+            mDialogView.animate()
+                    .translationX(0)
+                    .setDuration(scaledDuration(300))
+                    .setInterpolator(new LogDecelerateInterpolator())
+                    .setListener(null)
+                    .setUpdateListener(animation -> {
+                        if (mChevronPositionAnimator != null) {
+                            final float v = (Float) mChevronPositionAnimator.getAnimatedValue();
+                            if (mChevronPositionAnimator == null) return;
+                        }
+                    })
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mChevronPositionAnimator == null) return;
+                        }
+                    })
+                    .start();
+        }
 
         mContentsPositionAnimator = ValueAnimator.ofFloat(-chevronDistance(), 0)
                 .setDuration(scaledDuration(400));
@@ -174,7 +200,9 @@ public class VolumeDialogMotion {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float v = (Float) animation.getAnimatedValue();
-                mContents.setTranslationY(v + -mDialogView.getTranslationY());
+                if (!mPieVolumeDialog) {
+                    mContents.setTranslationY(v + -mDialogView.getTranslationY());
+                }
             }
         });
         mContentsPositionAnimator.setInterpolator(new LogDecelerateInterpolator());
@@ -187,18 +215,20 @@ public class VolumeDialogMotion {
                 .setInterpolator(new PathInterpolator(0f, 0f, .2f, 1f))
                 .start();
 
-        mChevronPositionAnimator = ValueAnimator.ofFloat(-chevronDistance(), 0)
-                .setDuration(scaledDuration(250));
-        mChevronPositionAnimator.setInterpolator(new PathInterpolator(.4f, 0f, .2f, 1f));
-        mChevronPositionAnimator.start();
+        if (!mPieVolumeDialog) {
+            mChevronPositionAnimator = ValueAnimator.ofFloat(-chevronDistance(), 0)
+                    .setDuration(scaledDuration(250));
+            mChevronPositionAnimator.setInterpolator(new PathInterpolator(.4f, 0f, .2f, 1f));
+            mChevronPositionAnimator.start();
 
-        mChevron.setAlpha(0);
-        mChevron.animate()
-                .alpha(1)
-                .setStartDelay(scaledDuration(50))
-                .setDuration(scaledDuration(150))
-                .setInterpolator(new PathInterpolator(.4f, 0f, 1f, 1f))
-                .start();
+            mChevron.setAlpha(0);
+            mChevron.animate()
+                    .alpha(1)
+                    .setStartDelay(scaledDuration(50))
+                    .setDuration(scaledDuration(150))
+                    .setInterpolator(new PathInterpolator(.4f, 0f, 1f, 1f))
+                    .start();
+        }
     }
 
     public void startDismiss(final Runnable onComplete) {
@@ -214,44 +244,82 @@ public class VolumeDialogMotion {
             if (mChevronPositionAnimator != null) {
                 mChevronPositionAnimator.cancel();
             }
-            mChevron.animate().cancel();
+            if (!mPieVolumeDialog) {
+                mChevron.animate().cancel();
+            }
             setShowing(false);
         }
-        mDialogView.animate()
-                .translationY(-mDialogView.getHeight())
-                .setDuration(scaledDuration(250))
-                .setInterpolator(new LogAccelerateInterpolator())
-                .setUpdateListener(new AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        mContents.setTranslationY(-mDialogView.getTranslationY());
-                        final int posY = chevronPosY();
-                        mChevron.setTranslationY(posY + -mDialogView.getTranslationY());
-                    }
-                })
-                .setListener(new AnimatorListenerAdapter() {
-                    private boolean mCancelled;
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if (mCancelled) return;
-                        if (D.BUG) Log.d(TAG, "dismiss.onAnimationEnd");
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (D.BUG) Log.d(TAG, "mDialog.dismiss()");
-                                mDialog.dismiss();
-                                onComplete.run();
-                                setDismissing(false);
-                            }
-                        }, PRE_DISMISS_DELAY);
+        if (!mPieVolumeDialog) {
+            mDialogView.animate()
+                    .translationY(-mDialogView.getHeight())
+                    .setDuration(scaledDuration(250))
+                    .setInterpolator(new LogAccelerateInterpolator())
+                    .setUpdateListener(new AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            mContents.setTranslationY(-mDialogView.getTranslationY());
+                            final int posY = chevronPosY();
+                            mChevron.setTranslationY(posY + -mDialogView.getTranslationY());
+                        }
+                    })
+                    .setListener(new AnimatorListenerAdapter() {
+                        private boolean mCancelled;
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (mCancelled) return;
+                            if (D.BUG) Log.d(TAG, "dismiss.onAnimationEnd");
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (D.BUG) Log.d(TAG, "mDialog.dismiss()");
+                                    mDialog.dismiss();
+                                    onComplete.run();
+                                    setDismissing(false);
+                                }
+                            }, PRE_DISMISS_DELAY);
 
-                    }
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        if (D.BUG) Log.d(TAG, "dismiss.onAnimationCancel");
-                        mCancelled = true;
-                    }
-                }).start();
+                        }
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            if (D.BUG) Log.d(TAG, "dismiss.onAnimationCancel");
+                            mCancelled = true;
+                        }
+                    }).start();
+        } else {
+            mDialogView.animate()
+                    .translationX(-mDialogView.getHeight())
+                    .setDuration(scaledDuration(250))
+                    .setInterpolator(new LogAccelerateInterpolator())
+                    .setUpdateListener(new AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            final int posY = chevronPosY();
+                        }
+                    })
+                    .setListener(new AnimatorListenerAdapter() {
+                        private boolean mCancelled;
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (mCancelled) return;
+                            if (D.BUG) Log.d(TAG, "dismiss.onAnimationEnd");
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (D.BUG) Log.d(TAG, "mDialog.dismiss()");
+                                    mDialog.dismiss();
+                                    onComplete.run();
+                                    setDismissing(false);
+                                }
+                            }, PRE_DISMISS_DELAY);
+
+                        }
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            if (D.BUG) Log.d(TAG, "dismiss.onAnimationCancel");
+                            mCancelled = true;
+                        }
+                    }).start();
+        }
     }
 
     private static int scaledDuration(int base) {
