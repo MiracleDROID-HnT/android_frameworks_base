@@ -856,6 +856,11 @@ public class SignalStrength implements Parcelable {
                     + rsrpIconLevel + " snrIconLevel:" + snrIconLevel
                     + " lteRsrpBoost:" + mLteRsrpBoost);
 
+            if (Resources.getSystem().getBoolean(com.android.internal.R.bool.config_ignore_rssnr)) {
+                /* Ignore RSSNR for now */
+                if(rsrpIconLevel != -1) return rsrpIconLevel;
+            }
+
             /* Choose a measurement type to use for notification */
             if (snrIconLevel != -1 && rsrpIconLevel != -1) {
                 /*

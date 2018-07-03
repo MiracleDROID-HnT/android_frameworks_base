@@ -139,4 +139,7 @@
 
     <java-symbol type="string" name="cannot_get_su" />
 
+    <!-- Whether to ignore RSSNR for LTE -->
+    <java-symbol type="bool" name="config_ignore_rssnr" />
+
 </resources>

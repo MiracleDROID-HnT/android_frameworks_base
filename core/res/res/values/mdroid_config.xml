@@ -115,4 +115,7 @@
     <!-- Whether device has turbo power charging support -->
     <bool name="config_hasTurboPowerCharger">false</bool>
 
+    <!-- Whether to ignore RSSNR for LTE -->
+    <bool name="config_ignore_rssnr">false</bool>
+
 </resources>
