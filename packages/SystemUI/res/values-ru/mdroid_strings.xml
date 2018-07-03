@@ -212,4 +212,7 @@
     <string name="accessibility_quick_settings_location_gps_only">Определение местоположения: По спутникам GPS.</string>
     <string name="accessibility_quick_settings_location_high_accuracy">Определение местоположения: По всем источникам.</string>
 
+    <!-- Content description of the superuser tile -->
+    <string name="accessibility_su_active">Сесия Superuser активна</string>
+
 </resources>

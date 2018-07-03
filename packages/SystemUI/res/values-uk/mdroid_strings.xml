@@ -212,4 +212,7 @@
     <string name="accessibility_quick_settings_location_gps_only">Режим локації: Лише датчики пристрою.</string>
     <string name="accessibility_quick_settings_location_high_accuracy">Режим локації: Висока точність.</string>
 
+    <!-- Content description of the superuser tile -->
+    <string name="accessibility_su_active">Сесія Superuser активна</string>
+
 </resources>
