@@ -8393,7 +8393,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
 
         boolean alwaysHeadsUpForThis = !isDialerForegroundApp && isNotificationFromDialer && mIsAlwaysHeadsupDialer;
-        if ((!isDozing() && !mUseHeadsUp) || isDeviceInVrMode() || (!isDozing() && !alwaysHeadsUpForThis)) {
+        if ((!isDozing() && !mUseHeadsUp && !alwaysHeadsUpForThis) || isDeviceInVrMode()) {
             if (DEBUG) Log.d(TAG, "No peeking: no huns or vr mode");
             return false;
         }
