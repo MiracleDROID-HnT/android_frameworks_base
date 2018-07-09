@@ -23,4 +23,11 @@
     <!-- PiP Tile -->
     <string name="quick_settings_pip_label">PiP</string>
     <string name="quick_settings_pip_tile_app_na">Додаток не підтримує PiP</string>
+
+    <string name="quick_settings_immersive_tile">Повноекр. режим</string>
+    <string name="quick_settings_immersive_tile_off">Повноекр. режим вимк.</string>
+    <string name="quick_settings_immersive_tile_statusbar">Приховати ряд. стану</string>
+    <string name="quick_settings_immersive_tile_navbar">Приховати панель нав.</string>
+    <string name="quick_settings_immersive_tile_full">Повноекр. режим</string>
+
 </resources>
