@@ -30,6 +30,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.os.storage.StorageManager;
+import android.os.UserHandle;
 import android.provider.Downloads;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -137,8 +138,8 @@ public class BootReceiver extends BroadcastReceiver {
                     Slog.e(TAG, "Can't remove old update packages", e);
                 }
                 try {
-                    if (Settings.System.getInt(context.getContentResolver(),
-                                    Settings.System.START_SCREEN_STATE_SERVICE, 0) != 0) {
+                    if (Settings.Secure.getIntForUser(context.getContentResolver(),
+                                    Settings.Secure.START_SCREEN_STATE_SERVICE, 0, UserHandle.USER_CURRENT) != 0) {
                         Intent screenstate = (new Intent()).setClassName("com.android.systemui",
                                 "com.android.systemui.screenstate.ScreenStateService");
                         context.startService(screenstate);

@@ -202,4 +202,6 @@
 
     <string name="cannot_get_su">Дію не виконано через відсутність прав суперкористувача</string>
 
+    <string name="suspend_title_tile">Дії в режимі очікування</string>
+
 </resources>

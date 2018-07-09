@@ -27,6 +27,7 @@ import android.util.Log;
 import android.database.ContentObserver;
 import android.content.ContentResolver;
 import android.os.Handler;
+import android.os.UserHandle;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -92,7 +93,8 @@ public class ScreenStateService extends Service  {
         mContext = getApplicationContext();
 
         // firewall
-        int s = Settings.System.getInt(mContext.getContentResolver(), Settings.System.START_SCREEN_STATE_SERVICE, 0);
+        int s = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                    Settings.Secure.START_SCREEN_STATE_SERVICE, 0, UserHandle.USER_CURRENT);
         if(s!=0)
             mEnabled = true;
         else

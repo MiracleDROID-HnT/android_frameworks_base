@@ -21,6 +21,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -31,15 +32,18 @@ import android.util.Log;
 public class BootReceiver extends BroadcastReceiver {
     private static final String TAG = "SystemUIBootReceiver";
 
+    private Context mContext;
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         try {
-            ContentResolver res = context.getContentResolver();
+            mContext = context;
 
             // start the screen state service if activated
-            if (Settings.System.getInt(res, Settings.System.START_SCREEN_STATE_SERVICE, 0) != 0) {
-                Intent screenstate = new Intent(context, com.android.systemui.screenstate.ScreenStateService.class);
-                context.startService(screenstate);
+            if (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                    Settings.Secure.START_SCREEN_STATE_SERVICE, 0, UserHandle.USER_CURRENT) != 0) {
+                Intent screenstate = new Intent(mContext, com.android.systemui.screenstate.ScreenStateService.class);
+                mContext.startService(screenstate);
             }
         } catch (Exception e) {
             Log.e(TAG, "Can't start service", e);

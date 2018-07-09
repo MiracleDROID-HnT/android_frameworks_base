@@ -4600,11 +4600,6 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String START_SCREEN_STATE_SERVICE = "start_screen_state_service";
-
-        /**
-         * @hide
-         */
         public static final String SCREEN_STATE_TWOG = "screen_state_twog";
 
         /**
@@ -8293,6 +8288,11 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_BATTERY_SAVER_COLOR = "status_bar_battery_saver_color";
+
+        /**
+         * @hide
+         */
+        public static final String START_SCREEN_STATE_SERVICE = "start_screen_state_service";
 
         /**
          * This are the settings to be backed up.

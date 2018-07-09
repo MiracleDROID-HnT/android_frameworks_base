@@ -192,4 +192,6 @@
     <string name="quick_settings_dmesg_label">Dmsg</string>
     <string name="cannot_get_su">Action failed because of missing superuser access</string>
 
+    <string name="suspend_title_tile">Suspend Action</string>
+
 </resources>
