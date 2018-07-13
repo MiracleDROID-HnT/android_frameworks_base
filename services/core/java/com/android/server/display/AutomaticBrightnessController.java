@@ -292,6 +292,7 @@ class AutomaticBrightnessController {
             if (mLightSensorEnabled) {
                 mLightSensorEnabled = false;
                 mAmbientLuxValid = !mResetAmbientLuxAfterWarmUpConfig;
+                mScreenAutoBrightness = -1;
                 mRecentLightSamples = 0;
                 mAmbientLightRingBuffer.clear();
                 mInitialHorizonAmbientLightRingBuffer.clear();
