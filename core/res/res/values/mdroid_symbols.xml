@@ -134,4 +134,6 @@
     <java-symbol type="color" name="recents_wallpaper_tint_off_color" />
     <java-symbol type="color" name="power_menu_wallpaper_tint_off_color" />
 
+    <java-symbol type="string" name="cannot_get_su" />
+
 </resources>

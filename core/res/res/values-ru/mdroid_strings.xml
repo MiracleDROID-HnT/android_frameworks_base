@@ -40,4 +40,6 @@
     <string name="kilobytespersecond_short">кБ/с</string>
     <string name="megabytespersecond_short">МБ/с</string>
 
+    <string name="cannot_get_su">Действие не выполнено из-за отсутствия прав суперпользователя</string>
+
 </resources>
