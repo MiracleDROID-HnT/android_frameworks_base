@@ -86,6 +86,11 @@ public class SuspendActionTile extends QSTileImpl<BooleanState> {
         refreshState(); 
     } 
  
+    @Override
+    protected void handleLongClick() {
+        handleClick();
+    }
+
     @Override 
     public Intent getLongClickIntent() { 
        return null;
