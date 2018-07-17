@@ -55,56 +55,81 @@ import java.util.List;
 import java.util.UUID;
 
 public class SuspendActionTile extends QSTileImpl<BooleanState> {
-    private boolean mListening; 
-    private final SecureSetting mSetting; 
-	
+    private boolean mListening;
+    private final SecureSetting mSetting;
+
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_suspend);
-       
+
     public SuspendActionTile(QSHost host) {
         super(host);
-        mSetting = new SecureSetting(mContext, mHandler, Secure.START_SCREEN_STATE_SERVICE) { 
-            @Override 
-            protected void handleValueChanged(int value, boolean observedChange) { 
-                handleRefreshState(value); 
-            } 
-        }; 
-    }
-    @Override
-    public void handleSetListening(boolean listening) {
-        if (mListening == listening) return;
-        mListening = listening;
+        mSetting = new SecureSetting(mContext, mHandler, Secure.START_SCREEN_STATE_SERVICE) {
+            @Override
+            protected void handleValueChanged(int value, boolean observedChange) {
+                handleRefreshState(value);
+            }
+        };
     }
 
-    @Override 
-    public BooleanState newTileState() { 
-        return new BooleanState(); 
-    } 
- 
-    @Override 
-    public void handleClick() { 
-        mSetting.setValue(mState.value ? 0 : 1); 
-        refreshState(); 
-    } 
- 
+    @Override
+    protected void handleDestroy() {
+        super.handleDestroy();
+        mSetting.setListening(false);
+    }
+
+    @Override
+    public void handleSetListening(boolean listening) {
+        mSetting.setListening(listening);
+    }
+
+    @Override
+    protected void handleUserSwitch(int newUserId) {
+        mSetting.setUserId(newUserId);
+        handleRefreshState(mSetting.getValue());
+    }
+
+    @Override
+    public BooleanState newTileState() {
+        return new BooleanState();
+    }
+
+    @Override
+    public void handleClick() {
+        mSetting.setValue(mState.value ? 0 : 1);
+        enableSuspendActions(mState.value ? 0 : 1);
+        refreshState();
+    }
+
+    private void enableSuspendActions(final int value) {
+		final boolean suspend = value != 0;
+        Intent service = (new Intent())
+            .setClassName("com.android.systemui", "com.android.systemui.screenstate.ScreenStateService");
+        if (suspend) {
+            mContext.stopService(service);
+            mContext.startService(service);
+        } else {
+            mContext.stopService(service);
+        }
+    }
+
     @Override
     protected void handleLongClick() {
         handleClick();
     }
 
-    @Override 
-    public Intent getLongClickIntent() { 
+    @Override
+    public Intent getLongClickIntent() {
        return null;
-    } 
- 
-    @Override 
-    public CharSequence getTileLabel() { 
-        return mContext.getString(R.string.suspend_title_tile); 
-    } 
- 
-    @Override 
-    protected void handleUpdateState(BooleanState state, Object arg) { 
-        final int value = arg instanceof Integer ? (Integer)arg : mSetting.getValue(); 
-        final boolean suspend = value != 0; 
+    }
+
+    @Override
+    public CharSequence getTileLabel() {
+        return mContext.getString(R.string.suspend_title_tile);
+    }
+
+    @Override
+    protected void handleUpdateState(BooleanState state, Object arg) {
+        final int value = arg instanceof Integer ? (Integer) arg : mSetting.getValue();
+        final boolean suspend = value != 0;
         if (state.slash == null) {
             state.slash = new SlashState();
         }
@@ -122,21 +147,21 @@ public class SuspendActionTile extends QSTileImpl<BooleanState> {
             state.state = Tile.STATE_INACTIVE;
         }
     }
- 
-    @Override 
-    protected String composeChangeAnnouncement() { 
-        if (mState.value) { 
-            return mContext.getString( 
-                    R.string.suspend_title_tile); 
-        } else { 
-            return mContext.getString( 
-                    R.string.suspend_title_tile); 
-        } 
-    } 
- 
-    @Override 
-    public int getMetricsCategory() { 
-        return MetricsEvent.MAGICAL_WORLD; 
-    } 
- 
+
+    @Override
+    protected String composeChangeAnnouncement() {
+        if (mState.value) {
+            return mContext.getString(
+                    R.string.suspend_title_tile);
+        } else {
+            return mContext.getString(
+                    R.string.suspend_title_tile);
+        }
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsEvent.MAGICAL_WORLD;
+    }
+
 }
