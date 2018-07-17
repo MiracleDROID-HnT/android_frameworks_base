@@ -30,9 +30,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.os.storage.StorageManager;
-import android.os.UserHandle;
 import android.provider.Downloads;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.AtomicFile;
 import android.util.Slog;
@@ -137,16 +135,7 @@ public class BootReceiver extends BroadcastReceiver {
                 } catch (Exception e) {
                     Slog.e(TAG, "Can't remove old update packages", e);
                 }
-                try {
-                    if (Settings.Secure.getIntForUser(context.getContentResolver(),
-                                    Settings.Secure.START_SCREEN_STATE_SERVICE, 0, UserHandle.USER_CURRENT) != 0) {
-                        Intent screenstate = (new Intent()).setClassName("com.android.systemui",
-                                "com.android.systemui.screenstate.ScreenStateService");
-                        context.startService(screenstate);
-                    }
-                } catch (Exception e) {
-                    Slog.e(TAG, "Can't start the screen state service", e);
-                }
+
             }
         }.start();
     }
