@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -35,15 +34,6 @@ import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
 
 public class LogTile extends QSTileImpl<BooleanState> {
-
-    private static final String TAG = "LogTile";
-
-    private static final String LOGCAT_FILE = new File(Environment
-        .getExternalStorageDirectory(), "LogCat.txt").getAbsolutePath();
-    private static final String KMSG_FILE = new File(Environment
-        .getExternalStorageDirectory(), "KernelLog.txt").getAbsolutePath();
-    private static final String DMESG_FILE = new File(Environment
-        .getExternalStorageDirectory(), "Dmesg.txt").getAbsolutePath();
 
     private int mLog = 0;
 	private boolean mLogcat;
@@ -90,18 +80,24 @@ public class LogTile extends QSTileImpl<BooleanState> {
     }
 
     public void makeLogcat() throws SuShell.SuDeniedException, IOException {
+        final String LOGCAT_FILE = new File(Environment
+            .getExternalStorageDirectory(), "LogCat.txt").getAbsolutePath();
         String command = "logcat -d";
         command += " > " + LOGCAT_FILE;
         SuShell.runWithSuCheck(command);
     }
 
     public void makeKmsg() throws SuShell.SuDeniedException, IOException {
+        final String KMSG_FILE = new File(Environment
+            .getExternalStorageDirectory(), "KernelLog.txt").getAbsolutePath();
         String command = "cat /proc/last_kmsg";
         command += " > " + KMSG_FILE;
         SuShell.runWithSuCheck(command);
     }
 
     public void makeDmesg() throws SuShell.SuDeniedException, IOException {
+        final String DMESG_FILE = new File(Environment
+            .getExternalStorageDirectory(), "Dmesg.txt").getAbsolutePath();
         String command = "dmesg";
         command += " > " + DMESG_FILE;
         SuShell.runWithSuCheck(command);
