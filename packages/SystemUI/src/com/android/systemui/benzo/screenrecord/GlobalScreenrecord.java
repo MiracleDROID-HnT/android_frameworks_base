@@ -40,6 +40,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.provider.Settings;
 import android.content.res.Resources;
@@ -124,6 +125,8 @@ class GlobalScreenrecord {
 
         public void run() {
             Runtime rt = Runtime.getRuntime();
+            final int display_mode = mContext.getResources().getConfiguration().orientation;
+            final boolean portrait = (display_mode == Configuration.ORIENTATION_PORTRAIT);
 
             // additional arguments to pass to screenrecord bin
             final String[] cmds = new String[6];
@@ -133,21 +136,21 @@ class GlobalScreenrecord {
                 case WindowManager.SCREEN_RECORD_LOW_QUALITY:
                     // low resolution and 1.5Mbps
                     cmds[2] = "--size";
-                    cmds[3] = "480x800";
+                    cmds[3] = portrait ? "480x800" : "800x480";
                     cmds[4] = "--bit-rate";
                     cmds[5] = "1500000";
                     break;
                 case WindowManager.SCREEN_RECORD_MID_QUALITY:
                     // default resolution (720p) and 4Mbps
                     cmds[2] = "--size";
-                    cmds[3] = "720x1280";
+                    cmds[3] = portrait ? "720x1280" : "1280x720";
                     cmds[4] = "--bit-rate";
                     cmds[5] = "4000000";
                     break;
                 case WindowManager.SCREEN_RECORD_HIGH_QUALITY:
                     // default resolution (720p) and 8Mbps
                     cmds[2] = "--size";
-                    cmds[3] = "720x1280";
+                    cmds[3] = portrait ? "720x1280" : "1280x720";
                     cmds[4] = "--bit-rate";
                     cmds[5] = "8000000";
                     break;
