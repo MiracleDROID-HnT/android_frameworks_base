@@ -34,13 +34,17 @@
     <string name="accent_blue">Blueberry</string>
     <string name="accent_brown">Cocoa</string>
     <string name="accent_cyan">Cyan</string>
-    <string name="accent_green">Forest</string>
+    <string name="accent_forest">Forest</string>
+    <string name="accent_green">Green</string>
+    <string name="accent_grey">Grey</string>
     <string name="accent_orange">Pumpkin</string>
     <string name="accent_pink">Cherry</string>
     <string name="accent_pixel">Pixel</string>
-    <string name="accent_purple">Lavender</string>
+    <string name="accent_purple">Purple</string>
     <string name="accent_red">Tomato</string>
+    <string name="accent_teal">Teal</string>
     <string name="accent_white">Snow</string>
+    <string name="accent_violet">Violet</string>
     <string name="accent_yellow">Banana</string>
 
     <!-- Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->

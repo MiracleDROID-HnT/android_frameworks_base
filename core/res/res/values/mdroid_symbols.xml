@@ -65,13 +65,17 @@
     <java-symbol type="string" name="accent_blue" />
     <java-symbol type="string" name="accent_brown" />
     <java-symbol type="string" name="accent_cyan" />
+    <java-symbol type="string" name="accent_forest" />
     <java-symbol type="string" name="accent_green" />
+    <java-symbol type="string" name="accent_grey" />
     <java-symbol type="string" name="accent_orange" />
     <java-symbol type="string" name="accent_pink" />
     <java-symbol type="string" name="accent_pixel" />
     <java-symbol type="string" name="accent_purple" />
     <java-symbol type="string" name="accent_red" />
+    <java-symbol type="string" name="accent_teal" />
     <java-symbol type="string" name="accent_white" />
+    <java-symbol type="string" name="accent_violet" />
     <java-symbol type="string" name="accent_yellow" />
 
     <!-- Whether device supports an alt. ambient display -->
