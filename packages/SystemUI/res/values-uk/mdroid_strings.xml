@@ -309,4 +309,13 @@
     <!-- Ambient display QS tile -->
     <string name="quick_settings_ambient_display_label">Активація екрана</string>
 
+    <!-- Gaming Mode -->
+    <string name="gaming_mode_tile_title">Ігровий режим</string>
+    <string name="gaming_mode_dialog_title">Ігровий режим</string>
+    <string name="gaming_mode_tile_toast">Ігровий режим увімк.</string>
+    <string name="gaming_mode_tile_toast_disabled">Ігровий режим вимк.</string>
+    <string name="gaming_mode_dialog_message">Коли ігровий режим увімкнуто, ваш режим дзвінку переключиться в режим вібрації, всі сповішення та аппаратні клавіші будуть вимкнуті. Гучність медіа буде збільшена до максимального рівню. Усі вимкнуті налаштування будуть відновлені після виходу з режиму гри.</string>
+    <string name="accessibility_quick_settings_gaming_mode_on">Ігровий режим увімк.</string>
+    <string name="accessibility_quick_settings_gaming_mode_off">Ігровий режим вимк.</string>
+
 </resources>

@@ -309,4 +309,13 @@
     <!-- Ambient display QS tile -->
     <string name="quick_settings_ambient_display_label">Активация экрана</string>
 
+    <!-- Gaming Mode -->
+    <string name="gaming_mode_tile_title">Игровой режим</string>
+    <string name="gaming_mode_tile_toast">Игровой режим вкл.</string>
+    <string name="gaming_mode_tile_toast_disabled">Игровой режим выкл.</string>
+    <string name="gaming_mode_dialog_title">Игровой режим</string>
+    <string name="gaming_mode_dialog_message">Когда включен игровой режим, будет активирован режим небеспокоить и аппаратные клавиши будут выключены. Громкость мультимедии будет увеличена до максимального значения. Все отключенные настройки будут сброшены по умолчанию после выхода из игрового режима.</string>
+    <string name="accessibility_quick_settings_gaming_mode_on">Игровой режим вкл.</string>
+    <string name="accessibility_quick_settings_gaming_mode_off">Игровой режим выкл.</string>
+
 </resources>
