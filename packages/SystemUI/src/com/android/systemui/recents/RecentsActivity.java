@@ -415,13 +415,9 @@ public class RecentsActivity extends Activity implements ViewTreeObserver.OnPreD
         // Getting system scrim colors ignoring wallpaper visibility since it should never be grey.
         ColorExtractor.GradientColors systemColors = mColorExtractor.getColors(
                 ColorExtractor.TYPE_DARK, WallpaperManager.FLAG_SYSTEM, true);
-
-        // Getting the fallback colors from ColorExtractor because we need a fallback
-        ColorExtractor.GradientColors fallbackColors = mColorExtractor.getColors(4);
-
         // We don't want to interpolate colors because we're defining the initial state.
         // Gradient should be set/ready when you open "Recents".
-        mRecentsView.setScrimColors(showWallpaperTint(getApplicationContext()) ? systemColors : fallbackColors, false);
+        mRecentsView.setScrimColors(systemColors, false);
 
         // Notify of the next draw
         mRecentsView.getViewTreeObserver().addOnPreDrawListener(mRecentsDrawnEventListener);
@@ -1004,10 +1000,4 @@ public class RecentsActivity extends Activity implements ViewTreeObserver.OnPreD
             mRecentsView.dump(prefix, writer);
         }
     }
-
-   private boolean showWallpaperTint(Context context) {
-        return Settings.System.getIntForUser(context.getContentResolver(),
-                Settings.System.WALLPAPER_RECENTS_TINT, 1, UserHandle.USER_CURRENT) == 1;
-    }
-
 }
