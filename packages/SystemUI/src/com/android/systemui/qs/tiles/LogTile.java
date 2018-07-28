@@ -37,6 +37,7 @@ public class LogTile extends QSTileImpl<BooleanState> {
 
     private int mLog = 0;
 	private boolean mLogcat;
+	private boolean mLogcatRadio;
 	private boolean mKmsg;
 	private boolean mDmsg;
 
@@ -55,6 +56,8 @@ public class LogTile extends QSTileImpl<BooleanState> {
             mLog = 1;
         } else if (mLog == 1) {
             mLog = 2;
+        } else if (mLog == 2) {
+            mLog = 3;
         } else {
             mLog = 0;
         }
@@ -65,18 +68,26 @@ public class LogTile extends QSTileImpl<BooleanState> {
     protected void handleLongClick() {
         if (mLog == 1) {
             mLogcat = false;
-            mKmsg = true;
+            mLogcatRadio = true;
+            mKmsg = false;
             mDmsg = false;
         } else if (mLog == 2) {
             mLogcat = false;
+            mLogcatRadio = false;
+            mKmsg = true;
+            mDmsg = false;
+        } else if (mLog == 3) {
+            mLogcat = false;
+            mLogcatRadio = false;
             mKmsg = false;
             mDmsg = true;
         } else {
             mLogcat = true;
+            mLogcatRadio = false;
             mKmsg = false;
             mDmsg = false;
         }
-        new CreateLogTask().execute(mLogcat, mKmsg, mDmsg);
+        new CreateLogTask().execute(mLogcat, mLogcatRadio, mKmsg, mDmsg);
     }
 
     public void makeLogcat() throws SuShell.SuDeniedException, IOException {
@@ -84,6 +95,14 @@ public class LogTile extends QSTileImpl<BooleanState> {
             .getExternalStorageDirectory(), "LogCat.txt").getAbsolutePath();
         String command = "logcat -d";
         command += " > " + LOGCAT_FILE;
+        SuShell.runWithSuCheck(command);
+    }
+
+    public void makeLogcatRadio() throws SuShell.SuDeniedException, IOException {
+        final String LOGCAT_RADIO_FILE = new File(Environment
+            .getExternalStorageDirectory(), "LogcatRadio.txt").getAbsolutePath();
+        String command = "logcat -d -b radio";
+        command += " > " + LOGCAT_RADIO_FILE;
         SuShell.runWithSuCheck(command);
     }
 
@@ -114,9 +133,12 @@ public class LogTile extends QSTileImpl<BooleanState> {
                     makeLogcat();
                 }
                 if (params[1]) {
-                    makeKmsg();
+                    makeLogcatRadio();
                 }
                 if (params[2]) {
+                    makeKmsg();
+                }
+                if (params[3]) {
                     makeDmesg();
                 }
             } catch (SuShell.SuDeniedException e) {
@@ -157,9 +179,12 @@ public class LogTile extends QSTileImpl<BooleanState> {
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
         if (mLog == 1) {
-            state.label = mContext.getString(R.string.quick_settings_kmsg_label);
+            state.label = mContext.getString(R.string.quick_settings_logcatradio_label);
             state.icon = ResourceIcon.get(R.drawable.ic_qs_log);
         } else if (mLog == 2) {
+            state.label = mContext.getString(R.string.quick_settings_kmsg_label);
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_log);
+        } else if (mLog == 3) {
             state.label = mContext.getString(R.string.quick_settings_dmesg_label);
             state.icon = ResourceIcon.get(R.drawable.ic_qs_log);
         } else {
