@@ -42,6 +42,9 @@ public class GlobalActionsImpl implements GlobalActions {
 
     private static final float SHUTDOWN_SCRIM_ALPHA = 0.95f;
 
+    // Default scrim color
+    private static final int SCRIM_DEFAULT_COLOR = Color.BLACK;
+
     private final Context mContext;
     private final KeyguardMonitor mKeyguardMonitor;
     private final DeviceProvisionedController mDeviceProvisionedController;
@@ -115,11 +118,19 @@ public class GlobalActionsImpl implements GlobalActions {
 
         Point displaySize = new Point();
         mContext.getDisplay().getRealSize(displaySize);
-        GradientColors colors = Dependency.get(SysuiColorExtractor.class).getColors(
-                onKeyguard ? WallpaperManager.FLAG_LOCK : WallpaperManager.FLAG_SYSTEM);
+        GradientColors colors = getDarkGradientColor(Dependency.get(SysuiColorExtractor.class).getColors(
+                onKeyguard ? WallpaperManager.FLAG_LOCK : WallpaperManager.FLAG_SYSTEM));
         background.setColors(colors, false);
         background.setScreenSize(displaySize.x, displaySize.y);
 
         d.show();
+    }
+
+    private GradientColors getDarkGradientColor(GradientColors fromWallpaper) {
+        GradientColors colors = new GradientColors();
+        colors.setMainColor(SCRIM_DEFAULT_COLOR);
+        colors.setSecondaryColor(SCRIM_DEFAULT_COLOR);
+        colors.setSupportsDarkText(fromWallpaper.supportsDarkText());
+        return colors;
     }
 }
