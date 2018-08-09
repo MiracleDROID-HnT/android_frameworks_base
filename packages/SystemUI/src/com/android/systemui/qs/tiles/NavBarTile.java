@@ -111,7 +111,7 @@ public class NavBarTile extends QSTileImpl<BooleanState> {
 
     private boolean NavBarEnabled() {
         return Settings.Secure.getInt(mContext.getContentResolver(),
-                Settings.Secure.NAVIGATION_BAR_ENABLED, 1) == 1;
+                Settings.Secure.NAVIGATION_BAR_ENABLED, 0) == 1;
     }
 
     @Override
