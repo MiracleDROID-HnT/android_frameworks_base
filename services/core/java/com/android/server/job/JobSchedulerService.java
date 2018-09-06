@@ -1691,6 +1691,7 @@ public final class JobSchedulerService extends com.android.server.SystemService
             // If job is already running, go to next job.
             int jobRunningContext = findJobContextIdFromMap(nextPending, contextIdToJobMap);
             if (jobRunningContext != -1) {
+                mPendingJobs.remove(nextPending);
                 continue;
             }
 
