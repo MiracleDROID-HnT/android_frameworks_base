@@ -258,6 +258,7 @@ public class KeyguardStatusView extends GridLayout implements
 
         refreshTime();
         refreshAlarmStatus(nextAlarm);
+        refreshLockClockFont();
         updateSettings();
     }
 
@@ -375,6 +376,10 @@ public class KeyguardStatusView extends GridLayout implements
           } catch(Exception e) {
             // Do nothing
        }
+    }
+
+    private void refreshLockClockFont() {
+        mClockView.setTypeface(Typeface.create(FONT_FAMILY, Typeface.NORMAL));
     }
 
     private void updateSettings() {
