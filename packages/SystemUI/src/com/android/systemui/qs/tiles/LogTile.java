@@ -117,7 +117,7 @@ public class LogTile extends QSTileImpl<BooleanState> {
     public void makeDmesg() throws SuShell.SuDeniedException, IOException {
         final String DMESG_FILE = new File(Environment
             .getExternalStorageDirectory(), "Dmesg.txt").getAbsolutePath();
-        String command = "dmesg";
+        String command = "dmesg -T";
         command += " > " + DMESG_FILE;
         SuShell.runWithSuCheck(command);
     }
