@@ -1281,7 +1281,7 @@ public abstract class WallpaperService extends Service {
                     mEngine.doDisplayPaddingChanged((Rect) message.obj);
                 }
                 case MSG_UPDATE_SURFACE:
-                    mEngine.updateSurface(true, false, false);
+                    mEngine.updateSurface(true, false, true/*false*/);
                     break;
                 case MSG_VISIBILITY_CHANGED:
                     if (DEBUG) Log.v(TAG, "Visibility change in " + mEngine
