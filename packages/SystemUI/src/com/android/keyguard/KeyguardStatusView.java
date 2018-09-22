@@ -381,10 +381,18 @@ public class KeyguardStatusView extends GridLayout implements
     }
 
     private void refreshLockClockFont() {
-        mClockView.setTypeface(Typeface.create(FONT_FAMILY_LIGHT, Typeface.NORMAL));
-        mDateView.setTypeface(Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL));
-        mOwnerInfo.setTypeface(Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL));
-        mAlarmStatusView.setTypeface(Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL));
+        if (mClockView != null) {
+            mClockView.setTypeface(Typeface.create(FONT_FAMILY_LIGHT, Typeface.NORMAL));
+        }
+        if (mDateView != null) {
+            mDateView.setTypeface(Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL));
+        }
+        if (mOwnerInfo != null) {
+            mOwnerInfo.setTypeface(Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL));
+        }
+        if (mAlarmStatusView != null) {
+            mAlarmStatusView.setTypeface(Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL));
+        }
     }
 
     private void updateSettings() {
