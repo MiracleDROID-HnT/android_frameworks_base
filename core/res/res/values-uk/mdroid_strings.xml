@@ -156,4 +156,8 @@
     <string name="profileNameNight">Ніч</string>
     <string name="profileNameAutomobile">За кермом</string>
 
+    <!-- SystemUI Restart -->
+    <string name="systemui_restart_title">Необхідне перезавантаження інтерфейсу системи</string>
+    <string name="systemui_restart_message">Для застосування змін потрібно перезавантажити системний інтерфейс. Перезавантажити його зараз?</string>
+
 </resources>

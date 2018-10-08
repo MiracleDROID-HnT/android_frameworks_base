@@ -156,4 +156,8 @@
     <string name="profileNameNight">Ночь</string>
     <string name="profileNameAutomobile">За рулем</string>
 
+    <!-- SystemUI Restart -->
+    <string name="systemui_restart_title">Требуется перезапуск системного интерфейса</string>
+    <string name="systemui_restart_message">Чтобы все изменения вступили в силу, требуется перезапуск системного интерфейса. Перезапустить сейчас?</string>
+
 </resources>

@@ -177,4 +177,8 @@
 
     <java-symbol type="bool" name="config_canForceDozeNotifications" />
 
+    <!-- SystemUI Restart -->
+    <java-symbol type="string" name="systemui_restart_title" />
+    <java-symbol type="string" name="systemui_restart_message" />
+
 </resources>
