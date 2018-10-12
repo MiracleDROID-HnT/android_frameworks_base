@@ -49,4 +49,27 @@
 
     <string name="app_blacklist">Чорний список додатків</string>
 
+    <!-- Accent colors -->
+    <string name="accent_amber">Бурштиновий</string>
+    <string name="accent_black">Чорний</string>
+    <string name="accent_blue">Синій</string>
+    <string name="accent_blue_light">Світло-синій</string>
+    <string name="accent_brown">Брунатний</string>
+    <string name="accent_cyan">Ціан</string>
+    <string name="accent_green">Зелений</string>
+    <string name="accent_green_light">Світло-зелений</string>
+    <string name="accent_grey">Сірий</string>
+    <string name="accent_grey_blue">Синьо-сірий</string>
+    <string name="accent_indigo">Індиго</string>
+    <string name="accent_lime">Лайм</string>
+    <string name="accent_orange">Помаранчевий</string>
+    <string name="accent_orange_deep">Темно-помаранчевий</string>
+    <string name="accent_pink">Рожевий</string>
+    <string name="accent_purple">Пурпуровий</string>
+    <string name="accent_purple_deep">Темно-пурпуровий</string>
+    <string name="accent_red">Червоний</string>
+    <string name="accent_teal">Зеленувато-блакитний</string>
+    <string name="accent_white">Білосніжний</string>
+    <string name="accent_yellow">Жовтий</string>
+
 </resources>

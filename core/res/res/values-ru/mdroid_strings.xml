@@ -49,4 +49,27 @@
 
     <string name="app_blacklist">Черный список приложений</string>
 
+    <!-- Accent colors -->
+    <string name="accent_amber">Янтарный</string>
+    <string name="accent_black">Черный</string>
+    <string name="accent_blue">Синий</string>
+    <string name="accent_blue_light">Светло-синий</string>
+    <string name="accent_brown">Коричневый</string>
+    <string name="accent_cyan">Циан</string>
+    <string name="accent_green">Зелёный</string>
+    <string name="accent_green_light">Светло-зеленый</string>
+    <string name="accent_grey">Серый</string>
+    <string name="accent_grey_blue">Сине-серый</string>
+    <string name="accent_indigo">Индиго</string>
+    <string name="accent_lime">Лайм</string>
+    <string name="accent_orange">Оранжевый</string>
+    <string name="accent_orange_deep">Темно-оранжевый</string>
+    <string name="accent_pink">Розовий</string>
+    <string name="accent_purple">Фиолетовый</string>
+    <string name="accent_purple_deep">Темно-фиолетовый</string>
+    <string name="accent_red">Красный</string>
+    <string name="accent_teal">Сине-зелёный</string>
+    <string name="accent_white">Белоснежный</string>
+    <string name="accent_yellow">Желтый</string>
+
 </resources>
