@@ -95,8 +95,6 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
     private static final int COLOR_FADE_ON_ANIMATION_DURATION_MILLIS = 250;
     private static final int COLOR_FADE_OFF_ANIMATION_DURATION_MILLIS = 400;
 
-    private static final int SCREEN_OFF_DELAY_MILLIS = 1000;
-
     private static final int MSG_UPDATE_POWER_STATE = 1;
     private static final int MSG_PROXIMITY_SENSOR_DEBOUNCED = 2;
     private static final int MSG_SCREEN_ON_UNBLOCKED = 3;
@@ -166,6 +164,9 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
 
     // The maximum allowed brightness.
     private final int mScreenBrightnessRangeMaximum;
+
+    // The screen off delay
+    private final int mScreenOffDelayConfig;
 
     // True if auto-brightness should be used.
     private boolean mUseSoftwareAutoBrightnessConfig;
@@ -397,6 +398,9 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
                 com.android.internal.R.array.config_dynamicHysteresisLuxLevels);
         HysteresisLevels dynamicHysteresis = new HysteresisLevels(
                 brightLevels, darkLevels, luxLevels);
+
+        mScreenOffDelayConfig = resources.getInteger(
+                com.android.internal.R.integer.config_screen_off_delay);
 
         if (mUseSoftwareAutoBrightnessConfig) {
             int[] lux = resources.getIntArray(
@@ -1048,7 +1052,7 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
 
     private void setScreenOffDelayed() {
         cancelDelayedScreenOff();
-        mHandler.postDelayed(mScreenOffTask, SCREEN_OFF_DELAY_MILLIS);
+        mHandler.postDelayed(mScreenOffTask, mScreenOffDelayConfig);
     }
 
     private void cancelDelayedScreenOff() {
