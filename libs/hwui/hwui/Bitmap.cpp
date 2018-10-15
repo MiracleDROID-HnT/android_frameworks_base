@@ -228,15 +228,14 @@ Bitmap::~Bitmap() {
         break;
     case PixelStorageType::Heap:
         free(mPixelStorage.heap.address);
+        mallopt(M_PURGE, 0);
         break;
     case PixelStorageType::Hardware:
         auto buffer = mPixelStorage.hardware.buffer;
         buffer->decStrong(buffer);
         mPixelStorage.hardware.buffer = nullptr;
         break;
-
     }
-
     android::uirenderer::renderthread::RenderProxy::onBitmapDestroyed(getStableID());
 }
 
