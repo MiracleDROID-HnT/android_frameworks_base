@@ -393,28 +393,44 @@ public abstract class QSTileImpl<TState extends State> implements QSTile {
     public static int getColorForState(Context context, int state) {
 
         boolean enableQsTileTinting = Settings.System.getInt(context.getContentResolver(), 
-			           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+                Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+
+        boolean enableQsTileStyle = Settings.System.getInt(context.getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
 
         switch (state) {
             case Tile.STATE_UNAVAILABLE:
-                if (enableQsTileTinting) {
+                if (enableQsTileTinting && !enableQsTileStyle) {
                     return Utils.getDisabled(context,
                             Utils.getColorAttr(context, android.R.attr.colorForeground));
                 } else {
-                    return Utils.getDisabled(context,
-                            Utils.getColorAttr(context, android.R.attr.colorForeground));
+                    if (enableQsTileStyle) {
+                        return Utils.getDisabled(context,
+                                Utils.getColorAttr(context, android.R.attr.textColorSecondary));
+                    } else {
+                        return Utils.getDisabled(context,
+                                Utils.getColorAttr(context, android.R.attr.colorForeground));
+                    }
                 }
             case Tile.STATE_INACTIVE:
-                if (enableQsTileTinting) {
+                if (enableQsTileTinting && !enableQsTileStyle) {
                     return Utils.getColorAttr(context, android.R.attr.textColorHint);
                 } else {
-                    return Utils.getColorAttr(context, android.R.attr.textColorHint);
+                    if (enableQsTileStyle) {
+                        return Utils.getColorAttr(context, android.R.attr.textColorSecondary);
+                    } else {
+                        return Utils.getColorAttr(context, android.R.attr.textColorHint);
+                    }
                 }
             case Tile.STATE_ACTIVE:
-                if (enableQsTileTinting) {
+                if (enableQsTileTinting && !enableQsTileStyle) {
                     return context.getResources().getColor(R.color.qs_tiles_active_tint);
                 } else {
-                    return Utils.getColorAttr(context, android.R.attr.textColorPrimary);
+                    if (enableQsTileStyle) {
+                        return Utils.getColorAttr(context, android.R.attr.colorPrimary);
+                    } else {
+                        return Utils.getColorAttr(context, android.R.attr.textColorPrimary);
+                    }
                 }
             default:
                 Log.e("QSTile", "Invalid state " + state);

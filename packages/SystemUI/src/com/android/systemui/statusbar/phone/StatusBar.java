@@ -401,6 +401,13 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final int FADE_KEYGUARD_DURATION = 300;
     public static final int FADE_KEYGUARD_DURATION_PULSING = 96;
 
+    private static final String[] QS_TILE_THEMES = {
+        "mx.mdroid.systemui.qstile.default", // 0
+        "mx.mdroid.systemui.qstile.circletrim", // 1
+        "mx.mdroid.systemui.qstile.dualtonecircletrim", // 2
+        "mx.mdroid.systemui.qstile.squircletrim", // 3
+    };
+
     /** If true, the system is in the half-boot-to-decryption-screen state.
      * Prudently disable QS and notifications.  */
     private static final boolean ONLY_CORE_APPS;
@@ -5565,6 +5572,15 @@ public class StatusBar extends SystemUI implements DemoMode,
                 Settings.System.NOTIFICATION_STYLE, 0, mCurrentUserId);
     }
 
+    /**
+     * Switches qs tile style.
+     */
+    public void updateTileStyle() {
+        int qsTileStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QS_TILE_STYLE, 0, mCurrentUserId);
+        updateNewTileStyle(mOverlayManager, mCurrentUserId, qsTileStyle);
+    }
+
     protected void updateTheme(boolean themeNeedsRefresh) {
         final boolean inflated = mStackScroller != null;
 
@@ -5644,6 +5660,11 @@ public class StatusBar extends SystemUI implements DemoMode,
             // Make sure we have the correct navbar/statusbar colors.
             mStatusBarWindowManager.setKeyguardDark(useDarkText);
         }
+    }
+
+    // Switches qs tile style back to stock.
+    public void stockTileStyle() {
+        stockNewTileStyle(mOverlayManager, mCurrentUserId);
     }
 
     private void updateDozingState() {
@@ -6958,6 +6979,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.USE_SLIM_RECENTS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_TILE_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -7005,6 +7029,10 @@ public class StatusBar extends SystemUI implements DemoMode,
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.USE_SLIM_RECENTS))) {
                 updateRecentsMode();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.QS_TILE_STYLE))) {
+                stockTileStyle();
+                updateTileStyle();
             }
         }
 
@@ -7131,6 +7159,34 @@ public class StatusBar extends SystemUI implements DemoMode,
     private void rebuildRecentsScreen() {
         if (mSlimRecents != null) {
             mSlimRecents.rebuildRecentsScreen();
+        }
+    }
+
+    // Switches qs tile style to user selected.
+    public static void updateNewTileStyle(IOverlayManager om, int userId, int qsTileStyle) {
+        if (qsTileStyle == 0) {
+            stockNewTileStyle(om, userId);
+        } else {
+            try {
+                om.setEnabled(QS_TILE_THEMES[qsTileStyle],
+                        true, userId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change qs tile style", e);
+            }
+        }
+    }
+
+    // Switches qs tile style back to stock.
+    public static void stockNewTileStyle(IOverlayManager om, int userId) {
+        // skip index 0
+        for (int i = 1; i < QS_TILE_THEMES.length; i++) {
+            String qstiletheme = QS_TILE_THEMES[i];
+            try {
+                om.setEnabled(qstiletheme,
+                        false /*disable*/, userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 

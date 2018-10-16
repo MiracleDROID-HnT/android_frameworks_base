@@ -4545,6 +4545,15 @@ public final class Settings {
         public static final String NOTIFICATION_STYLE = "notification_style";
 
         /**
+         * 0 - Default
+         * 1 - Round with ring
+         * 2 - Two-toned round with ring
+         * 3 - Squircle with ring
+         * @hide
+         */
+        public static final String QS_TILE_STYLE = "qs_tile_style";
+
+        /**
          * Whether to show Device Accent on QS on the screen.
          * 0 = OFF
          * 1 = ON
@@ -5425,6 +5434,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(PROXIMITY_AUTO_SPEAKER);
             PRIVATE_SETTINGS.add(PROXIMITY_AUTO_SPEAKER_DELAY);
             PRIVATE_SETTINGS.add(PROXIMITY_AUTO_SPEAKER_INCALL_ONLY);
+            PRIVATE_SETTINGS.add(QS_TILE_STYLE);
         }
 
         /**

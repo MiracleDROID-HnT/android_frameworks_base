@@ -13,25 +13,37 @@
  */
 package com.android.systemui.qs.tileimpl;
 
+import static com.android.systemui.qs.tileimpl.QSIconViewImpl.QS_ANIM_LENGTH;
+
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.service.quicksettings.Tile;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.Switch;
 
+import com.android.settingslib.Utils;
 import com.android.systemui.R;
-import com.android.systemui.plugins.qs.*;
+//import com.android.systemui.plugins.qs.*;
+import com.android.systemui.plugins.qs.QSIconView;
+import com.android.systemui.plugins.qs.QSTile;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 
 public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
@@ -47,6 +59,12 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
     private boolean mCollapsedView;
     private boolean mClicked;
 
+    private final ImageView mBg;
+    private final int mColorActive;
+    private final int mColorInactive;
+    private final int mColorDisabled;
+    private int mCircleColor;
+
     public QSTileBaseView(Context context, QSIconView icon) {
         this(context, icon, false);
     }
@@ -56,15 +74,29 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
         // Default to Quick Tile padding, and QSTileView will specify its own padding.
         int padding = context.getResources().getDimensionPixelSize(R.dimen.qs_quick_tile_padding);
 
+        boolean enableQsTileStyle = Settings.System.getInt(getContext().getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
+
         mIconFrame = new FrameLayout(context);
         mIconFrame.setForegroundGravity(Gravity.CENTER);
         int size = context.getResources().getDimensionPixelSize(R.dimen.qs_quick_tile_size);
         addView(mIconFrame, new LayoutParams(size, size));
+        mBg = new ImageView(getContext());
+        mBg.setScaleType(ScaleType.FIT_CENTER);
+        mBg.setImageResource(R.drawable.ic_qs_circle);
+        if (enableQsTileStyle) {
+            mIconFrame.addView(mBg);
+        }
         mIcon = icon;
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, padding, 0, padding);
         mIconFrame.addView(mIcon, params);
+
+        if (enableQsTileStyle) {
+            mIconFrame.setClipChildren(false);
+            mIconFrame.setClipToPadding(false);
+        }
 
         mTileBackground = newTileBackground();
         if (mTileBackground instanceof RippleDrawable) {
@@ -73,11 +105,20 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
         setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         setBackground(mTileBackground);
 
+        mColorActive = Utils.getColorAttr(context, android.R.attr.colorAccent);
+        mColorDisabled = Utils.getDisabled(context,
+                Utils.getColorAttr(context, android.R.attr.textColorTertiary));
+        mColorInactive = Utils.getColorAttr(context, android.R.attr.textColorSecondary);
+
         setPadding(0, 0, 0, 0);
         setClipChildren(false);
         setClipToPadding(false);
         mCollapsedView = collapsedView;
         setFocusable(true);
+    }
+
+    public View getBgCicle() {
+        return mBg;
     }
 
     protected Drawable newTileBackground() {
@@ -150,6 +191,24 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
     }
 
     protected void handleStateChanged(QSTile.State state) {
+        boolean enableQsTileStyle = Settings.System.getInt(getContext().getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
+        if (enableQsTileStyle) {
+            int circleColor = getCircleColor(state.state);
+            if (circleColor != mCircleColor) {
+                if (mBg.isShown()) {
+                    ValueAnimator animator = ValueAnimator.ofArgb(mCircleColor, circleColor)
+                            .setDuration(QS_ANIM_LENGTH);
+                    animator.addUpdateListener(animation -> mBg.setImageTintList(ColorStateList.valueOf(
+                            (Integer) animation.getAnimatedValue())));
+                    animator.start();
+                } else {
+                    QSIconViewImpl.setTint(mBg, circleColor);
+                }
+                mCircleColor = circleColor;
+            }
+        }
+
         setClickable(state.state != Tile.STATE_UNAVAILABLE);
         mIcon.setIcon(state);
         setContentDescription(state.contentDescription);
@@ -160,6 +219,19 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
                 mClicked = false;
                 mTileState = newState;
             }
+        }
+    }
+
+    private int getCircleColor(int state) {
+        switch (state) {
+            case Tile.STATE_ACTIVE:
+                return mColorActive;
+            case Tile.STATE_INACTIVE:
+            case Tile.STATE_UNAVAILABLE:
+                return mColorDisabled;
+            default:
+                Log.e(TAG, "Invalid state " + state);
+                return 0;
         }
     }
 

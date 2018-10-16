@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.android.settingslib.Utils;
 import com.android.systemui.R;
 import com.android.systemui.plugins.qs.QSTile;
 import com.android.systemui.plugins.qs.QSTile.SignalState;
@@ -42,15 +43,29 @@ public class SignalTileView extends QSIconViewImpl {
     private ImageView mOut;
 
     private int mWideOverlayIconStartPadding;
+    private int mSignalIndicatorToIconFrameSpacing;
 
     public SignalTileView(Context context) {
         super(context);
 
-        mIn = addTrafficView(R.drawable.ic_qs_signal_in);
-        mOut = addTrafficView(R.drawable.ic_qs_signal_out);
+        boolean enableQsTileStyle = Settings.System.getInt(mContext.getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
+
+        if (enableQsTileStyle) {
+            mIn = addTrafficView(R.drawable.ic_qs_signal_in_custom);
+            mOut = addTrafficView(R.drawable.ic_qs_signal_out_custom);
+
+            setClipChildren(false);
+            setClipToPadding(false);
+        } else {
+            mIn = addTrafficView(R.drawable.ic_qs_signal_in);
+            mOut = addTrafficView(R.drawable.ic_qs_signal_out);
+        }
 
         mWideOverlayIconStartPadding = context.getResources().getDimensionPixelSize(
                 R.dimen.wide_type_icon_start_padding_qs);
+        mSignalIndicatorToIconFrameSpacing = context.getResources().getDimensionPixelSize(
+                R.dimen.signal_indicator_to_icon_frame_spacing);
     }
 
     private ImageView addTrafficView(int icon) {
@@ -98,12 +113,22 @@ public class SignalTileView extends QSIconViewImpl {
 
     private void layoutIndicator(View indicator) {
         boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+        boolean enableQsTileStyle = Settings.System.getInt(mContext.getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
         int left, right;
         if (isRtl) {
-            right = mIconFrame.getLeft();
+            if (enableQsTileStyle) {
+                right = getLeft() - mSignalIndicatorToIconFrameSpacing;
+            } else {
+                right = mIconFrame.getLeft();
+            }
             left = right - indicator.getMeasuredWidth();
         } else {
-            left = mIconFrame.getRight();
+            if (enableQsTileStyle) {
+                left = getRight() + mSignalIndicatorToIconFrameSpacing;
+            } else {
+                left = mIconFrame.getRight();
+            }
             right = left + indicator.getMeasuredWidth();
         }
         indicator.layout(
@@ -119,10 +144,15 @@ public class SignalTileView extends QSIconViewImpl {
         setIcon(mSignal, s);
 
         boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(),
-		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+                Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
 
-        if (enableQsTileTinting) {
+        boolean enableQsTileStyle = Settings.System.getInt(mContext.getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
+
+        if (enableQsTileTinting && !enableQsTileStyle) {
             mOverlay.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_color));
+        } else if (enableQsTileStyle) {
+            mOverlay.setColorFilter(Utils.getColorAttr(mContext, android.R.attr.colorPrimary));
         }
         if (s.overlayIconId > 0) {
             mOverlay.setVisibility(VISIBLE);
@@ -135,7 +165,7 @@ public class SignalTileView extends QSIconViewImpl {
         } else {
             mSignal.setPaddingRelative(0, 0, 0, 0);
         }
-        if (enableQsTileTinting) {
+        if (enableQsTileTinting && !enableQsTileStyle) {
             mIn.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_color));
             mOut.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_color));
         }

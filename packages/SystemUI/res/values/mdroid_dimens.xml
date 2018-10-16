@@ -48,4 +48,6 @@
 
     <!-- QS detail view scrolling -->
     <dimen name="qs_detail_item_height_twoline">72dp</dimen>
+
+    <dimen name="signal_indicator_to_icon_frame_spacing">3dp</dimen>
 </resources>

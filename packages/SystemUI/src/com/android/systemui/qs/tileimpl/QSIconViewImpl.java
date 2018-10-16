@@ -104,8 +104,14 @@ public class QSIconViewImpl extends QSIconView {
             }
 
             if (iv instanceof SlashImageView) {
+                boolean enableQsTileStyle = Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.QS_TILE_STYLE, 0) != 0;
                 ((SlashImageView) iv).setAnimationEnabled(shouldAnimate);
-                ((SlashImageView) iv).setState(state.slash, d);
+                if (enableQsTileStyle) {
+                    ((SlashImageView) iv).setState(null, d);
+                } else {
+                    ((SlashImageView) iv).setState(state.slash, d);
+                }
             } else {
                 iv.setImageDrawable(d);
             }
@@ -165,7 +171,10 @@ public class QSIconViewImpl extends QSIconView {
         }
 
         boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(), 
-		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+                Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+
+        boolean enableQsTileStyle = Settings.System.getInt(mContext.getContentResolver(), 
+                Settings.System.QS_TILE_STYLE, 0) != 0;
 
         if (ValueAnimator.areAnimatorsEnabled()) {
             final float fromAlpha = Color.alpha(fromColor);
@@ -180,12 +189,12 @@ public class QSIconViewImpl extends QSIconView {
                 int alpha = (int) (fromAlpha + (toAlpha - fromAlpha) * fraction);
                 int channel = (int) (fromChannel + (toChannel - fromChannel) * fraction);
 
-                if (enableQsTileTinting) {
-			setTint(iv, toColor);
-		 } else {
-                        setTint(iv, Color.argb(alpha, channel, channel, channel));
-	 	    }
-		});
+                if (enableQsTileTinting && !enableQsTileStyle) {
+                    setTint(iv, toColor);
+                } else {
+                    setTint(iv, Color.argb(alpha, channel, channel, channel));
+                }
+		    });
 
             anim.start();
         } else {
