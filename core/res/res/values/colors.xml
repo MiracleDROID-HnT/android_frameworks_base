@@ -175,26 +175,18 @@
     <color name="instant_app_badge">#FFFFFFFF</color><!-- White -->
 
     <!-- Multi-sim sim colors -->
-    <color name="Amber_700">#FFA000</color>
-    <color name="Carbon_700">#212121</color>
-    <color name="Blue_700">#1976D2</color>
-    <color name="Light_Blue_700">#0288D1</color>
-    <color name="Brown_700">#5D4037</color>
-    <color name="Cyan_700">#0097A7</color>
-    <color name="Green_700">#388E3C</color>
-    <color name="Light_Green_700">#689F38</color>
-    <color name="Grey_700">#616161</color>
-    <color name="Blue_Grey_700">#455A64</color>
-    <color name="Indigo_700">#303F9F</color>
-    <color name="Lime_700">#AFB42B</color>
-    <color name="Orange_700">#F57C00</color>
-    <color name="Deep_Orange_700">#E64A19</color>
-    <color name="Pink_700">#C2185B</color>
-    <color name="Purple_700">#7B1FA2</color>
-    <color name="Deep_Purple_700">#512DA8</color>
-    <color name="Red_700">#D32F2F</color>
-    <color name="Teal_700">#00796B</color>
-    <color name="Yellow_700">#FBC02D</color>
+    <color name="Teal_700">#ff00796b</color>
+    <color name="Teal_800">#ff00695c</color>
+    <color name="Blue_700">#ff3367d6</color>
+    <color name="Blue_800">#ff2a56c6</color>
+    <color name="Indigo_700">#ff303f9f</color>
+    <color name="Indigo_800">#ff283593</color>
+    <color name="Purple_700">#ff7b1fa2</color>
+    <color name="Purple_800">#ff6a1b9a</color>
+    <color name="Pink_700">#ffc2185b</color>
+    <color name="Pink_800">#ffad1457</color>
+    <color name="Red_700">#ffc53929</color>
+    <color name="Red_800">#ffb93221</color>
 
     <color name="chooser_service_row_background_color">#fff5f5f5</color>
 
