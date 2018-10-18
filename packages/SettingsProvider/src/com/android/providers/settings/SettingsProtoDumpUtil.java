@@ -1532,7 +1532,13 @@ class SettingsProtoDumpUtil {
                 Settings.System.RINGTONE,
                 SystemSettingsProto.RINGTONE);
         dumpSetting(s, p,
+                Settings.System.RINGTONE2,
+                SystemSettingsProto.RINGTONE);
+        dumpSetting(s, p,
                 Settings.System.RINGTONE_CACHE,
+                SystemSettingsProto.RINGTONE_CACHE);
+        dumpSetting(s, p,
+                Settings.System.RINGTONE2_CACHE,
                 SystemSettingsProto.RINGTONE_CACHE);
         dumpSetting(s, p,
                 Settings.System.NOTIFICATION_SOUND,
