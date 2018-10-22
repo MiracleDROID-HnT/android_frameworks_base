@@ -341,6 +341,9 @@ public final class ActivityThread {
         = new ArrayMap<Activity, ArrayList<OnActivityPausedListener>>();
 
     final GcIdler mGcIdler = new GcIdler();
+    final PurgeIdler mPurgeIdler = new PurgeIdler();
+
+    boolean mPurgeIdlerScheduled = false;
     boolean mGcIdlerScheduled = false;
 
     static volatile Handler sMainThreadHandler;  // set once in main()
@@ -1537,6 +1540,7 @@ public final class ActivityThread {
         public static final int APPLICATION_INFO_CHANGED = 156;
         public static final int ACTIVITY_MOVED_TO_DISPLAY = 157;
         public static final int RUN_ISOLATED_ENTRY_POINT = 158;
+        public static final int PURGE_RESOURCES = 159;
 
         String codeToString(int code) {
             if (DEBUG_MESSAGES) {
@@ -1595,6 +1599,7 @@ public final class ActivityThread {
                     case ATTACH_AGENT: return "ATTACH_AGENT";
                     case APPLICATION_INFO_CHANGED: return "APPLICATION_INFO_CHANGED";
                     case RUN_ISOLATED_ENTRY_POINT: return "RUN_ISOLATED_ENTRY_POINT";
+                    case PURGE_RESOURCES: return "PURGE_RESOURCES";
                 }
             }
             return Integer.toString(code);
@@ -1707,6 +1712,7 @@ public final class ActivityThread {
                 case UNBIND_SERVICE:
                     Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "serviceUnbind");
                     handleUnbindService((BindServiceData)msg.obj);
+                    schedulePurgeIdler();
                     Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
                     break;
                 case SERVICE_ARGS:
@@ -1717,6 +1723,7 @@ public final class ActivityThread {
                 case STOP_SERVICE:
                     Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "serviceStop");
                     handleStopService((IBinder)msg.obj);
+                    schedulePurgeIdler();
                     Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
                     break;
                 case CONFIGURATION_CHANGED:
@@ -1869,6 +1876,9 @@ public final class ActivityThread {
                     handleRunIsolatedEntryPoint((String) ((SomeArgs) msg.obj).arg1,
                             (String[]) ((SomeArgs) msg.obj).arg2);
                     break;
+                case PURGE_RESOURCES:
+                    schedulePurgeIdler();
+                    break;
             }
             Object obj = msg.obj;
             if (obj instanceof SomeArgs) {
@@ -1921,6 +1931,17 @@ public final class ActivityThread {
         @Override
         public final boolean queueIdle() {
             doGcIfNeeded();
+            nPurgePendingResources();
+            return false;
+        }
+    }
+
+    final class PurgeIdler implements MessageQueue.IdleHandler {
+        @Override
+        public boolean queueIdle() {
+            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "purgePendingResources");
+            nPurgePendingResources();
+            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
             return false;
         }
     }
@@ -2225,6 +2246,22 @@ public final class ActivityThread {
             Looper.myQueue().removeIdleHandler(mGcIdler);
         }
         mH.removeMessages(H.GC_WHEN_IDLE);
+    }
+
+    void schedulePurgeIdler() {
+        if (!mPurgeIdlerScheduled) {
+            mPurgeIdlerScheduled = true;
+            Looper.myQueue().addIdleHandler(mPurgeIdler);
+        }
+        mH.removeMessages(H.PURGE_RESOURCES);
+    }
+
+    void unschedulePurgeIdler() {
+        if (mPurgeIdlerScheduled) {
+            mPurgeIdlerScheduled = false;
+            Looper.myQueue().removeIdleHandler(mPurgeIdler);
+        }
+        mH.removeMessages(H.PURGE_RESOURCES);
     }
 
     void doGcIfNeeded() {
@@ -4412,6 +4449,7 @@ public final class ActivityThread {
                 }
             }
         }
+        schedulePurgeIdler();
         mActivities.remove(token);
         StrictMode.decrementExpectedActivityCount(activityClass);
         return r;
@@ -6566,6 +6604,6 @@ public final class ActivityThread {
     }
 
     // ------------------ Regular JNI ------------------------
-
+    private native void nPurgePendingResources();
     private native void nDumpGraphicsInfo(FileDescriptor fd);
 }
