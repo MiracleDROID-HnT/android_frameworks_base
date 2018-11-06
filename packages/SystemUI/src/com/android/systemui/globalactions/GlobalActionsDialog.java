@@ -172,6 +172,8 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
     private BitSet mAirplaneModeBits;
     private final List<PhoneStateListener> mPhoneStateListeners = new ArrayList<>();
 
+    private int mScreenshotDelay;
+
     /**
      * @param context everything needs a context :(
      */
@@ -309,6 +311,7 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
     private void handleShow() {
         awakenIfNecessary();
         mDialog = createDialog();
+        checkSettings();
         prepareDialog();
 
         // If we only have 1 item and it's a simple press action, just do this action.
@@ -1103,7 +1106,7 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
 
                         /* wait for the dialog box to close */
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(mScreenshotDelay);
                         } catch (InterruptedException ie) {
                             // Do nothing
                         }
@@ -1828,5 +1831,10 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
         public void setKeyguardShowing(boolean keyguardShowing) {
             mKeyguardShowing = keyguardShowing;
         }
+    }
+
+   private void checkSettings() {
+        mScreenshotDelay = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SCREENSHOT_DELAY, 1500);
     }
 }
