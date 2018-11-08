@@ -93,17 +93,17 @@ public class LocationTile extends QSTileImpl<BooleanState> {
     private void switchMode() {
         int currentMode = mController.getCurrentMode();
         if (currentMode == BATTERY_SAVING) {
-            //from battery saving to sensor only
-            mController.setLocationEnabled(SENSORS_ONLY);
-        } else if (currentMode == SENSORS_ONLY) {
-            //from sensor only to off
+            //from battery saving to off
             mController.setLocationEnabled(OFF);
+        } else if (currentMode == SENSORS_ONLY) {
+            //from sensor only to high precision
+            mController.setLocationEnabled(HIGH_ACCURACY);
         } else if (currentMode == HIGH_ACCURACY) {
             //from high precision to battery saving
             mController.setLocationEnabled(BATTERY_SAVING);
         } else {
-            //from off to high precision
-            mController.setLocationEnabled(HIGH_ACCURACY);
+            //from off to sensor only
+            mController.setLocationEnabled(SENSORS_ONLY);
         }
     }
 
