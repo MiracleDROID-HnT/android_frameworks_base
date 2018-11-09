@@ -1153,9 +1153,6 @@ exit:
     if (jHandle != NULL) {
         env->DeleteLocalRef(jHandle);
     }
-    if (jAudioPortConfig != NULL) {
-        env->DeleteLocalRef(jAudioPortConfig);
-    }
 
     return jStatus;
 }
@@ -1233,10 +1230,6 @@ android_media_AudioSystem_listAudioPorts(JNIEnv *env, jobject clazz,
             goto exit;
         }
         env->CallBooleanMethod(jPorts, gArrayListMethods.add, jAudioPort);
-        if (jAudioPort != NULL) {
-            env->DeleteLocalRef(jAudioPort);
-            jAudioPort = NULL;
-        }
     }
 
 exit:
