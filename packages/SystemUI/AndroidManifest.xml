@@ -34,8 +34,6 @@
     <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INJECT_EVENTS" />
     <uses-permission android:name="android.permission.DUMP" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
