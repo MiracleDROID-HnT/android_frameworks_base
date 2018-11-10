@@ -4498,6 +4498,15 @@ public final class Settings {
                 sNonNullStringValidator;
 
         /**
+         * 0 - Automatic (Theme based)
+         * 1 - Light
+         * 2 - Dark
+         * 3 - Black
+         * @hide
+         */
+        public static final String NOTIFICATION_STYLE = "notification_style";
+
+        /**
          * How many rows to show in the qs panel when in portrait
          * @hide
          */

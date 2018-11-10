@@ -574,6 +574,8 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private int mBatterySaverColor;
 
+    private int mNotificationStyle;
+
     Runnable mLongPressBrightnessChange = new Runnable() {
         @Override
         public void run() {
@@ -1178,6 +1180,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         updateDisplaySize(); // populates mDisplayMetrics
         updateResources();
+        getNotificationStyleSetting();
         updateTheme();
 
         inflateStatusBarWindow(context);
@@ -3198,6 +3201,44 @@ public class StatusBar extends SystemUI implements DemoMode,
                 (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
     }
 
+    // Unloads dark notification theme
+    private static void unloadDarkNotificationTheme(IOverlayManager om, int userId) {
+        try {
+            om.setEnabled("mx.mdroid.system.notification.dark", false, userId);
+        } catch (RemoteException e) {
+        }
+    }
+
+    // Unloads black notification theme
+    private static void unloadBlackNotificationTheme(IOverlayManager om, int userId) {
+        try {
+            om.setEnabled("mx.mdroid.system.notification.black", false, userId);
+        } catch (RemoteException e) {
+        }
+    }
+
+    // Check for the dark notification theme
+    public static boolean isUsingDarkNotificationTheme(IOverlayManager om, int userId) {
+        OverlayInfo systemuiThemeInfo = null;
+        try {
+            systemuiThemeInfo = om.getOverlayInfo("mx.mdroid.system.notification.dark", userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return systemuiThemeInfo != null && systemuiThemeInfo.isEnabled();
+    }
+
+    // Check for the black notification theme
+    public static boolean isUsingBlackNotificationTheme(IOverlayManager om, int userId) {
+        OverlayInfo systemuiThemeInfo = null;
+        try {
+            systemuiThemeInfo = om.getOverlayInfo("mx.mdroid.system.notification.black", userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return systemuiThemeInfo != null && systemuiThemeInfo.isEnabled();
+    }
+
     private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme) {
         // We can only use final variables in lambdas
         final boolean finalUseBlackTheme = useBlackTheme;
@@ -3277,6 +3318,27 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private void setCommonThemeState(boolean enable) {
         setThemeStateFromList(enable, getThemePkgs("android.theme.common"));
+    }
+
+    // Set light / dark notification theme
+    public static void setNotificationTheme(IOverlayManager om, int userId,
+                boolean useDarkTheme, boolean useBlackTheme, int notificationStyle) {
+        if (notificationStyle == 1 || (notificationStyle == 0 && !useDarkTheme && !useBlackTheme)) {
+            unloadDarkNotificationTheme(om, userId);
+            unloadBlackNotificationTheme(om, userId);
+        } else if (notificationStyle == 2 || (notificationStyle == 0 && useDarkTheme && !useBlackTheme)) {
+            unloadBlackNotificationTheme(om, userId);
+            try {
+                om.setEnabled("mx.mdroid.system.notification.dark", true, userId);
+            } catch (RemoteException e) {
+            }
+        } else if (notificationStyle == 3 || (notificationStyle == 0 && !useDarkTheme && useBlackTheme)) {
+            unloadDarkNotificationTheme(om, userId);
+            try {
+                om.setEnabled("mx.mdroid.system.notification.black", true, userId);
+            } catch (RemoteException e) {
+            }
+        }
     }
 
     @Nullable
@@ -5396,6 +5458,11 @@ public class StatusBar extends SystemUI implements DemoMode,
         Trace.endSection();
     }
 
+    private void getNotificationStyleSetting() {
+        mNotificationStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.NOTIFICATION_STYLE, 0, mCurrentUserId);
+    }
+
     /**
      * Switches theme from light to dark and vice-versa.
      */
@@ -5435,6 +5502,15 @@ public class StatusBar extends SystemUI implements DemoMode,
                 useDarkTheme = systemColors != null && (systemColors.getColorHints() &
                         WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
                 break;
+        }
+
+        boolean useDarkNotificationTheme = (mNotificationStyle == 0 && useDarkTheme && !useBlackTheme) || mNotificationStyle == 2;
+        boolean useBlackNotificationTheme = (mNotificationStyle == 0 && !useDarkTheme && useBlackTheme) || mNotificationStyle == 3;
+
+        if ((isUsingDarkNotificationTheme(mOverlayManager, mCurrentUserId) != useDarkNotificationTheme) ||
+                (isUsingBlackNotificationTheme(mOverlayManager, mCurrentUserId) != useBlackNotificationTheme)) {
+            setNotificationTheme(mOverlayManager, mCurrentUserId, useDarkTheme, useBlackTheme, mNotificationStyle);
+            onOverlayChanged();
         }
 
         handleThemeStates(useBlackTheme, useDarkTheme);
@@ -6730,6 +6806,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.DOZE_ENABLED),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NOTIFICATION_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6752,6 +6831,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             setQSTilesScroller();
             updateBatterySaverColor();
             setForceAmbient();
+            getNotificationStyleSetting();
+            updateTheme();
         }
     }
 
