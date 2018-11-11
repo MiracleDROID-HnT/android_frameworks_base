@@ -12,6 +12,197 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Content description of the data connection type HSPA+ for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_data_connection_hspap">HSPA+</string>
+
+    <!-- Battery saver tile -->
+    <string name="battery_saver_qs_tile_fully_charged">Vollständig geladen</string>
+
+    <!-- Indication on the keyguard that is shown when the device is charging with a dash charger. Should match keyguard_plugged_in_dash_charging [CHAR LIMIT=40]-->
+    <string name="keyguard_indication_dash_charging_time">Dash Laden (<xliff:g id="charging_time_left" example="4 hours and 2 minutes">%s</xliff:g> bis voll)</string>
+    <string name="keyguard_plugged_in_dash_charging">Dash Laden</string>
+
+    <string name="statusbar_items_title">Statusleiste Symbol</string>
+
+    <!-- volte icon switch -->
+    <string name="status_bar_volte">VOLTE</string>
+
+    <!-- Power Menu -->
+    <string name="global_action_reboot">Neustart</string>
+    <string name="global_action_reboot_sub">System</string>
+    <string name="global_action_reboot_recovery">Recovery</string>
+    <string name="global_action_reboot_bootloader">Bootloader</string>
+    <string name="global_action_reboot_soft">Schneller Neustart</string>
+    <string name="global_action_dismissable_dialog_text">Erweiterter Neustart ist deaktiviert.\nWillst du neu starten\u003f</string>
+    <string name="global_action_dnaa">Nicht erneut zeigen</string>
+    <string name="global_action_settings">Einstellungen</string>
+    <string name="global_action_screenshot">Screenshot</string>
+    <string name="global_action_flashlight">Taschenlampe</string>
+
+    <!-- Caffeine QS Tile -->
+    <string name="quick_settings_caffeine_label">Caffeine</string>
+    <string name="accessibility_quick_settings_caffeine_off">Caffeine aus</string>
+    <string name="accessibility_quick_settings_caffeine_on">Caffeine an</string>
+
+    <!-- Screenshot QS Tile -->
+    <string name="quick_settings_screenshot_label">Screenshot</string>
+    <string name="quick_settings_region_screenshot_label">Partieller Screenshot</string>
+
+    <!-- QS customizer -->
+    <string name="drag_or_tap_to_add_tiles">Ziehen um kacheln hinzuzufügen</string>
+
+    <!-- ADB over network QS tile -->
+    <string name="quick_settings_network_adb_enabled_label">Aktiviert</string>
+    <string name="quick_settings_network_adb_disabled_label">Deaktiviert</string>
+    <string name="quick_settings_network_adb_label">ADB über Netzwerk</string>
+    <string name="quick_settings_network_adb_toast">USB ist nicht aktiviert</string>
+
+    <!-- Screenrecord Notification Ticker -->
+    <string name="screenrecord_notif_ticker">Bildschirm wird aufgenommen</string>
+    <string name="screenrecord_notif_final_ticker">Bildschirm wurde erfolgreich aufgenommen</string>
+    <!-- Screenrecord notification title -->
+    <string name="screenrecord_notif_title">Bildschirm wird aufgenommen...</string>
+    <!-- Screenrecord notification action: Stop -->
+    <string name="screenrecord_notif_stop">Stop</string>
+    <string name="screenrecord_notif_completed">Bildschirm wurde erfolgreich aufgenommen</string>
+    <!-- Screenrecord notification action: show/hide pointer -->
+    <string name="screenrecord_notif_pointer_on">Zeige Berührungen</string>
+    <string name="screenrecord_notif_pointer_off">Verstecke Berührungen</string>
+    <!-- Screen record notification error title -->
+    <string name="screenrecord_notif_error">Kann Bildschirm nicht aufnehmen</string>
+    <string name="notification_channel_screenrecord">Bildschirmaufnahmen</string>
+    <!-- Screenrecord QS tile -->
+    <string name="quick_settings_screenrecord_label">Bildschirmaufnahme</string>
+    <string name="quick_settings_screenrecord_lq_label">Bildschirmaufnahme LQ</string>
+    <string name="quick_settings_screenrecord_mq_label">Bildschirmaufnahme MQ</string>
+    <string name="quick_settings_screenrecord_hq_label">Bildschirmaufnahme HQ</string>
+    <string name="screenrecord_hide_hint">Verstecke Hinweise</string>
+    <string name="screenrecord_show_hint">Zeige Hinweise</string>
+
+    <!-- [CHAR LIMIT=NONE] Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permlab_preventpower">Power-Taste überschreiben</string>
+    <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permdesc_preventpower">Erlaubt Apps die Power-Taste zu überschreiben.</string>
+
+    <!-- Recents memory bar -->
+    <string name="recents_free_ram">Freier RAM Speicher: %1$d MB</string>
+
+    <!-- Heads Up QS Tile -->
+    <string name="quick_settings_heads_up_label">Heads up</string>
+    <string name="accessibility_quick_settings_heads_up_off">Heads up an.</string>
+    <string name="accessibility_quick_settings_heads_up_on">Heads up aus.</string>
+    <string name="accessibility_quick_settings_heads_up_changed_off">Heads up ist ausgeschaltet.</string>
+    <string name="accessibility_quick_settings_heads_up_changed_on">Heads up ist eingeschaltet.</string>
+
+    <!-- Roaming -->
+    <string name="status_bar_roaming">Roaming</string>
+
+    <!-- HW Keys Tile -->
+    <string name="accessibility_quick_settings_hwkeys_on">HW Tasten an</string>
+    <string name="accessibility_quick_settings_hwkeys_off">HW Tasten aus</string>
+    <string name="quick_settings_hwkeys_label">HW Tasten</string>
+
+    <!-- Typing virtual buttons -->
+    <string name="accessibility_dpad_left">Zeiger links</string>
+    <string name="accessibility_dpad_right">Zeiger rechts</string>
+
+    <!-- Sync QS Tile -->
+    <string name="quick_settings_sync_label">Sync</string>
+    <string name="accessibility_quick_settings_sync_off">Sync aus</string>
+    <string name="accessibility_quick_settings_sync_on">Sync an</string>
+    <string name="accessibility_quick_settings_sync_changed_off">Sync ausgeschaltet</string>
+    <string name="accessibility_quick_settings_sync_changed_on">Sync eingeschaltet</string>
+
+    <!-- LTE QS Tile -->
+    <string name="qs_lte_label">LTE</string>
+    <string name="lte_on">LTE AN</string>
+    <string name="lte_off">LTE AUS</string>
+
+    <!-- Sound QS Tile -->
+    <string name="quick_settings_sound_label">Klang</string>
+    <string name="quick_settings_sound_ring">Klingeln</string>
+    <string name="quick_settings_sound_vibrate">Vibration</string>
+    <string name="quick_settings_sound_dnd">Nicht stören</string>
+
+    <string name="status_bar_vpn">VPN</string>
+
+    <!-- USB Tethering tile -->
+    <string name="accessibility_quick_settings_usb_tether_off">USB Tethering aus</string>
+    <string name="accessibility_quick_settings_usb_tether_on">USB Tethering an</string>
+    <string name="accessibility_quick_settings_usb_tether_changed_off">USB Tethering ausgeschaltet</string>
+    <string name="accessibility_quick_settings_usb_tether_changed_on">USB Tethering eingeschaltet</string>
+    <string name="quick_settings_usb_tether_label">USB Tethering</string>
+
+    <string name="lockscreen_default">Standard</string>
+    <string name="lockscreen_hidden">Keiner</string>
+
+    <!-- Shows when people have clicked on the custom lockscreen shortcut [CHAR LIMIT=60] -->
+    <string name="custom_hint">Vom Symbol nach oben ziehen um zu Starten</string>
+
+    <!-- Language toggle tile -->
+    <string name="quick_settings_locale_label">Sprache</string>
+    <string name="quick_settings_locale_more_locales_toast">Bitte konfiguriere mehrere Sprachen um Auswahl zu aktivieren</string>
+
+    <!-- Navigation Bar tile -->
+    <string name="quick_settings_navbar_title">NavBar</string>
+    <string name="quick_settings_navbar">NavBar Aktiviert</string>
+    <string name="quick_settings_navbar_off">NavBar Deaktiviert</string>
+
+    <!-- Reboot/Recovery/PowerOff QS Tile -->
+    <string name="quick_settings_reboot_label">Neustart</string>
+    <string name="quick_settings_reboot_recovery_label">Recovery</string>
+    <string name="quick_settings_poweroff_label">Ausschalten</string>
+
+    <!-- SysUI Tuner: Button that controls inversion of layout of navigation bar [CHAR LIMIT=60] -->
+    <string name="nav_bar_layout_inverse">Tasten umkehren</string>
+
+    <!-- Screenshot Crop & Share -->
+    <string name="action_delete_success">Gelöscht</string>
+    <string name="action_delete_fault">Löschen fehlgeschlagen</string>
+    <string name="action_save_success">Gespeichert</string>
+    <string name="action_save_fault">Speichern fehlgeschlagen</string>
+    <string name="pref_action_color_title">Farbe der Aktionstasten</string>
+    <string name="pref_action_color_summary">Wähle Farbe für die Aktionstasten</string>
+    <string name="pref_category_main">Einstellungen</string>
+    <string name="pref_category_user">Benutzer Einstellungen</string>
+    <string name="pref_crop_behavior_title">Crop behavior</string>
+    <string name="pref_crop_behavior_summary">Use the cropped image even if the original one hasn\'t actually been cropped with the crop action</string>
+    <string name="action_ok">OK</string>
+    <string name="action_edit">Edit</string>
+
+    <!-- accessibility label for button to open running apps prefscreen [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_running_services">Öffne Aktive Dienste.</string>
+
+    <!-- Indication on the keyguard that is shown when the device is charging with a turbo power charger. Should match keyguard_plugged_in_turbo_power_charging [CHAR LIMIT=40]-->
+    <string name="keyguard_indication_turbo_power_time">TurboPower verbunden (<xliff:g id="charging_time_left">%s</xliff:g> bis zur vollständigen Aufladung)</string>
+    <string name="keyguard_plugged_in_turbo_power_charging">TurboPower verbunden</string>
+    <string name="keyguard_plugged_in_turbo_charging">Schnelles Aufladen</string>
+
+    <!-- Kill button in notification guts -->
+    <string name="force_stop_dlg_title">Beenden erzwingen?</string>
+    <string name="force_stop_dlg_text">Falls Du das Beenden einer App erzwingst, kann dies zu Fehlverhalten führen.</string>
+    <string name="dlg_ok">@android:string/ok</string>
+    <string name="dlg_cancel">@android:string/cancel</string>
+    <string name="kill">App beenden</string>
+
+    <!-- Heads up snooze toast -->
+    <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> - Benachrichtigungen stumm für 1 Minute.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%s</xliff:g> - Benachrichtigungen stumm für <xliff:g id="number">%d</xliff:g> minutes.</string>
+
+    <string name="quick_settings_logcat_label">LogCat</string>
+    <string name="quick_settings_logcatradio_label">LogCatRadio</string>
+    <string name="quick_settings_kmsg_label">Kmsg</string>
+    <string name="quick_settings_dmesg_label">Dmsg</string>
+    <string name="cannot_get_su">Superuser Zugang nicht gefunden</string>
+
+    <string name="suspend_title_tile">Aktion aussetzen</string>
+
+    <!-- Content description of the superuser tile -->
+    <string name="accessibility_su_active">Superuser Session aktiv</string>
+
+    <string name="recents_app_killed">App beendet</string>
+    <string name="recents_locked_app_kill_warning">App ist gesperrt. Erzwinge das Anhalten, aber nicht das Schließen der App.</string>
+    <string name="recents_kill_error_warning">Konnte das Beenden der App nicht erzwingen. Vorgang abgebrochen.</string>
 
     <!-- Location Tile -->
     <string name="accessibility_quick_settings_location_battery_saving">Standortermittlung: Energie sparen.</string>
@@ -31,5 +222,22 @@
     <string name="quick_settings_location_detail_mode_high_accuracy_description">Standort über GPS, WLAN, Bluetooth oder Mobilfunknetz bestimmen</string>
     <string name="quick_settings_location_detail_mode_battery_saving_description">Standort über WLAN, Bluetooth oder Mobilfunknetz bestimmen</string>
     <string name="quick_settings_location_detail_mode_sensors_only_description">GPS und Gerätesensoren zur Standortbestimmung nutzen</string>
+
+    <!-- On The Go -->
+    <string name="onthego_notif_ticker">On-The-Go aktiviert</string>
+    <string name="onthego_notif_title">On-The-Go ist aktiv</string>
+    <string name="onthego_notif_stop">Stop</string>
+    <string name="onthego_notif_options">Optionen</string>
+    <string name="onthego_notif_error">Kann On-The-Go nicht starten</string>
+    <string name="onthego_notif_restart">On-The-Go neu starten</string>
+    <string name="onthego_notif_camera_changed">Kamera Modus gewechselt</string>
+    <string name="onthego_transparency">Transparenz</string>
+    <string name="onthego_front_camera">Frontkamera verwenden</string>
+    <string name="onthego_service_toggle">Service automatisch neu starten</string>
+    <string name="onthego_channel_name">Menü</string>
+    <string name="global_action_onthego">On-The-Go</string>
+
+    <!-- OnTheGo Tile -->
+    <string name="quick_settings_onthego_label">On-The-Go</string>
 
 </resources>
