@@ -269,7 +269,7 @@
     <string name="systemui_theme_style_dark">Темна</string>
     <string name="systemui_theme_style_black">Чорна</string>
     <string name="quick_settings_theme_tile_title">Колір акценту</string>
-    <string name="quick_settings_theme_tile_accent_detail_title">Вибір кольору</string>
+    <string name="quick_settings_theme_tile_accent_detail_title">Вибір акценту</string>
     <string name="quick_settings_theme_tile_style_detail_title">Вибір теми</string>
     <string name="quick_settings_theme_tile_color_default">За замовчуванням</string>
     <string name="quick_settings_theme_tile_color_red">Червоний</string>
@@ -296,7 +296,7 @@
     <string name="quick_settings_theme_tile_color_white">Білосніжний</string>
 
     <string name="theme_info_title">Що це?</string>
-    <string name="theme_info_message">Плитка «Теми» - це унікальна, але проста у використанні плитка, яка дозволяє користувачу змінювати системний акцент або стиль.\n\nЩоб переключитися між акцентами і стилями, просто довго утримуйте натиснутою плитку, а потім ще раз натисніть на неї, щоб вибрати із запропонованих варіантів.</string>
+    <string name="theme_info_message">Плитка «Теми» - це унікальна, але проста у використанні плитка, яка дозволяє користувачу змінювати системний акцент або тему.\n\nЩоб переключитися між акцентами і темами, просто довго утримуйте натиснутою плитку, а потім ще раз натисніть на неї, щоб вибрати із запропонованих варіантів.</string>
 
     <!-- CPUInfo tile -->
     <string name="quick_settings_cpuinfo_label">Інформація про процесор</string>
