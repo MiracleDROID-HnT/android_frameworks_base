@@ -33,6 +33,7 @@ import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 public class OnTheGoTile extends QSTileImpl<BooleanState> {
 
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_onthego);
+    private boolean mIsRunning = false;
 
     public OnTheGoTile(QSHost host) {
         super(host);
@@ -53,6 +54,13 @@ public class OnTheGoTile extends QSTileImpl<BooleanState> {
                 "com.android.systemui.mdroid.onthego.OnTheGoService");
         OnTheGoActions.processAction(mContext,
                 OnTheGoActions.ACTION_ONTHEGO_TOGGLE);
+        if (!OnTheGoUtils.isServiceRunning(mContext,
+                "com.android.systemui.mdroid.onthego.OnTheGoService") ||
+                mIsRunning == false) {
+            mIsRunning = true;
+        } else {
+            mIsRunning = false;
+        }
     }
 
     @Override
@@ -82,9 +90,7 @@ public class OnTheGoTile extends QSTileImpl<BooleanState> {
                 R.string.quick_settings_onthego_label);
         state.label = mContext.getString(R.string.quick_settings_onthego_label);
         state.icon = ResourceIcon.get(R.drawable.ic_qs_onthego);
-        state.state = OnTheGoUtils.isServiceRunning(mContext,
-                "com.android.systemui.mdroid.onthego.OnTheGoService")  ?
-                Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
+        state.state = mIsRunning ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
     }
 
     @Override
