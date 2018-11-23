@@ -86,10 +86,14 @@ public class OnTheGoTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
+        if (state.slash == null) {
+            state.slash = new SlashState();
+        }
+        state.slash.isSlashed = !mIsRunning;
         state.contentDescription =  mContext.getString(
                 R.string.quick_settings_onthego_label);
         state.label = mContext.getString(R.string.quick_settings_onthego_label);
-        state.icon = ResourceIcon.get(R.drawable.ic_qs_onthego);
+        state.icon = mIcon;
         state.state = mIsRunning ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
     }
 
