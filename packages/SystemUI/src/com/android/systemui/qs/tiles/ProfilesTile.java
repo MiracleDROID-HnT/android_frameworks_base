@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.provider.Settings;
+import android.service.quicksettings.Tile;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,8 @@ public class ProfilesTile extends QSTileImpl<State> {
     private final ProfilesObserver mObserver;
     private final ProfileDetailAdapter mDetailAdapter;
     private final KeyguardMonitorCallback mCallback = new KeyguardMonitorCallback();
+
+    private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_profiles);
 
     public ProfilesTile(QSHost host) {
         super(host);
@@ -118,16 +121,22 @@ public class ProfilesTile extends QSTileImpl<State> {
 
     @Override
     protected void handleUpdateState(State state, Object arg) {
+        if (state.slash == null) {
+            state.slash = new SlashState();
+        }
+        state.icon = mIcon;
         if (profilesEnabled()) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_profiles_on);
             state.label = mProfileManager.getActiveProfile().getName();
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_profiles, state.label);
+            state.slash.isSlashed = false;
+            state.state = Tile.STATE_ACTIVE;
         } else {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_profiles_off);
             state.label = mContext.getString(R.string.quick_settings_profiles_label);
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_profiles_off);
+            state.slash.isSlashed = true;
+            state.state = Tile.STATE_INACTIVE;
         }
         state.dualTarget = true;
     }
