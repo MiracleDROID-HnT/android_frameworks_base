@@ -5381,6 +5381,12 @@ public final class Settings {
         public static final String INCREASING_RING_RAMP_UP_TIME = "increasing_ring_ramp_up_time";
 
         /**
+         * Whether the phone ringtone should be played in max volume level when device is in pocket
+         * @hide
+         */
+        public static final String MAX_RING_VOLUME_IN_POCKET = "max_ring_volume_in_pocket";
+
+        /**
          * @deprecated Use {@link android.provider.Settings.Global#ADB_ENABLED}
          * instead
          */
