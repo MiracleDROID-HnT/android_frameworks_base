@@ -845,6 +845,13 @@ final class DefaultPermissionGrantPolicy {
                 grantRuntimePermissionsLPw(vendingPackage, SMS_PERMISSIONS, userId);
                 grantRuntimePermissionsLPw(vendingPackage, STORAGE_PERMISSIONS, userId);
             }
+
+            // Mediascanner
+            PackageParser.Package mediascannerPackage = getDefaultProviderAuthorityPackageLPr(
+                    "com.android.providers.media.MediaProvider", userId);
+            if (mediascannerPackage != null) {
+                grantRuntimePermissionsLPw(mediascannerPackage, STORAGE_PERMISSIONS, true, userId);
+            }
         }
     }
 
