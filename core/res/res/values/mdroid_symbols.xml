@@ -76,6 +76,7 @@
     <java-symbol type="string" name="accent_orange" />
     <java-symbol type="string" name="accent_orange_deep" />
     <java-symbol type="string" name="accent_pink" />
+    <java-symbol type="string" name="accent_pixel" />
     <java-symbol type="string" name="accent_purple" />
     <java-symbol type="string" name="accent_purple_deep" />
     <java-symbol type="string" name="accent_red" />
