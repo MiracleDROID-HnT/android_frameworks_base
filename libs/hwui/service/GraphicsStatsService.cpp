@@ -145,6 +145,7 @@ bool GraphicsStatsService::parseFromFile(const std::string& path, service::Graph
     uint32_t file_version = *reinterpret_cast<uint32_t*>(addr);
     if (file_version != sCurrentFileVersion) {
         ALOGW("file_version mismatch! expected %d got %d", sCurrentFileVersion, file_version);
+        munmap(addr, sb.st_size);
         return false;
     }
 
@@ -156,6 +157,7 @@ bool GraphicsStatsService::parseFromFile(const std::string& path, service::Graph
         ALOGW("Parse failed on '%s' error='%s'",
                 path.c_str(), output->InitializationErrorString().c_str());
     }
+    munmap(addr, sb.st_size);
     return success;
 }
 
