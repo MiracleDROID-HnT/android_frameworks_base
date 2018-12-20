@@ -208,4 +208,7 @@
     <java-symbol type="integer" name="config_defaultThemeCustomStartTime" />
     <java-symbol type="integer" name="config_defaultThemeCustomEndTime" />
 
+    <!-- Available icon mask paths for the adaptive icon shape setting -->
+    <java-symbol type="array" name="system_icon_masks" />
+
 </resources>
