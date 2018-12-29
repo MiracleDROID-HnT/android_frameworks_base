@@ -5530,6 +5530,18 @@ public class StatusBar extends SystemUI implements DemoMode,
         ThemeAccentUtils.unloadClocks(mOverlayManager, mCurrentUserId, mContext);
     }
 
+    // Switches switch style from stock to custom
+    public void updateSwitchStyle() {
+        int switchStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SWITCH_STYLE, 0, mCurrentUserId);
+        ThemeAccentUtils.updateSwitchStyle(mOverlayManager, mCurrentUserId, switchStyle);
+    }
+
+    // Unload all the switch styles
+    public void unlockSwitchStyles() {
+        ThemeAccentUtils.unlockSwitchStyles(mOverlayManager, mCurrentUserId);
+    }
+
     private void updateDozingState() {
         Trace.traceCounter(Trace.TRACE_TAG_APP, "dozing", mDozing ? 1 : 0);
         Trace.beginSection("StatusBar#updateDozingState");
@@ -6860,6 +6872,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_DATE_SELECTION),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SWITCH_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6924,6 +6939,10 @@ public class StatusBar extends SystemUI implements DemoMode,
                 unloadClocks();
                 updateClocks();
                 updateKeyguardStatusSettings();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.SWITCH_STYLE))) {
+                unlockSwitchStyles();
+                updateSwitchStyle();
             }
         }
 

@@ -50,6 +50,13 @@ public class ThemeAccentUtils {
         return list.split(",");
     }
 
+    // Switch themes
+    private static final String[] SWITCH_THEMES = {
+        "default", // 0
+        "mx.mdroid.system.switch.md2", // 1
+        "mx.mdroid.system.switch.oneplus", // 2
+    };
+
     // Check for the dark system theme
     public static boolean isUsingDarkTheme(IOverlayManager om, int userId) {
         OverlayInfo themeInfo = null;
@@ -259,6 +266,33 @@ public class ThemeAccentUtils {
             String clock = clocks[i];
             try {
                 om.setEnabled(clock,
+                        false /*disable*/, userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Switches switch style to user selected.
+    public static void updateSwitchStyle(IOverlayManager om, int userId, int switchStyle) {
+        if (switchStyle == 0) {
+            unlockSwitchStyles(om, userId);
+        } else {
+            try {
+                om.setEnabled(SWITCH_THEMES[switchStyle],
+                        true, userId);
+            } catch (RemoteException e) {
+            }
+        }
+    }
+
+    // Unload all the switch styles
+    public static void unlockSwitchStyles(IOverlayManager om, int userId) {
+        // skip index 0
+        for (int i = 1; i < SWITCH_THEMES.length; i++) {
+            String switchtheme = SWITCH_THEMES[i];
+            try {
+                om.setEnabled(switchtheme,
                         false /*disable*/, userId);
             } catch (RemoteException e) {
                 e.printStackTrace();
