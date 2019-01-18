@@ -120,11 +120,13 @@
     <item msgid="5226878858503393706">"استفاده از انتخاب سیستم (پیش‌فرض)"</item>
     <item msgid="4106832974775067314">"مونو"</item>
     <item msgid="5571632958424639155">"استریو"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_channel_mode_summaries">
     <item msgid="4118561796005528173">"استفاده از انتخاب سیستم (پیش‌فرض)"</item>
     <item msgid="8900559293912978337">"مونو"</item>
     <item msgid="8883739882299884241">"استریو"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_ldac_playback_quality_titles">
     <item msgid="7158319962230727476">"بهینه‌شده برای کیفیت صوت (۹۹۰ کیلوبیت در ثانیه/۹۰۹ کیلوبیت در ثانیه)"</item>

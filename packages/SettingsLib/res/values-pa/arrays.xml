@@ -120,11 +120,13 @@
     <item msgid="5226878858503393706">"ਸਿਸਟਮ ਚੋਣ ਦੀ ਵਰਤੋਂ ਕਰੋ (ਪੂਰਵ-ਨਿਰਧਾਰਤ)"</item>
     <item msgid="4106832974775067314">"ਮੋਨੋ"</item>
     <item msgid="5571632958424639155">"ਸਟੀਰੀਓ"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_channel_mode_summaries">
     <item msgid="4118561796005528173">"ਸਿਸਟਮ ਚੋਣ ਦੀ ਵਰਤੋਂ ਕਰੋ (ਪੂਰਵ-ਨਿਰਧਾਰਤ)"</item>
     <item msgid="8900559293912978337">"ਮੋਨੋ"</item>
     <item msgid="8883739882299884241">"ਸਟੀਰੀਓ"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_ldac_playback_quality_titles">
     <item msgid="7158319962230727476">" ਆਡੀਓ  ਗੁਣਵੱਤਾ ਲਈ ਸੁਯੋਗ ਬਣਾਇਆ ਗਿਆ (990kbps/909kbps)"</item>

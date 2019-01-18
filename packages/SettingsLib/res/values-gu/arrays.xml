@@ -120,11 +120,13 @@
     <item msgid="5226878858503393706">"સિસ્ટમ પસંદગીનો ઉપયોગ કરો (ડિફૉલ્ટ)"</item>
     <item msgid="4106832974775067314">"મૉનો"</item>
     <item msgid="5571632958424639155">"સ્ટીરિઓ"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_channel_mode_summaries">
     <item msgid="4118561796005528173">"સિસ્ટમ પસંદગીનો ઉપયોગ કરો (ડિફૉલ્ટ)"</item>
     <item msgid="8900559293912978337">"મૉનો"</item>
     <item msgid="8883739882299884241">"સ્ટીરિઓ"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_ldac_playback_quality_titles">
     <item msgid="7158319962230727476">"ઑડિઓની ગુણવત્તા (990 kbps/909 kbps) માટે ઓપ્ટિમાઇઝ કર્યું"</item>

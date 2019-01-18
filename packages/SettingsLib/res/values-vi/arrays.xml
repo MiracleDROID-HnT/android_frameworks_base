@@ -120,11 +120,13 @@
     <item msgid="5226878858503393706">"Sử dụng lựa chọn hệ thống (Mặc định)"</item>
     <item msgid="4106832974775067314">"Đơn âm"</item>
     <item msgid="5571632958424639155">"Âm thanh nổi"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_channel_mode_summaries">
     <item msgid="4118561796005528173">"Sử dụng lựa chọn hệ thống (Mặc định)"</item>
     <item msgid="8900559293912978337">"Đơn âm"</item>
     <item msgid="8883739882299884241">"Âm thanh nổi"</item>
+    <item>Dual Channel</item>
   </string-array>
   <string-array name="bluetooth_a2dp_codec_ldac_playback_quality_titles">
     <item msgid="7158319962230727476">"Được tối ưu hóa cho chất lượng âm thanh (990kb/giây/909kb/giây)"</item>
