@@ -561,8 +561,9 @@ public class ViewConfiguration {
      * a long press
      */
     public static int getLongPressTimeout() {
+        int longpress_delay = SystemProperties.getInt("persist.sys.longpress.delay", 0);
         return AppGlobals.getIntCoreSetting(Settings.Secure.LONG_PRESS_TIMEOUT,
-                DEFAULT_LONG_PRESS_TIMEOUT);
+                DEFAULT_LONG_PRESS_TIMEOUT + longpress_delay);
     }
 
     /**
