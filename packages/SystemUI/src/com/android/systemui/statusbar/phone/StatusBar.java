@@ -2733,8 +2733,10 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         final boolean keyguardVisible = (mState != StatusBarState.SHADE);
         final boolean hasArtwork = artworkDrawable != null;
+        final boolean useCustomColor = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.LOCK_SCREEN_VISUALIZER_USE_CUSTOM_COLOR, 0) == 1;
 
-        if (!mKeyguardFadingAway && keyguardVisible && hasArtwork && mScreenOn) {
+        if (!mKeyguardFadingAway && keyguardVisible && (hasArtwork || useCustomColor) && mScreenOn) {
             // if there's album art, ensure visualizer is visible
             mVisualizerView.setPlaying(mMediaController != null
                     && mMediaController.getPlaybackState() != null
