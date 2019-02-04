@@ -291,4 +291,9 @@
     <!-- CPUInfo tile -->
     <string name="quick_settings_cpuinfo_label">CPU Info</string>
 
+    <string name="cpuinfo_cpu_title">"cpu"</string>
+    <string name="cpuinfo_freq">" MHz"</string>
+    <string name="cpuinfo_temp_title">"temp: "</string>
+    <string name="cpuinfo_temp">" °C"</string>
+
 </resources>

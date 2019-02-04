@@ -19,6 +19,7 @@ package com.android.systemui;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -119,7 +120,7 @@ public class CPUInfoService extends Service {
             float descent = mOnlinePaint.descent();
             mFH = (int)(descent - mAscent + .5f);
 
-            final String maxWidthStr="cpuX interactive 0000000";
+            final String maxWidthStr="cpuX: interactive: 0000000 MHz";
             mMaxWidth = (int)mOnlinePaint.measureText(maxWidthStr);
 
             updateDisplay();
@@ -145,7 +146,7 @@ public class CPUInfoService extends Service {
         private String getCPUInfoString(int i) {
             String freq=mCurrFreq[i];
             String gov=mCurrGov[i];
-            return "cpu"+i+": "+gov+": "+freq;
+            return getResources().getString(R.string.cpuinfo_cpu_title)+i+": "+gov+": "+toMHz(freq);
         }
 
         @Override
@@ -164,7 +165,7 @@ public class CPUInfoService extends Service {
 
             int y = mPaddingTop - (int)mAscent;
 
-            canvas.drawText("temp: "+mCPUTemp, RIGHT-mPaddingRight-mMaxWidth,
+            canvas.drawText(getResources().getString(R.string.cpuinfo_temp_title)+toCelcius(mCPUTemp), RIGHT-mPaddingRight-mMaxWidth,
                 y-1, mOnlinePaint);
             y += mFH;
 
@@ -200,7 +201,11 @@ public class CPUInfoService extends Service {
         }
 
         private String toMHz(String mhzString) {
-            return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append(" MHz").toString();
+            return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append(getResources().getString(R.string.cpuinfo_freq)).toString();
+        }
+
+        private String toCelcius(String celciusString) {
+            return new StringBuilder().append(String.format("%.1f", (Float.valueOf(celciusString) / 1000))).append(getResources().getString(R.string.cpuinfo_temp)).toString();
         }
 
         public Handler getHandler(){

@@ -301,4 +301,9 @@
     <!-- CPUInfo tile -->
     <string name="quick_settings_cpuinfo_label">Информация о процессоре</string>
 
+    <string name="cpuinfo_cpu_title">"цп"</string>
+    <string name="cpuinfo_freq">" МГц"</string>
+    <string name="cpuinfo_temp_title">"темп: "</string>
+    <string name="cpuinfo_temp">" °C"</string>
+
 </resources>
