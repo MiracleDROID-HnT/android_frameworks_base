@@ -49,7 +49,6 @@ public interface DozeHost {
 
     interface Callback {
         default void onNotificationHeadsUp() {}
-        default void onNotificationMedia() {}
         default void onPowerSaveChanged(boolean active) {}
     }
 
