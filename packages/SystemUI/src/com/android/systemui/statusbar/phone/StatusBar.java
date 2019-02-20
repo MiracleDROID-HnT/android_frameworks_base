@@ -3320,8 +3320,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                 setLightThemeState(!finalUseDarkTheme || !finalUseBlackTheme);
             });
         }
-        if ((isUsingBlackTheme() != finalUseBlackTheme) ||
-                (isUsingDarkTheme() != finalUseDarkTheme)) {
+        if (themeNeedsRefresh() || ((isUsingBlackTheme() != finalUseBlackTheme) ||
+                (isUsingDarkTheme() != finalUseDarkTheme))) {
             mUiOffloadThread.submit(() -> {
                 setDarkThemeState(finalUseDarkTheme);
                 setBlackThemeState(finalUseBlackTheme);
@@ -5541,6 +5541,16 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mUnlockMethodCache.isMethodSecure(),
                 mStatusBarKeyguardViewManager.isOccluded());
         Trace.endSection();
+    }
+
+    private boolean themeNeedsRefresh(){
+        if (mContext.getSharedPreferences("systemui_theming", 0).getString(
+                "build_fingerprint", "").equals(Build.MDROID_FINGERPRINT)){
+            return false;
+        }
+        mContext.getSharedPreferences("systemui_theming", 0).edit().putString(
+                "build_fingerprint", Build.MDROID_FINGERPRINT).commit();
+        return true;
     }
 
     private void getNotificationStyleSetting() {
