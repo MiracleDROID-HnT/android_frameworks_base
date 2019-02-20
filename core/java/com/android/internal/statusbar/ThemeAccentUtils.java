@@ -55,6 +55,7 @@ public class ThemeAccentUtils {
         "default", // 0
         "mx.mdroid.system.switch.md2", // 1
         "mx.mdroid.system.switch.oneplus", // 2
+        "mx.mdroid.system.switch.telegram", // 3
     };
 
     // Check for the dark system theme
