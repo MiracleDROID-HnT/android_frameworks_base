@@ -94,16 +94,21 @@ public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
         if (mSetting == null) return;
+        if (state.slash == null) {
+            state.slash = new SlashState();
+        }
         final int value = arg instanceof Integer ? (Integer)arg : mSetting.getValue();
         final boolean enable = value != 0;
         state.value = enable;
         state.label = mContext.getString(R.string.quick_settings_ambient_display_label);
         state.icon = ResourceIcon.get(R.drawable.ic_qs_ambientdisplay);
         if (enable) {
+            state.slash.isSlashed = false;
             state.contentDescription =  mContext.getString(
                     R.string.quick_settings_ambient_display_label);
             state.state = Tile.STATE_ACTIVE;
         } else {
+            state.slash.isSlashed = true;
             state.contentDescription =  mContext.getString(
                     R.string.quick_settings_ambient_display_label);
             state.state = Tile.STATE_INACTIVE;
