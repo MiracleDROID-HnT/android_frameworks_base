@@ -17,6 +17,7 @@
 
 package com.android.systemui.qs.tiles;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemProperties;
@@ -32,6 +33,8 @@ import com.android.systemui.qs.SecureSetting;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+
+import com.android.internal.util.mdroid.MDroidUtils;
 
 /** Quick settings tile: Ambient Display **/
 public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
@@ -73,7 +76,13 @@ public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
-        return DISPLAY_SETTINGS;
+        if (MDroidUtils.isPackageInstalled(mContext, "com.custom.ambient.display")) {
+            return new Intent().setComponent(new ComponentName(
+                "com.custom.ambient.display", "com.custom.ambient.display.DozeSettings"));
+        } else {
+            return new Intent().setComponent(new ComponentName(
+                "com.android.settings", "com.android.settings.Settings$AmbientDisplaySettingsActivity"));
+        }
     }
 
     private void setEnabled(boolean enabled) {
