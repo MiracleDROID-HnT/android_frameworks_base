@@ -1208,7 +1208,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         updateDisplaySize(); // populates mDisplayMetrics
         updateResources();
         getNotificationStyleSetting();
-        updateTheme();
+        updateTheme(themeNeedsRefresh());
 
         inflateStatusBarWindow(context);
         mStatusBarWindow.setService(this);
@@ -3311,7 +3311,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         return systemuiThemeInfo != null && systemuiThemeInfo.isEnabled();
     }
 
-    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme) {
+    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme, boolean themeNeedsRefresh) {
         // We can only use final variables in lambdas
         final boolean finalUseBlackTheme = useBlackTheme;
         final boolean finalUseDarkTheme = useDarkTheme;
@@ -3320,7 +3320,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 setLightThemeState(!finalUseDarkTheme || !finalUseBlackTheme);
             });
         }
-        if (themeNeedsRefresh() || ((isUsingBlackTheme() != finalUseBlackTheme) ||
+        if (themeNeedsRefresh || ((isUsingBlackTheme() != finalUseBlackTheme) ||
                 (isUsingDarkTheme() != finalUseDarkTheme))) {
             mUiOffloadThread.submit(() -> {
                 setDarkThemeState(finalUseDarkTheme);
@@ -5543,6 +5543,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         Trace.endSection();
     }
 
+    /**
+     * Switches theme from light to dark and vice-versa.
+     */
+    protected void updateTheme() {
+        updateTheme(false);
+    }
+
     private boolean themeNeedsRefresh(){
         if (mContext.getSharedPreferences("systemui_theming", 0).getString(
                 "build_fingerprint", "").equals(Build.MDROID_FINGERPRINT)){
@@ -5558,10 +5565,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 Settings.System.NOTIFICATION_STYLE, 0, mCurrentUserId);
     }
 
-    /**
-     * Switches theme from light to dark and vice-versa.
-     */
-    protected void updateTheme() {
+    protected void updateTheme(boolean themeNeedsRefresh) {
         final boolean inflated = mStackScroller != null;
 
         haltTicker();
@@ -5608,7 +5612,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             onOverlayChanged();
         }
 
-        handleThemeStates(useBlackTheme, useDarkTheme);
+        handleThemeStates(useBlackTheme, useDarkTheme, themeNeedsRefresh);
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it
         // to set our default theme.
