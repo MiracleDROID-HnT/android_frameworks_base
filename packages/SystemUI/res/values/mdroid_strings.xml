@@ -315,4 +315,8 @@
     <string name="accessibility_quick_settings_gaming_mode_on">Gaming mode on</string>
     <string name="accessibility_quick_settings_gaming_mode_off">Gaming mode off</string>
 
+    <!-- Font Tile -->
+    <string name="quick_settings_font_label">Fonts</string>
+    <string name="quick_settings_font_detail_label">Select a font</string>
+
 </resources>

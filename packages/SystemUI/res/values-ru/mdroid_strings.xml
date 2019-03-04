@@ -318,4 +318,8 @@
     <string name="accessibility_quick_settings_gaming_mode_on">Игровой режим вкл.</string>
     <string name="accessibility_quick_settings_gaming_mode_off">Игровой режим выкл.</string>
 
+    <!-- Font Tile -->
+    <string name="quick_settings_font_label">Шрифты</string>
+    <string name="quick_settings_font_detail_label">Выберите шрифт</string>
+
 </resources>

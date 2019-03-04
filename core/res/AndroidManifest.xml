@@ -3591,7 +3591,7 @@
     <permission android:name="android.permission.ACCESS_FONT_MANAGER"
         android:label="@string/permlab_accessFontManager"
         android:description="@string/permdesc_accessFontManager"
-        android:protectionLevel="signatureOrSystem" />
+        android:protectionLevel="normal" />
 
     <!-- Allows an application to read overlay information
          @hide -->
