@@ -3172,7 +3172,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         updateTheme();
     }
 
-    public boolean isUsingDarkTheme() {
+    private boolean isUsingDarkTheme() {
         OverlayInfo systemuiThemeInfo = null;
         OverlayInfo settingsThemeInfo = null;
         try {
@@ -3185,7 +3185,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
     }
 
-    public boolean isUsingBlackTheme() {
+    private boolean isUsingBlackTheme() {
         OverlayInfo systemuiThemeInfo = null;
         OverlayInfo settingsThemeInfo = null;
         try {
@@ -3196,6 +3196,83 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
         return (systemuiThemeInfo != null && systemuiThemeInfo.isEnabled()) ||
                 (settingsThemeInfo != null && settingsThemeInfo.isEnabled());
+    }
+
+    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme) {
+        // We can only use final variables in lambdas
+        final boolean finalUseBlackTheme = useBlackTheme;
+        final boolean finalUseDarkTheme = useDarkTheme;
+        if ((isUsingBlackTheme() != finalUseBlackTheme) ||
+                (isUsingDarkTheme() != finalUseDarkTheme)) {
+            mUiOffloadThread.submit(() -> {
+                setDarkThemeState(finalUseDarkTheme);
+                setBlackThemeState(finalUseBlackTheme);
+                setLightThemeState(!finalUseDarkTheme || !finalUseBlackTheme);
+                setCommonThemeState(finalUseDarkTheme || finalUseBlackTheme);
+            });
+        }
+    }
+
+    private List<OverlayInfo> getAllOverlays() {
+        Map<String, List<OverlayInfo>> allOverlaysMap = null;
+        List<OverlayInfo> allOverlays = new ArrayList<OverlayInfo>();
+        try {
+            allOverlaysMap = mOverlayManager.getAllOverlays(
+                    mCurrentUserId);
+            for (String key : allOverlaysMap.keySet()) {
+                List<OverlayInfo> stuff = allOverlaysMap.get(key);
+                allOverlays.addAll(stuff);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return allOverlays;
+    }
+
+    private List<OverlayInfo> getOverlayInfosForCategory(String category) {
+        List<OverlayInfo> allOverlays = getAllOverlays();
+        List<OverlayInfo> ret = new ArrayList<OverlayInfo>();
+        for (OverlayInfo oi : allOverlays) {
+            if (category.equals(oi.category)) {
+                ret.add(oi);
+            }
+        }
+        return ret;
+    }
+
+    private List<String> getThemePkgs(String category) {
+        List<String> pkgs = new ArrayList<>();
+        List<OverlayInfo> oi = getOverlayInfosForCategory(category);
+        for (int i = 0; i < oi.size(); i++)
+            pkgs.add(oi.get(i).packageName);
+        return pkgs;
+    }
+
+    private void setThemeStateFromList(boolean enable, List<String> pkgs) {
+        try {
+            for (String pkg : pkgs) {
+                mOverlayManager.setEnabled(pkg,
+                        enable, mCurrentUserId);
+            }
+        } catch (RemoteException e) {
+            Log.w(TAG, "Can't set dark themes", e);
+        }
+    }
+
+    private void setDarkThemeState(boolean enable) {
+        setThemeStateFromList(enable, getThemePkgs("android.theme.dark"));
+    }
+
+    private void setBlackThemeState(boolean enable) {
+        setThemeStateFromList(enable, getThemePkgs("android.theme.black"));
+    }
+
+    private void setLightThemeState(boolean enable) {
+        setThemeStateFromList(enable, getThemePkgs("android.theme.light"));
+    }
+
+    private void setCommonThemeState(boolean enable) {
+        setThemeStateFromList(enable, getThemePkgs("android.theme.common"));
     }
 
     @Nullable
@@ -4193,6 +4270,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             pw.println("    overlay manager not initialized!");
         } else {
             pw.println("    dark overlay on: " + isUsingDarkTheme());
+            pw.println("    black overlay on: " + isUsingBlackTheme());
         }
         final boolean lightWpTheme = mContext.getThemeResId() == R.style.Theme_SystemUI_Light;
         pw.println("    light wallpaper theme: " + lightWpTheme);
@@ -5335,15 +5413,19 @@ public class StatusBar extends SystemUI implements DemoMode,
         switch (globalStyleSetting) {
             case 1:
                 useDarkTheme = nightMode;
+                useBlackTheme = false;
                 break;
             case 2:
                 useDarkTheme = false;
+                useBlackTheme = false;
                 break;
             case 3:
                 useDarkTheme = true;
+                useBlackTheme = false;
                 break;
             case 4:
                 useBlackTheme = true;
+                useDarkTheme = false;
                 break;
             default:
                 useDarkTheme = systemColors != null && (systemColors.getColorHints() &
@@ -5351,104 +5433,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 break;
         }
 
-        if (!useDarkTheme || !useBlackTheme) {
-            try {
-                mOverlayManager.setEnabled("mx.mdroid.gboard.theme.light",
-                        true, mCurrentUserId);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Can't change theme", e);
-            }
-        }
-
-        if (isUsingDarkTheme() != useDarkTheme) {
-            try {
-                mOverlayManager.setEnabled("mx.mdroid.system.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.settings.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.dialer.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.systemui.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.ebay.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.contacts.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.documentsui.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.messaging.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.phone.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.telecom.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.calculator.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.gboard.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.calendar.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.googlepackageinstaller.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.email.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.fmradio.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.eleven.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.recorder.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.xiaomiparts.theme.dark",
-                        useDarkTheme, mCurrentUserId);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Can't change theme", e);
-            }
-        }
-
-        if (isUsingBlackTheme() != useBlackTheme) {
-            try {
-                mOverlayManager.setEnabled("mx.mdroid.system.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.settings.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.dialer.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.systemui.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.ebay.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.contacts.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.documentsui.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.messaging.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.phone.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.telecom.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.calculator.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.gboard.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.calendar.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.googlepackageinstaller.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.email.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.fmradio.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.eleven.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.recorder.theme.black",
-                        useBlackTheme, mCurrentUserId);
-                mOverlayManager.setEnabled("mx.mdroid.xiaomiparts.theme.black",
-                        useBlackTheme, mCurrentUserId);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Can't change theme", e);
-            }
-        }
+        handleThemeStates(useBlackTheme, useDarkTheme);
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it
         // to set our default theme.
