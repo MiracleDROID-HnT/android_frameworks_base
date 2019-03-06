@@ -3202,12 +3202,16 @@ public class StatusBar extends SystemUI implements DemoMode,
         // We can only use final variables in lambdas
         final boolean finalUseBlackTheme = useBlackTheme;
         final boolean finalUseDarkTheme = useDarkTheme;
+        if (!finalUseDarkTheme || !finalUseBlackTheme) {
+            mUiOffloadThread.submit(() -> {
+                setLightThemeState(!finalUseDarkTheme || !finalUseBlackTheme);
+            });
+        }
         if ((isUsingBlackTheme() != finalUseBlackTheme) ||
                 (isUsingDarkTheme() != finalUseDarkTheme)) {
             mUiOffloadThread.submit(() -> {
                 setDarkThemeState(finalUseDarkTheme);
                 setBlackThemeState(finalUseBlackTheme);
-                setLightThemeState(!finalUseDarkTheme || !finalUseBlackTheme);
                 setCommonThemeState(finalUseDarkTheme || finalUseBlackTheme);
             });
         }
