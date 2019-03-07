@@ -19,6 +19,7 @@ package com.android.systemui.qs;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -127,6 +128,12 @@ public class SignalTileView extends QSIconViewImpl {
             mSignal.setPaddingRelative(mWideOverlayIconStartPadding, 0, 0, 0);
         } else {
             mSignal.setPaddingRelative(0, 0, 0, 0);
+        }
+        boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(),
+		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+        if (enableQsTileTinting) {
+            mIn.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_in_out_color));
+            mOut.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_in_out_color));
         }
         final boolean shown = isShown();
         setVisibility(mIn, shown, s.activityIn);

@@ -165,7 +165,7 @@ public class QSIconViewImpl extends QSIconView {
         }
 
         boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(), 
-		           Settings.System.QS_TILE_TINTING_ENABLE, 1) == 1;
+		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
 
         if (ValueAnimator.areAnimatorsEnabled()) {
             final float fromAlpha = Color.alpha(fromColor);

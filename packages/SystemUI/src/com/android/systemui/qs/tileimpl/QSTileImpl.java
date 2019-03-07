@@ -393,7 +393,7 @@ public abstract class QSTileImpl<TState extends State> implements QSTile {
     public static int getColorForState(Context context, int state) {
 
         boolean enableQsTileTinting = Settings.System.getInt(context.getContentResolver(), 
-			           Settings.System.QS_TILE_TINTING_ENABLE, 1) == 1;
+			           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
 
         switch (state) {
             case Tile.STATE_UNAVAILABLE:
@@ -402,13 +402,13 @@ public abstract class QSTileImpl<TState extends State> implements QSTile {
                             Utils.getColorAttr(context, android.R.attr.colorForeground));
                 } else {
                     return Utils.getDisabled(context,
-                            context.getResources().getColor(R.color.qs_tiles_unavailable_tint));
+                            Utils.getColorAttr(context, android.R.attr.colorForeground));
                 }
             case Tile.STATE_INACTIVE:
                 if (enableQsTileTinting) {
                     return Utils.getColorAttr(context, android.R.attr.textColorHint);
                 } else {
-                    return context.getResources().getColor(R.color.qs_tiles_inactive_tint);
+                    return Utils.getColorAttr(context, android.R.attr.textColorHint);
                 }
             case Tile.STATE_ACTIVE:
                 if (enableQsTileTinting) {
