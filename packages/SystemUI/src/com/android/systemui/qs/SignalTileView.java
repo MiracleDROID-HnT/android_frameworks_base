@@ -118,6 +118,12 @@ public class SignalTileView extends QSIconViewImpl {
         final SignalState s = (SignalState) state;
         setIcon(mSignal, s);
 
+        boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(),
+		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+
+        if (enableQsTileTinting) {
+            mOverlay.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_color));
+        }
         if (s.overlayIconId > 0) {
             mOverlay.setVisibility(VISIBLE);
             mOverlay.setImageResource(s.overlayIconId);
@@ -129,11 +135,9 @@ public class SignalTileView extends QSIconViewImpl {
         } else {
             mSignal.setPaddingRelative(0, 0, 0, 0);
         }
-        boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(),
-		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
         if (enableQsTileTinting) {
-            mIn.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_in_out_color));
-            mOut.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_in_out_color));
+            mIn.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_color));
+            mOut.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_signal_color));
         }
         final boolean shown = isShown();
         setVisibility(mIn, shown, s.activityIn);
