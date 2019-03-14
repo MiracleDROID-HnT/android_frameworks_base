@@ -190,8 +190,10 @@ public class HardkeyActionHandler {
                 // If an incoming call is ringing, HOME is totally disabled.
                 // (The user is already on the InCallUI at this point,
                 // and his ONLY options are to answer or reject the call.)
+                boolean enableHomeKeyWhenRinging = Settings.System.getInt(mContext.getContentResolver(), 
+		                Settings.System.ENABLE_HOME_KEY_WHEN_RINGING, 0) != 0;
                 TelecomManager telecomManager = getTelecommService();
-                if (telecomManager != null && telecomManager.isRinging()) {
+                if (telecomManager != null && telecomManager.isRinging() && !enableHomeKeyWhenRinging) {
                     Log.i(TAG, "Ignoring HOME; there's a ringing incoming call.");
                     return true;
                 }

@@ -4977,6 +4977,12 @@ public final class Settings {
         public static final String A2DP_SOURCE_CODEC_PRIORITY = "a2dp_source_codec_priority";
 
         /**
+         *  Weather to enable Home key when there\'s a ringing incoming call
+         * @hide
+         */
+        public static final String ENABLE_HOME_KEY_WHEN_RINGING = "enable_home_key_when_ringing";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
