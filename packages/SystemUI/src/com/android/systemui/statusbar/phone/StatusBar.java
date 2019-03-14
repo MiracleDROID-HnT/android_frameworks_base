@@ -6303,6 +6303,10 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private void updateDozing() {
         Trace.beginSection("StatusBar#updateDozing");
+        final boolean wakeAndUnlock = mFingerprintUnlockController.getMode()
+                        == FingerprintUnlockController.MODE_WAKE_AND_UNLOCK_PULSING
+                        || mFingerprintUnlockController.getMode()
+                        == FingerprintUnlockController.MODE_WAKE_AND_UNLOCK;
         // When in wake-and-unlock while pulsing, keep dozing state until fully unlocked.
         mDozing = mDozingRequested && mState == StatusBarState.KEYGUARD
                 || mFingerprintUnlockController.getMode()
@@ -6313,8 +6317,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                 FingerprintUnlockController.MODE_WAKE_AND_UNLOCK) {
             mDozing = false;
         }
-        mStatusBarWindowManager.setDozing(mDozing);
-        mStatusBarKeyguardViewManager.setDozing(mDozing);
+        final boolean dozingKeyguard = mDozing && wakeAndUnlock;
+        mStatusBarWindowManager.setDozing(dozingKeyguard);
+        mStatusBarKeyguardViewManager.setDozing(dozingKeyguard);
         if (mAmbientMediaPlaying != 0 && mAmbientIndicationContainer instanceof DozeReceiver) {
             ((DozeReceiver) mAmbientIndicationContainer).setDozing(mDozing);
         }
