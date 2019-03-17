@@ -122,4 +122,7 @@
 
     <bool name="config_canForceDozeNotifications">true</bool>
 
+    <bool name="config_deviceHasHallSensor" translatable="false">false</bool>
+    <integer name="config_hallSensorType" translatable="false">33171016</integer>
+
 </resources>

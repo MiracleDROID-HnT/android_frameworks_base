@@ -64,6 +64,7 @@ import com.android.internal.util.lineageos.app.ContextConstants;
 import com.android.internal.widget.ILockSettings;
 import com.android.server.accessibility.AccessibilityManagerService;
 import com.android.server.am.ActivityManagerService;
+import com.android.server.am.MDroidService;
 import com.android.server.audio.AudioService;
 import com.android.server.camera.CameraServiceProxy;
 import com.android.server.car.CarServiceHelperService;
@@ -910,6 +911,10 @@ public final class SystemServer {
 
             traceBeginAndSlog("PinnerService");
             mSystemServiceManager.startService(PinnerService.class);
+            traceEnd();
+
+            traceBeginAndSlog("MDroidService");
+            mSystemServiceManager.startService(MDroidService.class);
             traceEnd();
         } catch (RuntimeException e) {
             Slog.e("System", "******************************************");

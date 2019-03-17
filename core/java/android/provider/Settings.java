@@ -10788,6 +10788,11 @@ public final class Settings {
         public static final String DEVICE_IDLE_CONSTANTS_WATCH = "device_idle_constants_watch";
 
         /**
+         * Whether to enable Hall sensor.
+         */
+        public static final String HALL_SENSOR_ENABLED = "hall_sensor_enabled";
+
+        /**
          * Battery Saver specific settings
          * This is encoded as a key=value list, separated by commas. Ex:
          *
