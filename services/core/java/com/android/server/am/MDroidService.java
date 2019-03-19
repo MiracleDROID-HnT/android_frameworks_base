@@ -18,6 +18,7 @@ package com.android.server.am;
 
 import android.content.Context;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.hardware.Sensor;
@@ -32,6 +33,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Slog;
 import com.android.server.SystemService;
@@ -50,6 +52,7 @@ public class MDroidService extends SystemService {
 
     private boolean mHallSensorServiceEnabled = false;
     private int mHallSensorType;
+    private int mLidState;
 
     private HallSensorService mHallSensorService;
     private BinderService mBinderService;
@@ -168,7 +171,8 @@ public class MDroidService extends SystemService {
 
     void goToSleep() {
         if (mPowerManager != null) {
-            mPowerManager.goToSleep(SystemClock.uptimeMillis(), PowerManager.GO_TO_SLEEP_REASON_POWER_BUTTON, 0);
+            mPowerManager.goToSleep(SystemClock.uptimeMillis(), PowerManager.GO_TO_SLEEP_REASON_LID_SWITCH,
+                    PowerManager.GO_TO_SLEEP_FLAG_NO_DOZE);
         }
     }
 
@@ -241,10 +245,21 @@ public class MDroidService extends SystemService {
             }
             if (wakeup) {
                 wakeUp();
+                mLidState = 1;
             } else {
                 goToSleep();
+                mLidState = 0;
             }
+            sendLidChangeBroadcast();
         }
+    }
+
+    private void sendLidChangeBroadcast() {
+        Slog.i(TAG, "Sending cover change broadcast, mLidState = " + mLidState);
+        Intent intent = new Intent(com.android.internal.util.mdroid.content.Intent.ACTION_LID_STATE_CHANGED);
+        intent.putExtra(com.android.internal.util.mdroid.content.Intent.EXTRA_LID_STATE, mLidState);
+        intent.setFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+        mContext.sendBroadcastAsUser(intent, UserHandle.SYSTEM);
     }
 
     private class MDroidHandlerThread extends HandlerThread {
