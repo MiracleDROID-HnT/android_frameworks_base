@@ -5101,6 +5101,12 @@ public final class Settings {
         public static final String TORCH_POWER_BUTTON_GESTURE_HAPTIC_FEEDBACK_ENABLE = "torch_power_button_gesture_haptic_feedback_enable";
 
         /**
+         * show the membar in slim recents
+         *  @hide
+         */
+        public static final String SLIM_RECENTS_MEM_DISPLAY = "slim_recents_mem_display";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
