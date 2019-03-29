@@ -5089,6 +5089,12 @@ public final class Settings {
         public static final String SLIM_RECENTS_BLACKLIST_VALUES = "slim_recents_blacklist_values";
 
         /**
+         * Long press delay to toggle torch
+         * @hide
+         */
+        public static final String LONG_PRESS_POWER_TORCH_DELAY = "long_press_power_torch_delay";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

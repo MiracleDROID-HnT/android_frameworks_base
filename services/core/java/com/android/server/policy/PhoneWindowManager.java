@@ -1591,10 +1591,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     if (mResolvedLongPressOnPowerBehavior != LONG_PRESS_POWER_TORCH) {
                         wakeUpFromPowerKey(event.getDownTime());
                     }
+                    boolean longpressPowerTorch = mResolvedLongPressOnPowerBehavior == LONG_PRESS_POWER_TORCH;
+                    long longpressPowerTorchDelay = Settings.System.getLongForUser(mContext.getContentResolver(),
+                            Settings.System.LONG_PRESS_POWER_TORCH_DELAY,
+                            ViewConfiguration.get(mContext).getDeviceGlobalActionKeyTimeout(),
+                            UserHandle.USER_CURRENT);
+                    Slog.i(TAG, "longpressPowerTorchDelay = " + longpressPowerTorchDelay);
                     Message msg = mHandler.obtainMessage(MSG_POWER_LONG_PRESS);
                     msg.setAsynchronous(true);
                     mHandler.sendMessageDelayed(msg,
-                            ViewConfiguration.get(mContext).getDeviceGlobalActionKeyTimeout());
+                            longpressPowerTorch ? longpressPowerTorchDelay : ViewConfiguration.get(mContext).getDeviceGlobalActionKeyTimeout());
                     mBeganFromNonInteractive = true;
                 } else {
                     if ((mTorchActionMode != 1) ||
