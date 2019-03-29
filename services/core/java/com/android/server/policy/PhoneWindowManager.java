@@ -1112,7 +1112,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     private void toggleFlashLight() {
-        performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, true);
+        if (Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.TORCH_POWER_BUTTON_GESTURE_HAPTIC_FEEDBACK_ENABLE, 1,
+                    UserHandle.USER_CURRENT) != 0) {
+            performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, true);
+        }
         MDroidUtils.toggleCameraFlash();
     }
 

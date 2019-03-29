@@ -5095,6 +5095,12 @@ public final class Settings {
         public static final String LONG_PRESS_POWER_TORCH_DELAY = "long_press_power_torch_delay";
 
         /**
+         * Whether to enable toggle torch haptic feedback
+         * @hide
+         */
+        public static final String TORCH_POWER_BUTTON_GESTURE_HAPTIC_FEEDBACK_ENABLE = "torch_power_button_gesture_haptic_feedback_enable";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
