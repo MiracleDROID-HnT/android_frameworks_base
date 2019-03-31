@@ -158,6 +158,7 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
         mActivityStarter = Dependency.get(ActivityStarter.class);
         addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight,
                 oldBottom) -> updateAnimator(right - left));
+        updateEverything();
     }
 
     private void updateAnimator(int width) {
