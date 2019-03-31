@@ -61,10 +61,10 @@ import android.widget.TextView;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardStatusView;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.systemui.DejankUtils;
+import com.android.systemui.Dependency;
 import com.android.systemui.Interpolators;
 import com.android.systemui.R;
 import com.android.systemui.classifier.FalsingManager;
@@ -82,6 +82,7 @@ import com.android.systemui.statusbar.NotificationShelf;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.notification.NotificationUtils;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
+import com.android.systemui.statusbar.policy.KeyguardMonitor;
 import com.android.systemui.statusbar.policy.KeyguardUserSwitcher;
 import com.android.systemui.statusbar.policy.OnHeadsUpChangedListener;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
@@ -165,7 +166,6 @@ public class NotificationPanelView extends PanelView implements
     private boolean mQsFullyExpanded;
     public static boolean mKeyguardShowing;
     public static boolean mHeadsUpShowing;
-    private static boolean mKeyguardOrShadeShowing;
     private boolean mDozing;
     private boolean mDozingOnDown;
     protected int mStatusBarState;
@@ -245,7 +245,8 @@ public class NotificationPanelView extends PanelView implements
 
     // Omni additions
     private boolean mQsSecureExpandDisabled;
-    private LockPatternUtils mLockPatternUtils;
+    private final Callback mCallback = new Callback();
+    private final KeyguardMonitor mKeyguardMonitor;
 
     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
         @Override
@@ -309,7 +310,6 @@ public class NotificationPanelView extends PanelView implements
     public NotificationPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(!DEBUG);
-        mLockPatternUtils = new LockPatternUtils(context);
         mFalsingManager = FalsingManager.getInstance(context);
         mPowerManager = context.getSystemService(PowerManager.class);
 
@@ -324,6 +324,8 @@ public class NotificationPanelView extends PanelView implements
                 return true;
             }
         });
+        mKeyguardMonitor = Dependency.get(KeyguardMonitor.class);
+        mKeyguardMonitor.addCallback(mCallback);
     }
 
     public void setStatusBar(StatusBar bar) {
@@ -759,6 +761,7 @@ public class NotificationPanelView extends PanelView implements
         mQsExpansionEnabled = qsExpansionEnabled && !isQsSecureExpandDisabled();
         if (mQs == null) return;
         mQs.setHeaderClickable(qsExpansionEnabled);
+        mQs.setSecureExpandDisabled(!mQsExpansionEnabled);
     }
 
     @Override
@@ -2805,6 +2808,9 @@ public class NotificationPanelView extends PanelView implements
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             update();
+            if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.LOCK_QS_DISABLED))) {
+                mStatusBar.updateQsExpansionEnabled();
+            }
         }
 
         public void update() {
@@ -2971,11 +2977,16 @@ public class NotificationPanelView extends PanelView implements
         return mKeyguardBottomArea.getLockIcon();
     }
 
+    private final class Callback implements KeyguardMonitor.Callback {
+        @Override
+        public void onKeyguardShowingChanged() {
+            mStatusBar.updateQsExpansionEnabled();
+        }
+    };
+
     private boolean isQsSecureExpandDisabled() {
-        final boolean keyguardOrShadeShowing = mStatusBarState == StatusBarState.KEYGUARD
-                || mStatusBarState == StatusBarState.SHADE_LOCKED;
-        return mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()) && mQsSecureExpandDisabled &&
-                keyguardOrShadeShowing;
+        return mQsSecureExpandDisabled && mKeyguardMonitor.isSecure()
+            && mKeyguardMonitor.isShowing();
     }
 
     public static void startBlurTask() {
