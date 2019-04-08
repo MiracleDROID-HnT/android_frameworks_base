@@ -79,23 +79,23 @@ public class QSTileView extends QSTileBaseView {
     }
 
     protected void createLabel() {
-        boolean enableQsTileTinting = Settings.System.getInt(mContext.getContentResolver(),
-		           Settings.System.QS_TILE_TINTING_ENABLE, 0) != 0;
+        boolean enableQsTileTitleTinting = Settings.System.getInt(mContext.getContentResolver(),
+		           Settings.System.QS_TILE_TITLE_TINTING_ENABLE, 0) != 0;
         mLabelContainer = (ViewGroup) LayoutInflater.from(getContext())
                 .inflate(R.layout.qs_tile_label, this, false);
         mLabelContainer.setClipChildren(false);
         mLabelContainer.setClipToPadding(false);
         mLabel = mLabelContainer.findViewById(R.id.tile_label);
-        if (enableQsTileTinting) {
+        if (enableQsTileTitleTinting) {
             mLabel.setTextColor(mContext.getResources().getColor(R.color.qs_tiles_label_color));
         }
         mPadLock = mLabelContainer.findViewById(R.id.restricted_padlock);
         mDivider = mLabelContainer.findViewById(R.id.underline);
-        if (enableQsTileTinting) {
+        if (enableQsTileTitleTinting) {
             mDivider.setBackgroundColor(mContext.getResources().getColor(R.color.qs_tiles_underline_color));
         }
         mExpandIndicator = mLabelContainer.findViewById(R.id.expand_indicator);
-        if (enableQsTileTinting) {
+        if (enableQsTileTitleTinting) {
             ImageView mExpandIndicatorIcon = mLabelContainer.findViewById(R.id.expand_indicator);
             mExpandIndicatorIcon.setColorFilter(mContext.getResources().getColor(R.color.qs_tiles_expand_tint));
         }

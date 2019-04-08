@@ -4553,6 +4553,14 @@ public final class Settings {
         public static final String QS_TILE_TINTING_ENABLE = "qs_tile_tinting_enable";
 
         /**
+         * Whether to show Device Accent on QS title on the screen.
+         * 0 = OFF
+         * 1 = ON
+         * @hide
+         */
+        public static final String QS_TILE_TITLE_TINTING_ENABLE = "qs_tile_title_tinting_enable";
+
+        /**
          * How many rows to show in the qs panel when in portrait
          * @hide
          */
