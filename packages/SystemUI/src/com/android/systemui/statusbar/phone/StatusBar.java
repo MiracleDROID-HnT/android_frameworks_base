@@ -5608,8 +5608,12 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         if ((isUsingDarkNotificationTheme(mOverlayManager, mCurrentUserId) != useDarkNotificationTheme) ||
                 (isUsingBlackNotificationTheme(mOverlayManager, mCurrentUserId) != useBlackNotificationTheme)) {
-            setNotificationTheme(mOverlayManager, mCurrentUserId, useDarkTheme, useBlackTheme, mNotificationStyle);
-            onOverlayChanged();
+            final boolean finalUseBlackTheme = useBlackTheme;
+            final boolean finalUseDarkTheme = useDarkTheme;
+            mUiOffloadThread.submit(() -> {
+                setNotificationTheme(mOverlayManager, mCurrentUserId, finalUseDarkTheme, finalUseBlackTheme, mNotificationStyle);
+                onOverlayChanged();
+            });
         }
 
         handleThemeStates(useBlackTheme, useDarkTheme, themeNeedsRefresh);
