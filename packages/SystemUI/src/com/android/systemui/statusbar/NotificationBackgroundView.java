@@ -23,8 +23,9 @@ import android.database.ContentObserver;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.os.Handler;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.UserHandle;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -49,11 +50,12 @@ public class NotificationBackgroundView extends View {
     private static int mTranslucencyPercentage;
     private static boolean mTranslucentNotifications;
 
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private SettingsObserver mSettingsObserver;
 
     public NotificationBackgroundView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mSettingsObserver = new SettingsObserver(new Handler());
+        mSettingsObserver = new SettingsObserver(mHandler);
     }
 
     @Override
