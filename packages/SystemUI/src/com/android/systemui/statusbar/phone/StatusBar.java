@@ -403,9 +403,10 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private static final String[] QS_TILE_THEMES = {
         "mx.mdroid.systemui.qstile.default", // 0
-        "mx.mdroid.systemui.qstile.circletrim", // 1
-        "mx.mdroid.systemui.qstile.dualtonecircletrim", // 2
-        "mx.mdroid.systemui.qstile.squircletrim", // 3
+        "mx.mdroid.systemui.qstile.circle", // 1
+        "mx.mdroid.systemui.qstile.circletrim", // 2
+        "mx.mdroid.systemui.qstile.dualtonecircletrim", // 3
+        "mx.mdroid.systemui.qstile.squircletrim", // 4
     };
 
     /** If true, the system is in the half-boot-to-decryption-screen state.
