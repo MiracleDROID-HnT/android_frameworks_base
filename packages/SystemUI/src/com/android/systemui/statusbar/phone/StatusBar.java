@@ -406,7 +406,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         "mx.mdroid.systemui.qstile.circle", // 1
         "mx.mdroid.systemui.qstile.circletrim", // 2
         "mx.mdroid.systemui.qstile.dualtonecircletrim", // 3
-        "mx.mdroid.systemui.qstile.squircletrim", // 4
+        "mx.mdroid.systemui.qstile.squircle", // 4
+        "mx.mdroid.systemui.qstile.squircletrim", // 5
+        "mx.mdroid.systemui.qstile.teardrop", // 6
     };
 
     /** If true, the system is in the half-boot-to-decryption-screen state.
