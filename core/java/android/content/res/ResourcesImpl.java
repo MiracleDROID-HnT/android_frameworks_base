@@ -625,6 +625,13 @@ public class ResourcesImpl {
                 }
                 dr = cs.newDrawable(wrapper);
             } else if (isColorDrawable) {
+                try {
+                    if (AccentUtils.isResourceAccent(getResourceName(id)))
+                        value.data = AccentUtils.getAccentColor(value.data);
+                } catch (NotFoundException nfe) {
+                } catch (Exception ex) {
+                    Log.e(TAG, ex.getMessage());
+                }
                 dr = new ColorDrawable(value.data);
             } else {
                 dr = loadDrawableForCookie(wrapper, value, id, density, null);
@@ -957,6 +964,14 @@ public class ResourcesImpl {
 
         final long key = (((long) value.assetCookie) << 32) | value.data;
 
+        try {
+            if (AccentUtils.isResourceAccent(getResourceName(id)))
+                value.data = AccentUtils.getAccentColor(value.data);
+        } catch (NotFoundException nfe) {
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+
         // Handle inline color definitions.
         if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT
                 && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
@@ -995,6 +1010,14 @@ public class ResourcesImpl {
                 final String name = getResourceName(id);
                 if (name != null) android.util.Log.d("PreloadColorStateList", name);
             }
+        }
+
+        try {
+            if (AccentUtils.isResourceAccent(getResourceName(id)))
+                value.data = AccentUtils.getAccentColor(value.data);
+        } catch (NotFoundException nfe) {
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
         }
 
         final long key = (((long) value.assetCookie) << 32) | value.data;
