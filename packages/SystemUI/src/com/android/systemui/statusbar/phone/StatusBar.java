@@ -7020,6 +7020,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.QS_QUICKBAR_SCROLL_ENABLED))) {
                 setQSTilesScroller();
             } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.Secure.STATUS_BAR_BATTERY_SAVER_COLOR))) {
+                updateBatterySaverColor();
+            } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.FORCE_AMBIENT_FOR_MEDIA))) {
                 setForceAmbient();
             } else if (uri.equals(Settings.System.getUriFor(
