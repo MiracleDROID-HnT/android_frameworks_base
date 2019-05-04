@@ -5575,15 +5575,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                 Settings.System.NOTIFICATION_STYLE, 0, mCurrentUserId);
     }
 
-    /**
-     * Switches qs tile style.
-     */
-    public void updateTileStyle() {
-        int qsTileStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.QS_TILE_STYLE, 0, mCurrentUserId);
-        updateNewTileStyle(mOverlayManager, mCurrentUserId, qsTileStyle);
-    }
-
     protected void updateTheme(boolean themeNeedsRefresh) {
         final boolean inflated = mStackScroller != null;
 
@@ -5665,9 +5656,36 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
+    /**
+     * Switches qs tile style.
+     */
+    public void updateTileStyle() {
+        int qsTileStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QS_TILE_STYLE, 0, mCurrentUserId);
+        if (qsTileStyle == 0) {
+            stockTileStyle();
+        } else {
+            try {
+                mOverlayManager.setEnabled(QS_TILE_THEMES[qsTileStyle],
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change qs tile style", e);
+            }
+        }
+    }
+
     // Switches qs tile style back to stock.
     public void stockTileStyle() {
-        stockNewTileStyle(mOverlayManager, mCurrentUserId);
+        // skip index 0
+        for (int i = 1; i < QS_TILE_THEMES.length; i++) {
+            String qstiletheme = QS_TILE_THEMES[i];
+            try {
+                mOverlayManager.setEnabled(qstiletheme,
+                        false /*disable*/, mCurrentUserId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static final String[] getClocks(Context ctx) {
@@ -7233,34 +7251,6 @@ public class StatusBar extends SystemUI implements DemoMode,
     private void rebuildRecentsScreen() {
         if (mSlimRecents != null) {
             mSlimRecents.rebuildRecentsScreen();
-        }
-    }
-
-    // Switches qs tile style to user selected.
-    public static void updateNewTileStyle(IOverlayManager om, int userId, int qsTileStyle) {
-        if (qsTileStyle == 0) {
-            stockNewTileStyle(om, userId);
-        } else {
-            try {
-                om.setEnabled(QS_TILE_THEMES[qsTileStyle],
-                        true, userId);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Can't change qs tile style", e);
-            }
-        }
-    }
-
-    // Switches qs tile style back to stock.
-    public static void stockNewTileStyle(IOverlayManager om, int userId) {
-        // skip index 0
-        for (int i = 1; i < QS_TILE_THEMES.length; i++) {
-            String qstiletheme = QS_TILE_THEMES[i];
-            try {
-                om.setEnabled(qstiletheme,
-                        false /*disable*/, userId);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
         }
     }
 
