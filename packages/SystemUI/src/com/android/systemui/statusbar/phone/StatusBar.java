@@ -402,7 +402,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final int FADE_KEYGUARD_DURATION_PULSING = 96;
 
     private static final String[] QS_TILE_THEMES = {
-        "mx.mdroid.systemui.qstile.default", // 0
+        "default", // 0
         "mx.mdroid.systemui.qstile.circle", // 1
         "mx.mdroid.systemui.qstile.circletrim", // 2
         "mx.mdroid.systemui.qstile.dualtonecircletrim", // 3
@@ -5663,7 +5663,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         int qsTileStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.QS_TILE_STYLE, 0, mCurrentUserId);
         if (qsTileStyle == 0) {
-            stockTileStyle();
+            unlockQsTileStyles();
         } else {
             try {
                 mOverlayManager.setEnabled(QS_TILE_THEMES[qsTileStyle],
@@ -5674,8 +5674,8 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
-    // Switches qs tile style back to stock.
-    public void stockTileStyle() {
+    // Unload all the qs tile styles
+    public void unlockQsTileStyles() {
         // skip index 0
         for (int i = 1; i < QS_TILE_THEMES.length; i++) {
             String qstiletheme = QS_TILE_THEMES[i];
@@ -7108,7 +7108,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 updateRecentsMode();
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.QS_TILE_STYLE))) {
-                stockTileStyle();
+                unlockQsTileStyles();
                 updateTileStyle();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.HIDE_LOCKSCREEN_ALARM)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.HIDE_LOCKSCREEN_CLOCK)) ||
