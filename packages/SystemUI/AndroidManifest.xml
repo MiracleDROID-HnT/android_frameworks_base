@@ -207,7 +207,6 @@
 
     <!-- Screenshots and screenrecord -->
     <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
-    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />
 
     <!-- Custom permissions -->
     <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
