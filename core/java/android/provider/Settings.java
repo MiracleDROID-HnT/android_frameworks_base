@@ -5207,12 +5207,6 @@ public final class Settings {
         public static final String THEME_TILE_ENABLED_MODE = "theme_tile_enabled_mode";
 
         /**
-         * Enable microphone as audio input in screen recording
-         * @hide
-         */
-        public static final String SREC_ENABLE_MIC = "srec_enable_mic";
-
-        /**
          * Whether to enable Pie Volume dialog
          */
         public static final String PIE_VOLUME_DIALOG = "pie_volume_dialog";
