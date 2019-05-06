@@ -75,7 +75,6 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -136,39 +135,49 @@ class GlobalScreenrecord {
                     mContext.getContentResolver(), Settings.System.SREC_ENABLE_MIC, 0) == 1;
 
             // additional arguments to pass to screenrecord bin
-            ArrayList<String> cmds1 = new ArrayList<String>();
-            cmds1.add("/system/bin/screenrecord");
-            cmds1.add(TMP_PATH);
+            final String[] cmds;
             if (includeMicrophone) {
-                cmds1.add("--microphone");
+                cmds = new String[7];
+            } else {
+                cmds = new String[6];
             }
+            cmds[0] = "/system/bin/screenrecord";
+            cmds[1] = TMP_PATH;
             switch (mMode) {
                 case WindowManager.SCREEN_RECORD_LOW_QUALITY:
                     // low resolution and 1.5Mbps
-                    cmds1.add("--size");
-                    cmds1.add(portrait ? (higherAspectRatio ? "480x960" : "480x800") : (higherAspectRatio ? "960x480" : "800x480"));
-                    cmds1.add("--bit-rate");
-                    cmds1.add("1500000");
+                    cmds[2] = "--size";
+                    cmds[3] = portrait ? (higherAspectRatio ? "480x960" : "480x800") : (higherAspectRatio ? "960x480" : "800x480");
+                    cmds[4] = "--bit-rate";
+                    cmds[5] = "1500000";
+                    if (includeMicrophone) {
+                        cmds[6] = "--microphone";
+                    }
                     break;
                 case WindowManager.SCREEN_RECORD_MID_QUALITY:
                     // default resolution (720p) and 4Mbps
-                    cmds1.add("--size");
-                    cmds1.add(portrait ? (higherAspectRatio ? "720x1440" : "720x1280") : (higherAspectRatio ? "1440x720" : "1280x720"));
-                    cmds1.add("--bit-rate");
-                    cmds1.add("4000000");
+                    cmds[2] = "--size";
+                    cmds[3] = portrait ? (higherAspectRatio ? "720x1440" : "720x1280") : (higherAspectRatio ? "1440x720" : "1280x720");
+                    cmds[4] = "--bit-rate";
+                    cmds[5] = "4000000";
+                    if (includeMicrophone) {
+                        cmds[6] = "--microphone";
+                    }
                     break;
                 case WindowManager.SCREEN_RECORD_HIGH_QUALITY:
                     // default resolution (720p) and 8Mbps
-                    cmds1.add("--size");
-                    cmds1.add(portrait ? (higherAspectRatio ? "720x1440" : "720x1280") : (higherAspectRatio ? "1440x720" : "1280x720"));
-                    cmds1.add("--bit-rate");
-                    cmds1.add("8000000");
+                    cmds[2] = "--size";
+                    cmds[3] = portrait ? (higherAspectRatio ? "720x1440" : "720x1280") : (higherAspectRatio ? "1440x720" : "1280x720");
+                    cmds[4] = "--bit-rate";
+                    cmds[5] = "8000000";
+                    if (includeMicrophone) {
+                        cmds[6] = "--microphone";
+                    }
                     break;
             }
 
             try {
-                final String[] cmds2 = cmds1.toArray(new String[cmds1.size()]);
-                Process proc = rt.exec(cmds2);
+                Process proc = rt.exec(cmds);
                 BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
                 while (!isInterrupted()) {
