@@ -9023,6 +9023,8 @@ public class ActivityManagerService extends IActivityManager.Stub
         if ((callingAppId == SYSTEM_UID) || (callingAppId == ROOT_UID)) {
             if ("com.android.settings.files".equals(grantUri.uri.getAuthority())) {
                 // Exempted authority for cropping user photos in Settings app
+            } else if ("org.lineageos.recorder.fileprovider".equals(grantUri.uri.getAuthority())) {
+                // Exempted authority for user to play recorded files in Recorder app
             } else {
                 Slog.w(TAG, "For security reasons, the system cannot issue a Uri permission"
                         + " grant to " + grantUri + "; use startActivityAsCaller() instead");
