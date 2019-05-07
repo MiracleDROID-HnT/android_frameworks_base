@@ -256,16 +256,23 @@ public class BatteryMeterView extends LinearLayout implements
     private void updateShowPercent() {
         final boolean showing = mBatteryPercentView != null;
         if (forcePercentageQsHeader()
-                || (mStyle != BatteryMeterDrawableBase.BATTERY_STYLE_HIDDEN && ((mShowPercentText == 1) || mForceShowPercent || mPowerSave || mCharging))) {
+                || (mStyle != BatteryMeterDrawableBase.BATTERY_STYLE_HIDDEN && ((mShowPercentText == 2 || mShowPercentText == 3) || mForceShowPercent || mPowerSave || mCharging))) {
             if (!showing) {
                 mBatteryPercentView = loadPercentView();
                 if (mTextColor != 0) mBatteryPercentView.setTextColor(mTextColor);
                 updatePercentText();
-                addView(mBatteryPercentView,
-                        0,
-                        new ViewGroup.LayoutParams(
-                                LayoutParams.WRAP_CONTENT,
-                                LayoutParams.MATCH_PARENT));
+                if(mShowPercentText == 2){
+                    addView(mBatteryPercentView,
+                            0,
+                            new ViewGroup.LayoutParams(
+                                    LayoutParams.WRAP_CONTENT,
+                                    LayoutParams.MATCH_PARENT));
+                } else if(mShowPercentText == 3) {
+                    addView(mBatteryPercentView,
+                            new ViewGroup.LayoutParams(
+                                    LayoutParams.WRAP_CONTENT,
+                                    LayoutParams.MATCH_PARENT));
+                }
             }
         } else {
             if (showing) {
@@ -280,8 +287,8 @@ public class BatteryMeterView extends LinearLayout implements
             mBatteryPercentView.setPaddingRelative(0, 0,
                     mStyle == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT ? (isRightClock() ? mEndPadding : 0) : mEndPadding, 0);
         }
-        mDrawable.showPercentInsideCircle(mShowPercentText == 2);
-        mDrawable.setShowPercent(mShowPercentText == 2);
+        mDrawable.showPercentInsideCircle(mShowPercentText == 1);
+        mDrawable.setShowPercent(mShowPercentText == 1);
     }
 
     @Override
