@@ -640,4 +640,9 @@ interface IActivityManager {
 
      void setShowWhenLocked(in IBinder token, boolean showWhenLocked);
      void setTurnScreenOn(in IBinder token, boolean turnScreenOn);
+
+    /**
+     *  Should disable touch if three fingers to screen shot is active?
+     */
+    boolean isSwipeToScreenshotGestureActive();
 }
