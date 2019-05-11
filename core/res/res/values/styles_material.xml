@@ -501,6 +501,11 @@ please see styles_device_defaults.xml.
 
     <style name="Widget.Material.Notification.ProgressBar" parent="Widget.Material.Light.ProgressBar.Horizontal" />
 
+    <style name="Widget.Material.Notification.Text" parent="Widget.Material.Light.TextView">
+        <item name="lineSpacingExtra">6sp</item>
+        <item name="textAppearance">@style/TextAppearance.Material.Notification</item>
+    </style>
+
     <style name="Widget.Material.Notification.MessagingText" parent="Widget.Material.Light.TextView">
         <item name="layout_width">match_parent</item>
         <item name="layout_height">wrap_content</item>
