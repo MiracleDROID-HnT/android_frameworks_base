@@ -8628,7 +8628,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         synchronized (mLock) {
             updateWakeGestureListenerLp();
         }
-        sendLidChangeBroadcast();
+        if (SystemProperties.get("sys.boot_completed").equals("1")) {
+            sendLidChangeBroadcast();
+        }
     }
 
     private void sendLidChangeBroadcast() {
