@@ -1043,12 +1043,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                 UserHandle.USER_ALL);
 
         mContext.getContentResolver().registerContentObserver(
-                Settings.Secure.getUriFor(Settings.Secure.NIGHT_DISPLAY_ACTIVATED),
-                false,
-                mNightSettingsObserver,
-                UserHandle.USER_ALL);
-
-        mContext.getContentResolver().registerContentObserver(
                 Settings.Secure.getUriFor(Settings.Secure.TWILIGHT_STATE),
                 false,
                 mTwilightStateObserver,
@@ -6726,13 +6720,6 @@ public class StatusBar extends SystemUI implements DemoMode,
     };
 
     protected final ContentObserver mThemeSettingsObserver = new ContentObserver(mHandler) {
-        @Override
-        public void onChange(boolean selfChange) {
-            updateTheme();
-        }
-    };
-
-    protected final ContentObserver mNightSettingsObserver = new ContentObserver(mHandler) {
         @Override
         public void onChange(boolean selfChange) {
             updateTheme();
