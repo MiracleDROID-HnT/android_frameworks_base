@@ -29,6 +29,7 @@
     <string name="global_action_reboot_recovery">Recovery</string>
     <string name="global_action_reboot_bootloader">Bootloader</string>
     <string name="global_action_reboot_soft">Restart interfejsu</string>
+    <string name="global_action_reboot_systemui">Interfejs systemowy</string>
     <string name="global_action_dismissable_dialog_text">Zaawansowany restart jest wyłączony.\nCzy na pewno chcesz zrestartować urządzenie\u003f</string>
     <string name="global_action_dnaa">Nie pokazuj ponownie</string>
     <string name="global_action_settings">Ustawienia</string>
@@ -253,4 +254,19 @@
     <string name="cpuinfo_temp">" °C"</string>
     <!-- Ambient display QS tile -->
     <string name="quick_settings_ambient_display_label">Ekran dostosowany do otoczenia</string>
+    <!-- Text to use when the number in a notification info is too large
+         (greater than status_bar_notification_info_maxnum, defined in
+         values/config.xml) and must be truncated.
+         [CHAR LIMIT=4] -->
+    <string name="status_bar_notification_info_overflow" translatable="false">\u221E</string>
+
+    <!-- Gaming Mode -->
+    <string name="gaming_mode_tile_title">Tryb gier</string>
+    <string name="gaming_mode_tile_toast">Tryb gier włączony</string>
+    <string name="gaming_mode_tile_toast_disabled">Tryb gier wyłączony</string>
+    <string name="gaming_mode_dialog_title">Tryb gier</string>
+    <string name="gaming_mode_dialog_message">Gdy tryb gier jest włączony, Dzwonek urządzenia zostanie ustawiony na wibrację, wszystkie wyskakujące powiadomienia zostaną ukryte, a przyciski sprzętowe urządzenia wyłączone. Głośność multimediów zostanie zwiększona do maksymalnej wartości. Wszystkie ustawienia zostaną zresetowane do domyślnych po wyjściu z trybu gier.</string>
+    <string name="accessibility_quick_settings_gaming_mode_on">Tryb gier wł.</string>
+    <string name="accessibility_quick_settings_gaming_mode_off">Tryb gier wył.</string>
+
 </resources>
