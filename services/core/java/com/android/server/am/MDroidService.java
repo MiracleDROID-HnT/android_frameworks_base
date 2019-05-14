@@ -47,7 +47,7 @@ public class MDroidService extends SystemService {
 
     private static final String TAG = "MDroidService";
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final Context mContext;
     private Constants mConstants;
@@ -105,7 +105,9 @@ public class MDroidService extends SystemService {
                 mConstants = new Constants(mHandler, getContext().getContentResolver());
 
                 mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-                Slog.i(TAG, "SensorManager initialized");
+                if (DEBUG) {
+                    Slog.i(TAG, "SensorManager initialized");
+                }
     
                 mPowerManager = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
 
@@ -202,7 +204,9 @@ public class MDroidService extends SystemService {
                 Slog.e(TAG, "Bad MDroidService settings", e);
             }
 
-            Slog.d(TAG, "updateConstantsLocked: mHallSensorServiceEnabled = " + mHallSensorServiceEnabled);
+            if (DEBUG) {
+                Slog.d(TAG, "updateConstantsLocked: mHallSensorServiceEnabled = " + mHallSensorServiceEnabled);
+            }
         }
     }
 
@@ -292,7 +296,9 @@ public class MDroidService extends SystemService {
     }
 
     private void sendLidChangeBroadcast() {
-        Slog.i(TAG, "Sending cover change broadcast, mLidState = " + mLidState);
+        if (DEBUG) {
+            Slog.i(TAG, "Sending cover change broadcast, mLidState = " + mLidState);
+        }
         Intent intent = new Intent(com.android.internal.util.mdroid.content.Intent.ACTION_LID_STATE_CHANGED);
         intent.putExtra(com.android.internal.util.mdroid.content.Intent.EXTRA_LID_STATE, mLidState);
         intent.setFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
