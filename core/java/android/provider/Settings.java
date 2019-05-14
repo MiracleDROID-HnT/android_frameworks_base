@@ -8461,6 +8461,12 @@ public final class Settings {
         public static final String NIGHT_DISPLAY_AUTO_MODE = "night_display_auto_mode";
 
         /**
+         * Control twilight state.
+         * @hide
+         */
+        public static final String TWILIGHT_STATE = "twilight_state";
+
+        /**
          * Control the color temperature of Night Display, represented in Kelvin.
          * @hide
          */

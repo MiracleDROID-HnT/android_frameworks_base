@@ -1049,6 +1049,12 @@ public class StatusBar extends SystemUI implements DemoMode,
                 UserHandle.USER_ALL);
 
         mContext.getContentResolver().registerContentObserver(
+                Settings.Secure.getUriFor(Settings.Secure.TWILIGHT_STATE),
+                false,
+                mTwilightStateObserver,
+                UserHandle.USER_ALL);
+
+        mContext.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.ALWAYS_HEADSUP_DIALER), false,
                 mSettingsObserver,
                 UserHandle.USER_ALL);
@@ -5427,7 +5433,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         final int globalStyleSetting = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.THEME_GLOBAL_STYLE, 0);
         final boolean nightMode = Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.NIGHT_DISPLAY_ACTIVATED, 0, mCurrentUserId) == 1;
+                Settings.Secure.TWILIGHT_STATE, 0, mCurrentUserId) == 1;
         WallpaperColors systemColors = mColorExtractor
                 .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
         boolean useDarkTheme = false;
@@ -6727,6 +6733,13 @@ public class StatusBar extends SystemUI implements DemoMode,
     };
 
     protected final ContentObserver mNightSettingsObserver = new ContentObserver(mHandler) {
+        @Override
+        public void onChange(boolean selfChange) {
+            updateTheme();
+        }
+    };
+
+    protected final ContentObserver mTwilightStateObserver = new ContentObserver(mHandler) {
         @Override
         public void onChange(boolean selfChange) {
             updateTheme();

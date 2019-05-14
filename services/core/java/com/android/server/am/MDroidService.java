@@ -35,8 +35,13 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.provider.Settings.Secure;
 import android.util.Slog;
 import com.android.server.SystemService;
+
+import com.android.server.twilight.TwilightListener;
+import com.android.server.twilight.TwilightManager;
+import com.android.server.twilight.TwilightState;
 
 public class MDroidService extends SystemService {
 
@@ -53,12 +58,14 @@ public class MDroidService extends SystemService {
     private boolean mHallSensorServiceEnabled = false;
     private int mHallSensorType;
     private int mLidState;
+    private boolean mTwilightState;
 
     private HallSensorService mHallSensorService;
     private BinderService mBinderService;
 
     private PowerManager mPowerManager;
     private SensorManager mSensorManager;
+    private TwilightManager mTwilightManager;
 
     public MDroidService(Context context) {
         super(context);
@@ -106,8 +113,38 @@ public class MDroidService extends SystemService {
                 mHallSensorService.Initialize();
 
                 mConstants.updateConstantsLocked();
+
+                mTwilightManager = getLocalService(TwilightManager.class);
+                mTwilightManager.registerListener(mTwilightListener, mHandler);
             }
         }
+    }
+
+    private final TwilightListener mTwilightListener = new TwilightListener() {
+        @Override
+        public void onTwilightStateChanged(TwilightState state) {
+            if (DEBUG) {
+                Slog.i(TAG, "onTwilightStateChanged");
+            }
+            synchronized (MDroidService.this) {
+                updateTwilightStateLocked();
+            }
+        }
+    };
+
+    private void updateTwilightStateLocked() {
+        if (mTwilightManager != null) {
+            TwilightState state = mTwilightManager.getLastTwilightState();
+            if (state != null) {
+                mTwilightState = state.isNight();
+            }
+        }
+        if (DEBUG) {
+            Slog.i(TAG, "updateTwilightStateLocked: mTwilightState = " + mTwilightState);
+        }
+        Settings.Secure.putIntForUser(mContext.getContentResolver(),
+                Settings.Secure.TWILIGHT_STATE, mTwilightState ? 1 : 0,
+                UserHandle.USER_CURRENT);
     }
 
     final class MDroidHandler extends Handler {
