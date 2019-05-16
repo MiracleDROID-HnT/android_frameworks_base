@@ -43,7 +43,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.os.SystemProperties;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -548,21 +547,8 @@ public class Camera {
             mEventHandler = null;
         }
 
-        String packageName = ActivityThread.currentOpPackageName();
-
-        //Force HAL1 if the package name falls in this bucket
-        String packageList = SystemProperties.get("camera.hal1.packagelist", "");
-        if (packageList.length() > 0) {
-            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(',');
-            splitter.setString(packageList);
-            for (String str : splitter) {
-                if (packageName.equals(str)) {
-                    halVersion = CAMERA_HAL_API_VERSION_1_0;
-                    break;
-                }
-            }
-        }
-        return native_setup(new WeakReference<Camera>(this), cameraId, halVersion, packageName);
+        return native_setup(new WeakReference<Camera>(this), cameraId, halVersion,
+                ActivityThread.currentOpPackageName());
     }
 
     private int cameraInitNormal(int cameraId) {
