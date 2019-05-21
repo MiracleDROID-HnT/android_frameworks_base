@@ -204,4 +204,8 @@
     <!-- Custom clocks -->
     <java-symbol type="string" name="custom_clock_styles" />
 
+    <java-symbol type="integer" name="config_defaultThemeAutoMode" />
+    <java-symbol type="integer" name="config_defaultThemeCustomStartTime" />
+    <java-symbol type="integer" name="config_defaultThemeCustomEndTime" />
+
 </resources>

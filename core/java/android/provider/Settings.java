@@ -8461,12 +8461,6 @@ public final class Settings {
         public static final String NIGHT_DISPLAY_AUTO_MODE = "night_display_auto_mode";
 
         /**
-         * Control twilight state.
-         * @hide
-         */
-        public static final String TWILIGHT_STATE = "twilight_state";
-
-        /**
          * Control the color temperature of Night Display, represented in Kelvin.
          * @hide
          */
@@ -8798,6 +8792,42 @@ public final class Settings {
          * @hide
          */
         public static final String START_SCREEN_STATE_SERVICE = "start_screen_state_service";
+
+        /**
+         * Control twilight state.
+         * @hide
+         */
+        public static final String TWILIGHT_STATE = "twilight_state";
+
+        /**
+         * Control whether Dark theme will automatically activate/deactivate.
+         * @hide
+         */
+        public static final String THEME_AUTO_MODE = "theme_auto_mode";
+
+        /**
+         * Custom time when Dark theme is scheduled to activate.
+         * Represented as milliseconds from midnight (e.g. 79200000 == 10pm).
+         * @hide
+         */
+        public static final String THEME_CUSTOM_START_TIME =
+                "theme_custom_start_time";
+
+        /**
+         * Custom time when Dark theme is scheduled to deactivate.
+         * Represented as milliseconds from midnight (e.g. 21600000 == 6am).
+         * @hide
+         */
+        public static final String THEME_CUSTOM_END_TIME = "theme_custom_end_time";
+
+        /**
+         * A String representing the LocalDateTime when Theme was last activated. Use to
+         * decide whether to apply the current activated state after a reboot or user change. In
+         * legacy cases, this is represented by the time in milliseconds (since epoch).
+         * @hide
+         */
+        public static final String THEME_LAST_ACTIVATED_TIME =
+                "theme_last_activated_time";
 
         /**
          * This are the settings to be backed up.

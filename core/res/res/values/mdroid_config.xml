@@ -128,4 +128,19 @@
     <!-- The duration (in milliseconds) of recent app screen animation. -->
     <integer name="config_recentDefaultDur">150</integer>
 
+    <!-- Default mode to control how Theme is automatically activated.
+         One of the following values (see MDroidController.java):
+             0 - AUTO_MODE_CUSTOM
+             1 - AUTO_MODE_TWILIGHT
+    -->
+    <integer name="config_defaultThemeAutoMode">1</integer>
+
+    <!-- Default time when Theme is automatically activated.
+         Represented as milliseconds from midnight (e.g. 79200000 == 10pm). -->
+    <integer name="config_defaultThemeCustomStartTime">79200000</integer>
+
+    <!-- Default time when Theme is automatically deactivated.
+         Represented as milliseconds from midnight (e.g. 21600000 == 6am). -->
+    <integer name="config_defaultThemeCustomEndTime">21600000</integer>
+
 </resources>
