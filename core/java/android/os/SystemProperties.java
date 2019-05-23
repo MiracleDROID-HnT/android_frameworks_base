@@ -41,7 +41,7 @@ public class SystemProperties {
      */
     public static final int PROP_NAME_MAX = Integer.MAX_VALUE;
 
-    public static final int PROP_VALUE_MAX = 161;
+    public static final int PROP_VALUE_MAX = 91;
 
     private static final ArrayList<Runnable> sChangeCallbacks = new ArrayList<Runnable>();
 
