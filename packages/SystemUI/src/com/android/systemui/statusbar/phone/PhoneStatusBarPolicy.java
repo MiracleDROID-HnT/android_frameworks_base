@@ -110,8 +110,10 @@ public class PhoneStatusBarPolicy implements Callback, Callbacks,
 
     private final String mSlotCast;
     private final String mSlotHotspot;
+    private final String mSlotImsstate;
     private final String mSlotBluetooth;
     private final String mSlotTty;
+    private final String mSlotVoteIcon;
     private final String mSlotZen;
     private final String mSlotVolume;
     private final String mSlotAlarmClock;
@@ -186,6 +188,8 @@ public class PhoneStatusBarPolicy implements Callback, Callbacks,
         mSlotHeadset = context.getString(com.android.internal.R.string.status_bar_headset);
         mSlotDataSaver = context.getString(com.android.internal.R.string.status_bar_data_saver);
         mSlotLocation = context.getString(com.android.internal.R.string.status_bar_location);
+        mSlotImsstate = context.getString(com.android.internal.R.string.status_bar_ims_state);
+        mSlotVoteIcon = context.getString(com.android.internal.R.string.status_bar_volte_icon);
         mSlotSu = context.getString(com.android.internal.R.string.status_bar_su);
 
         // listen for broadcasts
@@ -230,6 +234,14 @@ public class PhoneStatusBarPolicy implements Callback, Callbacks,
         // cast
         mIconController.setIcon(mSlotCast, R.drawable.stat_sys_cast, null);
         mIconController.setIconVisibility(mSlotCast, false);
+
+        // ims state
+        mIconController.setIcon(mSlotImsstate, R.drawable.stat_sys_ims_state, null);
+        mIconController.setIconVisibility(mSlotImsstate, false);
+
+        // VoLTE icon
+        mIconController.setIcon(mSlotVoteIcon, R.drawable.stat_sys_volte_icon, null);
+        mIconController.setIconVisibility(mSlotVoteIcon, false);
 
         // hotspot
         mIconController.setIcon(mSlotHotspot, R.drawable.stat_sys_hotspot,
@@ -295,6 +307,22 @@ public class PhoneStatusBarPolicy implements Callback, Callbacks,
         NotificationManager noMan = mContext.getSystemService(NotificationManager.class);
         mCurrentNotifs.forEach(v -> noMan.cancelAsUser(v.first, SystemMessage.NOTE_INSTANT_APPS,
                 new UserHandle(v.second)));
+    }
+
+    private final void updateIMS(Intent intent) {
+        if (intent.getBooleanExtra("MSHOWHDICON", false)) {
+            mIconController.setIconVisibility(mSlotImsstate, true);
+        } else {
+            mIconController.setIconVisibility(mSlotImsstate, false);
+        }
+    }
+
+    private final void updateVolte(Intent intent) {
+        if (intent.getBooleanExtra("MSHOWVOLEICON", false)) {
+            mIconController.setIconVisibility(mSlotVoteIcon, true);
+        } else {
+            mIconController.setIconVisibility(mSlotVoteIcon, false);
+        }
     }
 
     @Override
@@ -852,6 +880,10 @@ public class PhoneStatusBarPolicy implements Callback, Callbacks,
                 updateManagedProfile();
             } else if (action.equals(AudioManager.ACTION_HEADSET_PLUG)) {
                 updateHeadsetPlug(intent);
+            } else if (action.equals("com.qcom.ims.action.ShowHDIcon")) {
+                updateIMS(intent);
+            } else if (action.equals("com.qcom.ims.action.ShowVOLTEIcon")) {
+                updateVolte(intent);
             }
         }
     };

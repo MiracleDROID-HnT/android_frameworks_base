@@ -59,6 +59,8 @@
         <item><xliff:g id="id">@string/status_bar_clock</xliff:g></item>
         <item><xliff:g id="id">@string/status_bar_center_clock</xliff:g></item>
         <item><xliff:g id="id">@string/status_bar_left_clock</xliff:g></item>
+        <item><xliff:g id="id">@string/status_bar_volte_icon</xliff:g></item>
+        <item><xliff:g id="id">@string/status_bar_ims_state</xliff:g></item>
         <item><xliff:g id="id">@string/status_bar_su</xliff:g></item>
     </string-array>
 
@@ -67,6 +69,7 @@
     <string translatable="false" name="status_bar_data_saver">data_saver</string>
     <string translatable="false" name="status_bar_managed_profile">managed_profile</string>
     <string translatable="false" name="status_bar_ime">ime</string>
+    <string translatable="false" name="status_bar_ims_state">ims_state</string>
     <string translatable="false" name="status_bar_sync_failing">sync_failing</string>
     <string translatable="false" name="status_bar_sync_active">sync_active</string>
     <string translatable="false" name="status_bar_cast">cast</string>
@@ -75,6 +78,7 @@
     <string translatable="false" name="status_bar_bluetooth">bluetooth</string>
     <string translatable="false" name="status_bar_nfc">nfc</string>
     <string translatable="false" name="status_bar_tty">tty</string>
+    <string translatable="false" name="status_bar_volte_icon">volte_icon</string>
     <string translatable="false" name="status_bar_speakerphone">speakerphone</string>
     <string translatable="false" name="status_bar_zen">zen</string>
     <string translatable="false" name="status_bar_mute">mute</string>

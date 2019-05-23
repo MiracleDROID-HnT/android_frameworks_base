@@ -2588,6 +2588,7 @@
   <java-symbol type="string" name="status_bar_data_saver" />
   <java-symbol type="string" name="status_bar_managed_profile" />
   <java-symbol type="string" name="status_bar_ime" />
+  <java-symbol type="string" name="status_bar_ims_state" />
   <java-symbol type="string" name="status_bar_sync_failing" />
   <java-symbol type="string" name="status_bar_sync_active" />
   <java-symbol type="string" name="status_bar_cast" />
@@ -2596,6 +2597,7 @@
   <java-symbol type="string" name="status_bar_bluetooth" />
   <java-symbol type="string" name="status_bar_nfc" />
   <java-symbol type="string" name="status_bar_tty" />
+  <java-symbol type="string" name="status_bar_volte_icon" />
   <java-symbol type="string" name="status_bar_speakerphone" />
   <java-symbol type="string" name="status_bar_zen" />
   <java-symbol type="string" name="status_bar_mute" />
