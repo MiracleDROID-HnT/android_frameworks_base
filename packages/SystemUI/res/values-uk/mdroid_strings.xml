@@ -201,7 +201,7 @@
 
     <!-- Heads up snooze toast -->
     <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> - Виринаючі повідомлення вимкнено на одну хвилину.</string>
-    <string name="heads_up_snooze_message"><xliff:g id="string">%s</xliff:g> - Виринаючі повідомлення вимкнено на <xliff:g id="number">%d</xliff:g> хвилин.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%1$s</xliff:g> - Виринаючі повідомлення вимкнено на <xliff:g id="number">%2$d</xliff:g> хвилин.</string>
 
     <string name="cannot_get_su">Дію не виконано через відсутність прав суперкористувача</string>
 

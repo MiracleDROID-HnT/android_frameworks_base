@@ -157,7 +157,7 @@
     <string name="kill">Zamknij aplikację</string>
     <!-- Heads up snooze toast -->
     <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> Wyskakujące powiadomienia zostaną uśpione na 1 minutę.</string>
-    <string name="heads_up_snooze_message"><xliff:g id="string">%s </xliff:g> - Wyskakujące powiadomienia zostaną uśpione na <xliff:g id="number">%d </xliff:g> minut.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%1$s</xliff:g> - Wyskakujące powiadomienia zostaną uśpione na <xliff:g id="number">%2$d</xliff:g> minut.</string>
     <string name="quick_settings_logcat_label">Logcat</string>
     <string name="quick_settings_logcatradio_label">LogCatRadio</string>
     <string name="quick_settings_kmsg_label">Kmsg</string>

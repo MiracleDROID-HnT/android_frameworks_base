@@ -187,7 +187,7 @@
 
     <!-- Heads up snooze toast -->
     <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> - Benachrichtigungen stumm für 1 Minute.</string>
-    <string name="heads_up_snooze_message"><xliff:g id="string">%s</xliff:g> - Benachrichtigungen stumm für <xliff:g id="number">%d</xliff:g> minutes.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%1$s</xliff:g> - Benachrichtigungen stumm für <xliff:g id="number">%2$d</xliff:g> minutes.</string>
 
     <string name="quick_settings_logcat_label">LogCat</string>
     <string name="quick_settings_logcatradio_label">LogCatRadio</string>

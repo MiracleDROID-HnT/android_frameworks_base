@@ -201,7 +201,7 @@
 
     <!-- Heads up snooze toast -->
     <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> - Всплывающие уведомления выключены на одну минуту.</string>
-    <string name="heads_up_snooze_message"><xliff:g id="string">%s</xliff:g> - Всплывающие уведомления выключены на <xliff:g id="number">%d</xliff:g> минут.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%1$s</xliff:g> - Всплывающие уведомления выключены на <xliff:g id="number">%2$d</xliff:g> минут.</string>
 
     <string name="cannot_get_su">Действие не выполнено из-за отсутствия прав суперпользователя</string>
 
