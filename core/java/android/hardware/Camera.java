@@ -551,9 +551,11 @@ public class Camera {
         String packageName = ActivityThread.currentOpPackageName();
 
         // Force HAL1 if the package name is in our 'blacklist'
-        String packageList = SystemProperties.get("camera.hal1.packagelist", "");
-        if (!packageList.isEmpty()) {
-            if (Arrays.asList(packageList.split(",")).contains(packageName)) {
+        String packageList1 = SystemProperties.get("camera.hal1.packagelist1", "");
+        String packageList2 = SystemProperties.get("camera.hal1.packagelist2", "");
+        String finalPackageList = packageList1 + "," + packageList2;
+        if (!finalPackageList.isEmpty()) {
+            if (Arrays.asList(finalPackageList.split(",")).contains(packageName)) {
                 halVersion = CAMERA_HAL_API_VERSION_1_0;
             }
         }
