@@ -195,6 +195,9 @@ public class BatterySaverTile extends QSTileImpl<BooleanState> implements
     private int getBatteryLevel(Context context) {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent intent = context.registerReceiver(null, filter);
+        if (intent == null) {
+            return 0;
+        }
         int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
