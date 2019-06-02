@@ -284,6 +284,25 @@ public class BatteryMeterView extends LinearLayout implements
                                     LayoutParams.WRAP_CONTENT,
                                     LayoutParams.MATCH_PARENT));
                 }
+            } else if (showing && mShowPercentText == 2) {
+                removeView(mBatteryPercentView);
+                mBatteryPercentView = loadPercentView();
+                if (mTextColor != 0) mBatteryPercentView.setTextColor(mTextColor);
+                updatePercentText();
+                addView(mBatteryPercentView,
+                        0,
+                        new ViewGroup.LayoutParams(
+                                LayoutParams.WRAP_CONTENT,
+                                LayoutParams.MATCH_PARENT));
+            } else if (showing && mShowPercentText == 3) {
+                removeView(mBatteryPercentView);
+                mBatteryPercentView = loadPercentView();
+                if (mTextColor != 0) mBatteryPercentView.setTextColor(mTextColor);
+                updatePercentText();
+                addView(mBatteryPercentView,
+                        new ViewGroup.LayoutParams(
+                                LayoutParams.WRAP_CONTENT,
+                                LayoutParams.MATCH_PARENT));
             }
         } else {
             if (showing) {
