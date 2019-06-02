@@ -256,24 +256,30 @@ public class BatteryMeterView extends LinearLayout implements
     private void updateShowPercent() {
         final boolean showing = mBatteryPercentView != null;
         if (forcePercentageQsHeader()
-                || (mStyle != BatteryMeterDrawableBase.BATTERY_STYLE_HIDDEN && ((mShowPercentText == 2 || mShowPercentText == 3) || mForceShowPercent || mPowerSave || mCharging))) {
+                || (mStyle != BatteryMeterDrawableBase.BATTERY_STYLE_HIDDEN && ((mShowPercentText == 2 || mShowPercentText == 3) || mForceShowPercent || mPowerSave))) {
             if (!showing) {
                 mBatteryPercentView = loadPercentView();
                 if (mTextColor != 0) mBatteryPercentView.setTextColor(mTextColor);
                 updatePercentText();
-                if(mShowPercentText == 2){
+                if (mShowPercentText == 2) {
                     addView(mBatteryPercentView,
                             0,
                             new ViewGroup.LayoutParams(
                                     LayoutParams.WRAP_CONTENT,
                                     LayoutParams.MATCH_PARENT));
-                } else if(mShowPercentText == 3) {
+                } else if (mShowPercentText == 3) {
                     addView(mBatteryPercentView,
                             new ViewGroup.LayoutParams(
                                     LayoutParams.WRAP_CONTENT,
                                     LayoutParams.MATCH_PARENT));
-                } else if(mStyle == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT){
+                } else if (mStyle == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT) {
                     addView(mBatteryPercentView,
+                            new ViewGroup.LayoutParams(
+                                    LayoutParams.WRAP_CONTENT,
+                                    LayoutParams.MATCH_PARENT));
+                } else {
+                    addView(mBatteryPercentView,
+                            0,
                             new ViewGroup.LayoutParams(
                                     LayoutParams.WRAP_CONTENT,
                                     LayoutParams.MATCH_PARENT));
@@ -401,7 +407,8 @@ public class BatteryMeterView extends LinearLayout implements
         }
 
         if (forcePercentageQsHeader()
-                || style == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT) {
+                || style == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT
+                || ((isCircleBattery() || style == BatteryMeterDrawableBase.BATTERY_STYLE_PORTRAIT) && mCharging)) {
             mForceShowPercent = true;
         } else {
             mForceShowPercent = false;
