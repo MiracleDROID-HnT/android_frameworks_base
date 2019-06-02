@@ -152,7 +152,7 @@ public class FontTile extends QSTileImpl<BooleanState> {
             List<FontInfo> fontInfoList = new ArrayList<FontInfo>();
             try {
                 IFontService fontService = IFontService.Stub
-                        .asInterface(ServiceManager.getService("dufont"));
+                        .asInterface(ServiceManager.getService("mdfont"));
                 Map<String, List<FontInfo>> fontMap = fontService.getAllFonts();
                 for (Map.Entry<String, List<FontInfo>> entry : fontMap.entrySet()) {
                     String packageName = entry.getKey();
@@ -179,7 +179,7 @@ public class FontTile extends QSTileImpl<BooleanState> {
                 item.doDisableTint = true;
                 item.doDisableFocus = true;
                 item.fontPath = fontInfo.previewPath;
-                item.icon = getIcon(fontInfo.packageName);
+                item.iconDrawable = getIcon(fontInfo.packageName);
                 item.line1 = fontInfo.fontName.replace("_", " ");
                 item.line2 = getPackageLabel(fontInfo.packageName).replace("_", " ");
                 mFontItems.add(item);
