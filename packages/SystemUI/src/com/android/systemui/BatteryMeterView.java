@@ -287,8 +287,7 @@ public class BatteryMeterView extends LinearLayout implements
             }
         } else {
             if (showing) {
-                removeView(mBatteryPercentView);
-                mBatteryPercentView = null;
+                removePercentageView();
             }
         }
 
@@ -425,8 +424,16 @@ public class BatteryMeterView extends LinearLayout implements
         mClockStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.STATUSBAR_CLOCK_STYLE, STYLE_CLOCK_RIGHT, mUser);
         if (fromObserver && mAttached) {
+            removePercentageView();
             updateBatteryStyle();
         }
         scaleBatteryMeterViews();
+    }
+
+    private void removePercentageView() {
+        if (mBatteryPercentView != null) {
+            removeView(mBatteryPercentView);
+            mBatteryPercentView = null;
+        }
     }
 }
