@@ -117,7 +117,7 @@ public class FontTile extends QSTileImpl<BooleanState> {
                 public void run() {
                     try {
                         IFontService fontService = IFontService.Stub
-                                .asInterface(ServiceManager.getService("dufont"));
+                                .asInterface(ServiceManager.getService("mdfont"));
                         fontService.applyFont(fontInfo);
                     } catch (RemoteException e) {
                         Log.e(TAG, "Error in changing font");
