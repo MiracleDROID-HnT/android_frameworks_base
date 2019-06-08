@@ -127,6 +127,8 @@
     <!-- Reboot/Recovery/PowerOff QS Tile -->
     <string name="quick_settings_reboot_label">Uruchom ponownie</string>
     <string name="quick_settings_reboot_recovery_label">Recovery</string>
+    <string name="quick_settings_soft_reboot_label">Miękki restart</string>
+    <string name="quick_settings_systemui_reboot_label">Reset interfejsu systemowego</string>
     <string name="quick_settings_poweroff_label">Wyłącz</string>
     <!-- SysUI Tuner: Button that controls inversion of layout of navigation bar [CHAR LIMIT=60] -->
     <string name="nav_bar_layout_inverse">Odwróć układ przycisków</string>
@@ -268,5 +270,9 @@
     <string name="gaming_mode_dialog_message">Gdy tryb gier jest włączony, wszystkie wyskakujące powiadomienia zostaną ukryte, a przyciski sprzętowe urządzenia wyłączone. Wszystkie ustawienia zostaną zresetowane do domyślnych po wyjściu z trybu gier.</string>
     <string name="accessibility_quick_settings_gaming_mode_on">Tryb gier wł.</string>
     <string name="accessibility_quick_settings_gaming_mode_off">Tryb gier wył.</string>
+
+    <!-- Font Tile -->
+    <string name="quick_settings_font_label">Czcionka</string>
+    <string name="quick_settings_font_detail_label">Wybierz czcionkę</string>
 
 </resources>

@@ -166,4 +166,13 @@
     <!-- SystemUI Restart -->
     <string name="systemui_restart_title">Wymagany restart SystemUI</string>
     <string name="systemui_restart_message">Aby wszystkie zmiany zostały wprowadzone wymagany jest restart SystemUI. Zrestartować?</string>
+
+    <string name="custom_clock_styles" translatable="false">
+        digital,digital_bold,sammy,sammy_bold,analog
+    </string>
+
+    <!-- Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permlab_restartUI">uruchom ponownie paski systemowe</string>
+    <!-- Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
+    <string name="permdesc_restartUI">Zrestartuj SystemUIService, aby paski systemowe mogły załadować zasoby tematyczne</string>
 </resources>
