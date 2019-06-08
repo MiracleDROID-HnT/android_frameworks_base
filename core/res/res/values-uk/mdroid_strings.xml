@@ -37,8 +37,10 @@
     <!-- Status bar network traffic monitor strings -->
     <string name="kilobitspersecond_short">кб/с</string>
     <string name="megabitspersecond_short">Мб/с</string>
+    <string name="bytespersecond_short">Б/с</string>
     <string name="kilobytespersecond_short">кБ/с</string>
     <string name="megabytespersecond_short">МБ/с</string>
+    <string name="gigabytespersecond_short">ГБ/с</string>
 
     <string name="cannot_get_su">Дію не виконано через відсутність прав суперкористувача</string>
 

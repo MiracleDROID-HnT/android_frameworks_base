@@ -137,8 +137,10 @@
     <java-symbol type="dimen" name="net_traffic_multi_text_size" />
     <java-symbol type="string" name="kilobitspersecond_short" />
     <java-symbol type="string" name="megabitspersecond_short" />
+    <java-symbol type="string" name="bytespersecond_short" />
     <java-symbol type="string" name="kilobytespersecond_short" />
     <java-symbol type="string" name="megabytespersecond_short" />
+    <java-symbol type="string" name="gigabytespersecond_short" />
 
     <java-symbol type="string" name="cannot_get_su" />
 

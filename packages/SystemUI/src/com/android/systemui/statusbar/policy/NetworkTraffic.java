@@ -44,6 +44,8 @@ import android.widget.TextView;
 import com.android.internal.R;
 import com.android.systemui.statusbar.MDroidStatusBarItem;
 
+import java.text.DecimalFormat;
+
 public class NetworkTraffic extends TextView {
     private static final String TAG = "NetworkTraffic";
 
@@ -57,10 +59,22 @@ public class NetworkTraffic extends TextView {
 
     private static final int REFRESH_INTERVAL = 2000;
 
+    private static final int KILOBYTE = 1024;
+    private int KB = KILOBYTE;
+    private int MB = KB * KB;
+    private int GB = MB * KB;
+
+    private static DecimalFormat decimalFormat = new DecimalFormat("0.##");
+    static {
+        decimalFormat.setMaximumIntegerDigits(4);
+        decimalFormat.setMaximumFractionDigits(2);
+    }
+
     private static final int UNITS_KILOBITS = 0;
     private static final int UNITS_MEGABITS = 1;
     private static final int UNITS_KILOBYTES = 2;
     private static final int UNITS_MEGABYTES = 3;
+    private static final int UNITS_AUTO = 4;
 
     // Thresholds themselves are always defined in kbps
     private static final long AUTOHIDE_THRESHOLD_KILOBITS  = 10;
@@ -237,6 +251,22 @@ public class NetworkTraffic extends TextView {
                 case UNITS_MEGABYTES:
                     value = String.format("%.2f", (float) kbps / 8000);
                     unit = mContext.getString(R.string.megabytespersecond_short);
+                    break;
+                case UNITS_AUTO:
+                    long bytes = (long) (kbps * 128);
+                    if (bytes < KB) {
+                        value = decimalFormat.format(bytes);
+                        unit = mContext.getString(R.string.bytespersecond_short);
+                    } else if (bytes < MB) {
+                        value = decimalFormat.format((float)bytes / KB);
+                        unit = mContext.getString(R.string.kilobytespersecond_short);
+                    } else if (bytes < GB) {
+                        value = decimalFormat.format((float)bytes / MB);
+                        unit = mContext.getString(R.string.megabytespersecond_short);
+                    } else {
+                        value = decimalFormat.format((float)bytes / GB);
+                        unit = mContext.getString(R.string.gigabytespersecond_short);
+                    }
                     break;
                 default:
                     value = "unknown";
