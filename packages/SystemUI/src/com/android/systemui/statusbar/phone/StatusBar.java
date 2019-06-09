@@ -6911,6 +6911,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.LOCKSCREEN_MEDIA_METADATA))) {
                 setLockscreenMediaMetadata();
             } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.RECENTS_ICON_PACK))) {
+                updateRecentsIconPack();
+            } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.QS_QUICKBAR_SCROLL_ENABLED))) {
                 setQSTilesScroller();
             } else if (uri.equals(Settings.System.getUriFor(
@@ -7110,10 +7113,14 @@ public class StatusBar extends SystemUI implements DemoMode,
     }
 
     private void updateRecentsIconPack() {
-        String currentIconPack = Settings.System.getStringForUser(mContext.getContentResolver(),
-            Settings.System.RECENTS_ICON_PACK, mCurrentUserId);
-        mRecents.resetIconCache();
-        mRecents.setCurrentIconPack(currentIconPack);
+        boolean slimRecents = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.USE_SLIM_RECENTS, 0, mCurrentUserId) == 1;
+        if (!slimRecents) {
+            String currentIconPack = Settings.System.getStringForUser(mContext.getContentResolver(),
+                Settings.System.RECENTS_ICON_PACK, mCurrentUserId);
+            mRecents.resetIconCache();
+            mRecents.setCurrentIconPack(currentIconPack);
+        }
     }
 
     private void setForceAmbient() {
