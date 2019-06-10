@@ -222,4 +222,6 @@
     <java-symbol type="id" name="notification_media_elapsed_time" />
     <java-symbol type="id" name="notification_media_total_time" />
 
+    <java-symbol type="bool" name="config_isCrappyLedDevice"/>
+
 </resources>
