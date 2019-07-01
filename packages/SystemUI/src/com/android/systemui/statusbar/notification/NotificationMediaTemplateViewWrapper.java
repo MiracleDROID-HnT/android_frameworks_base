@@ -97,7 +97,7 @@ public class NotificationMediaTemplateViewWrapper extends NotificationTemplateVi
 
         @Override
         public void run() {
-            if (mMediaController == null || mMediaController.getMetadata() == null || mSeekBar == null) {
+            if (mMediaController == null || mMediaController.getMetadata() == null || mMediaController.getPlaybackState() == null || mSeekBar == null) {
                 clearTimer();
                 return;
             }
