@@ -5460,24 +5460,26 @@ public class StatusBar extends SystemUI implements DemoMode,
         final boolean finalUseBlackTheme = useBlackTheme;
         final boolean finalUseDarkTheme = useDarkTheme;
 
-        if ((isUsingDarkTheme() != useDarkTheme) ||
+        if (themeNeedsRefresh || (isUsingDarkTheme() != useDarkTheme) ||
                 (isUsingBlackTheme() != useBlackTheme)) {
             mUiOffloadThread.submit(() -> {
                 ThemeAccentUtils.handleThemeStates(mOverlayManager, mCurrentUserId,
-                        finalUseBlackTheme, finalUseDarkTheme, themeNeedsRefresh);
+                        finalUseBlackTheme, finalUseDarkTheme);
             });
         }
 
         boolean useDarkNotificationTheme = (mNotificationStyle == 0 && useDarkTheme && !useBlackTheme) || mNotificationStyle == 2;
         boolean useBlackNotificationTheme = (mNotificationStyle == 0 && !useDarkTheme && useBlackTheme) || mNotificationStyle == 3;
 
-        if ((isUsingDarkNotificationTheme() != useDarkNotificationTheme) ||
+        if (themeNeedsRefresh || (isUsingDarkNotificationTheme() != useDarkNotificationTheme) ||
                 (isUsingBlackNotificationTheme() != useBlackNotificationTheme)) {
             mUiOffloadThread.submit(() -> {
                 ThemeAccentUtils.setNotificationTheme(mOverlayManager, mCurrentUserId,
                         finalUseBlackTheme, finalUseDarkTheme, mNotificationStyle);
             });
-            onOverlayChanged();
+            mHandler.postDelayed(() -> {
+                onOverlayChanged();
+            }, 1000);
         }
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it

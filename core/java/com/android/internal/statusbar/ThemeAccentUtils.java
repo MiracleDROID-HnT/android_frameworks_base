@@ -82,16 +82,11 @@ public class ThemeAccentUtils {
         return (themeInfo != null && themeInfo.isEnabled());
     }
 
-    public static void handleThemeStates(IOverlayManager om, int userId, boolean useBlackTheme, boolean useDarkTheme, boolean themeNeedsRefresh) {
-        if (!useDarkTheme || !useBlackTheme) {
-            setLightThemeState(om, userId, !useDarkTheme || !useBlackTheme);
-        }
-        if (themeNeedsRefresh || ((isUsingBlackTheme(om, userId) != useBlackTheme) ||
-                (isUsingDarkTheme(om, userId) != useDarkTheme))) {
-            setDarkThemeState(om, userId, useDarkTheme);
-            setBlackThemeState(om, userId, useBlackTheme);
-            setCommonThemeState(om, userId, useDarkTheme || useBlackTheme);
-        }
+    public static void handleThemeStates(IOverlayManager om, int userId, boolean useBlackTheme, boolean useDarkTheme) {
+        setLightThemeState(om, userId, !useDarkTheme && !useBlackTheme);
+        setDarkThemeState(om, userId, useDarkTheme);
+        setBlackThemeState(om, userId, useBlackTheme);
+        setCommonThemeState(om, userId, useDarkTheme || useBlackTheme);
     }
 
     private static List<OverlayInfo> getAllOverlays(IOverlayManager om, int userId) {
