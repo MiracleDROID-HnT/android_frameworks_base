@@ -24,6 +24,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -92,7 +93,8 @@ public class Recents extends SystemUI
         RECENTS_ACTIVITIES.add(RecentsImpl.RECENTS_ACTIVITY);
     }
 
-    public final static Set<Task> sLockedTasks = new HashSet<>();
+    private static final String RECENTS_LOCKED_TASKS = "recents_locked_tasks";
+    public final static Set<Integer> sLockedTasks = new HashSet<>();
 
     // Purely for experimentation
     private final static String RECENTS_OVERRIDE_SYSPROP_KEY = "persist.recents_override_pkg";
@@ -268,6 +270,7 @@ public class Recents extends SystemUI
     @Override
     public void onBootCompleted() {
         mImpl.onBootCompleted();
+        getLockedTasks();
         mIconsHandler = new IconsHandler(
                 mContext, R.dimen.recents_task_view_header_height_tablet_land, 1.0f);
         resetIconCache();
@@ -886,5 +889,28 @@ public class Recents extends SystemUI
     public void addSbCallbacks() {
         getComponent(CommandQueue.class).addCallbacks(this);
         mImpl.mUseSlimRecents = false;
+    }
+
+    public static void saveLockedTasks(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                RECENTS_LOCKED_TASKS, Context.MODE_PRIVATE);
+        Set<String> stringSet = new HashSet<>();
+        for (Integer i : sLockedTasks) {
+            stringSet.add(String.valueOf(i));
+        }
+        prefs.edit().putStringSet(RECENTS_LOCKED_TASKS, stringSet).commit();
+    }
+
+    public void getLockedTasks() {
+        SharedPreferences prefs = mContext.getSharedPreferences(
+                RECENTS_LOCKED_TASKS, Context.MODE_PRIVATE);
+        Set<String> stringSet = prefs.getStringSet(
+                RECENTS_LOCKED_TASKS, new HashSet<String>());
+        if (stringSet.isEmpty()) {
+            return;
+        }
+        for (String str : stringSet) {
+            sLockedTasks.add(Integer.parseInt(str));
+        }
     }
 }

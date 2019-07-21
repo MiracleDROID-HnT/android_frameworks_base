@@ -506,8 +506,8 @@ public class TaskViewHeader extends FrameLayout
     private void updateLockTaskDrawable() {
         if (mTask != null) {
         mLockTaskButton.setImageDrawable(mTask.useLightOnPrimaryColor ?
-                (Recents.sLockedTasks.contains(mTask) ? mLightLockedDrawable : mLightUnlockedDrawable) :
-                (Recents.sLockedTasks.contains(mTask) ? mDarkLockedDrawable : mDarkUnlockedDrawable));
+                (Recents.sLockedTasks.contains(mTask.key.id) ? mLightLockedDrawable : mLightUnlockedDrawable) :
+                (Recents.sLockedTasks.contains(mTask.key.id) ? mDarkLockedDrawable : mDarkUnlockedDrawable));
         ((AnimatedVectorDrawable) mLockTaskButton.getDrawable()).start();
         }
     }
@@ -701,7 +701,7 @@ public class TaskViewHeader extends FrameLayout
     public void onClick(View v) {
         if (v == mDismissButton) {
             TaskView tv = Utilities.findParent(this, TaskView.class);
-            if (!Recents.sLockedTasks.contains(tv.getTask())) {
+            if (!Recents.sLockedTasks.contains(tv.getTask().key.id)) {
                 tv.dismissTask();
 
                 // Keep track of deletions by the dismiss button
@@ -711,7 +711,7 @@ public class TaskViewHeader extends FrameLayout
         } else if (v == mKillButton) {
             TaskView tv = Utilities.findParent(this, TaskView.class);
             boolean killed = killTask();
-            if (killed && !Recents.sLockedTasks.contains(tv.getTask())) {
+            if (killed && !Recents.sLockedTasks.contains(tv.getTask().key.id)) {
                 // task wasn't locked by user, we can do a full kill dismissing it from Recents list
                 tv.dismissTask();
                 Toast.makeText(getContext(), R.string.recents_app_killed, Toast.LENGTH_SHORT).show();
@@ -734,10 +734,12 @@ public class TaskViewHeader extends FrameLayout
         } else if (v == mAppIconView) {
             hideAppOverlay(false /* immediate */);
         } else if (v == mLockTaskButton) {
-            if (Recents.sLockedTasks.contains(mTask)) {
-               Recents.sLockedTasks.remove(mTask);
+            if (Recents.sLockedTasks.contains(mTask.key.id)) {
+               Recents.sLockedTasks.remove(mTask.key.id);
+               Recents.saveLockedTasks(mContext);
             } else {
-               Recents.sLockedTasks.add(mTask);
+               Recents.sLockedTasks.add(mTask.key.id);
+               Recents.saveLockedTasks(mContext);
             }
             updateLockTaskDrawable();
         }
