@@ -94,7 +94,7 @@ public class Recents extends SystemUI
     }
 
     private static final String RECENTS_LOCKED_TASKS = "recents_locked_tasks";
-    public final static Set<Integer> sLockedTasks = new HashSet<>();
+    public final static Set<String> sLockedTasks = new HashSet<>();
 
     // Purely for experimentation
     private final static String RECENTS_OVERRIDE_SYSPROP_KEY = "persist.recents_override_pkg";
@@ -895,8 +895,8 @@ public class Recents extends SystemUI
         SharedPreferences prefs = context.getSharedPreferences(
                 RECENTS_LOCKED_TASKS, Context.MODE_PRIVATE);
         Set<String> stringSet = new HashSet<>();
-        for (Integer i : sLockedTasks) {
-            stringSet.add(String.valueOf(i));
+        for (String str : sLockedTasks) {
+            stringSet.add(str);
         }
         prefs.edit().putStringSet(RECENTS_LOCKED_TASKS, stringSet).commit();
     }
@@ -910,7 +910,7 @@ public class Recents extends SystemUI
             return;
         }
         for (String str : stringSet) {
-            sLockedTasks.add(Integer.parseInt(str));
+            sLockedTasks.add(str);
         }
     }
 }
