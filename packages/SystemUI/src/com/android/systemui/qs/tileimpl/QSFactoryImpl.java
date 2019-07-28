@@ -60,7 +60,6 @@ import com.android.systemui.qs.tiles.SoundTile;
 import com.android.systemui.qs.tiles.SuspendActionTile;
 import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
-import com.android.systemui.qs.tiles.ThemeTile;
 import com.android.systemui.qs.tiles.VolumeTile;
 import com.android.systemui.qs.tiles.UserTile;
 import com.android.systemui.qs.tiles.WifiTile;
@@ -122,7 +121,6 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("onthego")) return new OnTheGoTile(mHost);
         else if (tileSpec.equals("volume")) return new VolumeTile(mHost);
         else if (tileSpec.equals("profiles")) return new ProfilesTile(mHost);
-        else if (tileSpec.equals("theme")) return new ThemeTile(mHost);
         else if (tileSpec.equals("cpuinfo")) return new CPUInfoTile(mHost);
         else if (tileSpec.equals("ambient_display")) return new AmbientDisplayTile(mHost);
         else if (tileSpec.equals("gaming")) return new GamingModeTile(mHost);
