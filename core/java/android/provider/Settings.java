@@ -2805,13 +2805,6 @@ public final class Settings {
             }
         }
 
-        private static final Validator sNonNullStringValidator = new Validator() {
-            @Override
-            public boolean validate(String value) {
-                return value != null;
-            }
-        };
-
         /**
          * @deprecated Use {@link android.provider.Settings.Global#STAY_ON_WHILE_PLUGGED_IN} instead
          */
@@ -4572,17 +4565,6 @@ public final class Settings {
                 new InclusiveIntegerRangeValidator(0, 4);
 
         /**
-         * The user selected theme accent
-         *
-         * @hide
-         */
-        public static final String THEME_CURRENT_ACCENT = "theme_current_accent";
-
-        /** @hide */
-        public static final Validator THEME_CURRENT_ACCENT_VALIDATOR =
-                sNonNullStringValidator;
-
-        /**
          * 0 - Automatic (Theme based)
          * 1 - Light
          * 2 - Dark
@@ -5630,7 +5612,6 @@ public final class Settings {
             VALIDATORS.put(STATUSBAR_CLOCK_DATE_DISPLAY, STATUSBAR_CLOCK_DATE_DISPLAY_VALIDATOR);
             VALIDATORS.put(STATUSBAR_CLOCK_DATE_STYLE, STATUSBAR_CLOCK_DATE_STYLE_VALIDATOR);
             VALIDATORS.put(THEME_GLOBAL_STYLE, THEME_GLOBAL_STYLE_VALIDATOR);
-            VALIDATORS.put(THEME_CURRENT_ACCENT, THEME_CURRENT_ACCENT_VALIDATOR);
         }
 
         /**
