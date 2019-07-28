@@ -43,6 +43,7 @@ import com.android.systemui.recents.views.grid.TaskGridLayoutAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -56,8 +57,6 @@ import java.util.List;
 public class RecentsTaskLoadPlan {
 
     private static int MIN_NUM_TASKS = 5;
-    private static int SESSION_BEGIN_TIME = 1000 /* ms/s */ * 60 /* s/min */ * 60 /* min/hr */ *
-            6 /* hrs */;
 
     /** The set of conditions to load tasks. */
     public static class Options {
@@ -291,7 +290,10 @@ public class RecentsTaskLoadPlan {
      * Returns whether this task is too old to be shown.
      */
     private boolean isHistoricalTask(ActivityManager.RecentTaskInfo t) {
-        return t.lastActiveTime < (System.currentTimeMillis() - SESSION_BEGIN_TIME);
+        Resources res = mContext.getResources();
+        final int sessionBeginTime = res.getInteger(
+                R.integer.config_isHistoricalTaskHours);
+        return t.lastActiveTime < (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(sessionBeginTime));
     }
 
 

@@ -435,4 +435,7 @@
 		<item>720</item>
 		<item>1440</item>
     </integer-array>
+
+    <!-- Time to consider recent task is too old to be shown. -->
+    <integer name="config_isHistoricalTaskHours">6</integer>
 </resources>
