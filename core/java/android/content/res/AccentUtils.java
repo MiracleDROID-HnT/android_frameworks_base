@@ -17,7 +17,12 @@ public class AccentUtils {
                     "material_deep_teal_500",
                     "notification_icon_bg_color",
                     "system_notification_accent_color",
-                    "settings_icon_tint_color"));
+                    "settings_icon_tint_color",
+                    "qs_tiles_active_tint",
+                    "qs_tiles_expand_tint",
+                    "qs_tiles_label_color",
+                    "qs_tiles_underline_color",
+                    "qs_tiles_signal_color"));
 
     private static final String ACCENT_COLOR_PROP = "persist.sys.theme.accentcolor";
 
