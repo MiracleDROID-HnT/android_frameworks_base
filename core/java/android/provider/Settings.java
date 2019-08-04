@@ -5216,6 +5216,14 @@ public final class Settings {
         public static final String AUTO_ANSWER_CALL_KEY = "auto_answer_call_key";
 
         /**
+         * The enabled mode for the theme tile.
+         * - ACCENT
+         * - STYLE
+         * @hide
+         */
+        public static final String THEME_TILE_ENABLED_MODE = "theme_tile_enabled_mode";
+
+        /**
          * Whether to enable Pie Volume dialog
          */
         public static final String PIE_VOLUME_DIALOG = "pie_volume_dialog";

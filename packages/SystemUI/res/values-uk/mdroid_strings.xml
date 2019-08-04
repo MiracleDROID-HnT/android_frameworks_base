@@ -263,6 +263,43 @@
     <string name="accessibility_quick_settings_profiles_changed_off">Профілі вимкнено.</string>
     <string name="accessibility_quick_settings_profiles_changed">Профіль змінено на <xliff:g id="profile" example="Default">%s</xliff:g>.</string>
 
+    <!-- Theme tile -->
+    <string name="systemui_theme_style_title">Теми</string>
+    <string name="systemui_theme_style_auto">Автоматично (шпалери)</string>
+    <string name="systemui_theme_style_time_based">Автоматично (день/ніч)</string>
+    <string name="systemui_theme_style_light">Світла</string>
+    <string name="systemui_theme_style_dark">Темна</string>
+    <string name="systemui_theme_style_black">Чорна</string>
+    <string name="quick_settings_theme_tile_title">Колір акценту</string>
+    <string name="quick_settings_theme_tile_accent_detail_title">Вибір акценту</string>
+    <string name="quick_settings_theme_tile_style_detail_title">Вибір теми</string>
+    <string name="quick_settings_theme_tile_color_default">За замовчуванням</string>
+    <string name="quick_settings_theme_tile_color_red">Червоний</string>
+    <string name="quick_settings_theme_tile_color_pink">Рожевий</string>
+    <string name="quick_settings_theme_tile_color_purple">Пурпуровий</string>
+    <string name="quick_settings_theme_tile_color_purple_deep">Темно-пурпуровий</string>
+    <string name="quick_settings_theme_tile_color_indigo">Індиго</string>
+    <string name="quick_settings_theme_tile_color_pixel">Pixel</string>
+    <string name="quick_settings_theme_tile_color_blue">Синій</string>
+    <string name="quick_settings_theme_tile_color_blue_light">Світло-синій</string>
+    <string name="quick_settings_theme_tile_color_cyan">Ціан</string>
+    <string name="quick_settings_theme_tile_color_teal">Зеленувато-блакитний</string>
+    <string name="quick_settings_theme_tile_color_green">Зелений</string>
+    <string name="quick_settings_theme_tile_color_green_light">Світло-зелений</string>
+    <string name="quick_settings_theme_tile_color_lime">Лайм</string>
+    <string name="quick_settings_theme_tile_color_yellow">Жовтий</string>
+    <string name="quick_settings_theme_tile_color_amber">Бурштиновий</string>
+    <string name="quick_settings_theme_tile_color_orange">Помаранчевий</string>
+    <string name="quick_settings_theme_tile_color_orange_deep">Темно-помаранчевий</string>
+    <string name="quick_settings_theme_tile_color_brown">Брунатний</string>
+    <string name="quick_settings_theme_tile_color_grey">Сірий</string>
+    <string name="quick_settings_theme_tile_color_grey_blue">Синьо-сірий</string>
+    <string name="quick_settings_theme_tile_color_black">Чорний</string>
+    <string name="quick_settings_theme_tile_color_white">Білосніжний</string>
+
+    <string name="theme_info_title">Що це?</string>
+    <string name="theme_info_message">Плитка «Теми» - це унікальна, але проста у використанні плитка, яка дозволяє користувачу змінювати системний акцент або тему.\n\nЩоб переключитися між акцентами і темами, просто довго утримуйте натиснутою плитку, а потім ще раз натисніть на неї, щоб вибрати із запропонованих варіантів.</string>
+
     <!-- CPUInfo tile -->
     <string name="quick_settings_cpuinfo_label">Інформація про процесор</string>
 
