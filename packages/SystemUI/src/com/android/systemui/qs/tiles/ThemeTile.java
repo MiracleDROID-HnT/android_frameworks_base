@@ -41,8 +41,10 @@ import android.widget.ListView;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 
+import com.android.systemui.Dependency;
 import com.android.systemui.Prefs;
 import com.android.systemui.R;
+import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.qs.DetailAdapter;
 import com.android.systemui.plugins.qs.QSTile;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -51,7 +53,6 @@ import com.android.systemui.qs.QSDetailItems.Item;
 import com.android.systemui.qs.QSDetailItemsList;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
-import com.android.internal.statusbar.ThemeAccentUtils;
 import com.android.systemui.statusbar.phone.SystemUIDialog;
 
 import java.util.ArrayList;
@@ -64,59 +65,23 @@ import java.util.Set;
 
 public class ThemeTile extends QSTileImpl<BooleanState> {
 
+    private final ActivityStarter mActivityStarter;
+
+    private static final Intent COLOR_PICKER = new Intent().setComponent(new ComponentName(
+            "com.android.settings", "mx.mdroid.magicalworld.fragments.style.colorpicker.ColorPickerActivity"));
+
     static final List<ThemeTileItem> sThemeItems = new ArrayList<ThemeTileItem>();
     static {
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.teal", R.color.quick_settings_theme_tile_default,
-                R.string.quick_settings_theme_tile_color_default));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.red", R.color.quick_settings_theme_tile_red,
-                R.string.quick_settings_theme_tile_color_red));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.pink", R.color.quick_settings_theme_tile_pink,
-                R.string.quick_settings_theme_tile_color_pink));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.purple", R.color.quick_settings_theme_tile_purple,
-                R.string.quick_settings_theme_tile_color_purple));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.purple_deep", R.color.quick_settings_theme_tile_purple_deep,
-                R.string.quick_settings_theme_tile_color_purple_deep));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.indigo", R.color.quick_settings_theme_tile_indigo,
-                R.string.quick_settings_theme_tile_color_indigo));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.pixel", R.color.quick_settings_theme_tile_pixel,
-                R.string.quick_settings_theme_tile_color_pixel));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.blue", R.color.quick_settings_theme_tile_blue,
-                R.string.quick_settings_theme_tile_color_blue));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.blue_light", R.color.quick_settings_theme_tile_blue_light,
-                R.string.quick_settings_theme_tile_color_blue_light));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.cyan", R.color.quick_settings_theme_tile_cyan,
-                R.string.quick_settings_theme_tile_color_cyan));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.teal", R.color.quick_settings_theme_tile_teal,
-                R.string.quick_settings_theme_tile_color_teal));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.green", R.color.quick_settings_theme_tile_green,
-                R.string.quick_settings_theme_tile_color_green));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.green_light", R.color.quick_settings_theme_tile_green_light,
-                R.string.quick_settings_theme_tile_color_green_light));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.lime", R.color.quick_settings_theme_tile_lime,
-                R.string.quick_settings_theme_tile_color_lime));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.yellow", R.color.quick_settings_theme_tile_yellow,
-                R.string.quick_settings_theme_tile_color_yellow));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.amber", R.color.quick_settings_theme_tile_amber,
-                R.string.quick_settings_theme_tile_color_amber));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.orange", R.color.quick_settings_theme_tile_orange,
-                R.string.quick_settings_theme_tile_color_orange));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.orange_deep", R.color.quick_settings_theme_tile_orange_deep,
-                R.string.quick_settings_theme_tile_color_orange_deep));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.brown", R.color.quick_settings_theme_tile_brown,
-                R.string.quick_settings_theme_tile_color_brown));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.grey", R.color.quick_settings_theme_tile_grey,
-                R.string.quick_settings_theme_tile_color_grey));
-        sThemeItems.add(new ThemeTileItem("mx.mdroid.accent.grey_blue", R.color.quick_settings_theme_tile_grey_blue,
-                R.string.quick_settings_theme_tile_color_grey_blue));
+        sThemeItems.add(new ThemeTileItem(R.string.quick_settings_theme_tile_title));
     }
 
     static final List<ThemeTileItem> sStyleItems = new ArrayList<ThemeTileItem>();
     static {
-        sStyleItems.add(new ThemeTileItem(0, -1, R.string.systemui_theme_style_auto));
-        sStyleItems.add(new ThemeTileItem(1, -1, R.string.systemui_theme_style_time_based));
-        sStyleItems.add(new ThemeTileItem(2, -1, R.string.systemui_theme_style_light));
-        sStyleItems.add(new ThemeTileItem(3, -1, R.string.systemui_theme_style_dark));
-        sStyleItems.add(new ThemeTileItem(4, -1, R.string.systemui_theme_style_black));
+        sStyleItems.add(new ThemeTileItem(0, R.string.systemui_theme_style_auto));
+        sStyleItems.add(new ThemeTileItem(1, R.string.systemui_theme_style_time_based));
+        sStyleItems.add(new ThemeTileItem(2, R.string.systemui_theme_style_light));
+        sStyleItems.add(new ThemeTileItem(3, R.string.systemui_theme_style_dark));
+        sStyleItems.add(new ThemeTileItem(4, R.string.systemui_theme_style_black));
     }
 
     private enum Mode {
@@ -129,6 +94,7 @@ public class ThemeTile extends QSTileImpl<BooleanState> {
 
     public ThemeTile(QSHost host) {
         super(host);
+        mActivityStarter = Dependency.get(ActivityStarter.class);
         mOverlayManager = IOverlayManager.Stub.asInterface(
                 ServiceManager.getService(Context.OVERLAY_SERVICE));
         mCurrentUserId = ActivityManager.getCurrentUser();
@@ -140,20 +106,15 @@ public class ThemeTile extends QSTileImpl<BooleanState> {
     }
 
     private static class ThemeTileItem {
-        String settingsValAccent;
         int settingsValStyle;
-        final int colorRes;
         final int labelRes;
 
-        public ThemeTileItem(String settingsValAccent, int colorRes, int labelRes) {
-            this.settingsValAccent = settingsValAccent;
-            this.colorRes = colorRes;
+        public ThemeTileItem(int labelRes) {
             this.labelRes = labelRes;
         }
 
-        public ThemeTileItem(int settingsValStyle, int colorRes, int labelRes) {
+        public ThemeTileItem(int settingsValStyle, int labelRes) {
 			this.settingsValStyle = settingsValStyle;
-            this.colorRes = colorRes;
             this.labelRes = labelRes;
         }
 
@@ -161,48 +122,9 @@ public class ThemeTile extends QSTileImpl<BooleanState> {
             return context.getString(labelRes);
         }
 
-        public void commit_accent(Context context) {
-            String previousAccent = Settings.System.getString(context.getContentResolver(),
-                    Settings.System.THEME_CURRENT_ACCENT);
-
-			final IOverlayManager om = IOverlayManager.Stub.asInterface(ServiceManager.getService("overlay"));
-            if (!TextUtils.isEmpty(previousAccent)) {
-				try {
-				    om.setEnabled(previousAccent, false, UserHandle.myUserId());
-                } catch (RemoteException ignored) {
-                }
-            }
-
-            Settings.System.putString(context.getContentResolver(),
-                    Settings.System.THEME_CURRENT_ACCENT, settingsValAccent);
-
-            if (!TextUtils.isEmpty(settingsValAccent)) {
-				try {
-                    om.setEnabled(settingsValAccent, true, UserHandle.myUserId());
-                } catch (RemoteException ignored) {
-                }
-            }
-        }
-
         public void commit_style(Context context) {
             Settings.System.putIntForUser(context.getContentResolver(),
                     Settings.System.THEME_GLOBAL_STYLE, settingsValStyle, UserHandle.USER_CURRENT);
-        }
-
-        public QSTile.Icon getIcon(Context context) {
-            QSTile.Icon icon = new QSTile.Icon() {
-                @Override
-                public Drawable getDrawable(Context context) {
-                    ShapeDrawable oval = new ShapeDrawable(new OvalShape());
-                    oval.setIntrinsicHeight(context.getResources()
-                            .getDimensionPixelSize(R.dimen.qs_detail_image_height));
-                    oval.setIntrinsicWidth(context.getResources()
-                            .getDimensionPixelSize(R.dimen.qs_detail_image_width));
-                    oval.getPaint().setColor(context.getColor(colorRes));
-                    return oval;
-                }
-            };
-            return icon;
         }
     }
 
@@ -255,24 +177,14 @@ public class ThemeTile extends QSTileImpl<BooleanState> {
 
         private List<Item> getAccentItems() {
             List<Item> items = new ArrayList<Item>();
-            for (int i = 0; i < sThemeItems.size(); i++) {
-                ThemeTileItem themeTileItem = sThemeItems.get(i);
+            for (ThemeTileItem themeTileItem : sThemeItems) {
                 Item item = new Item();
                 item.tag = themeTileItem;
-                item.doDisableTint = true;
                 item.doDisableFocus = true;
-                item.iconDrawable = themeTileItem.getIcon(mContext);
+                item.icon = R.drawable.ic_qs_style_list;
                 item.line1 = themeTileItem.getLabel(mContext);
                 items.add(item);
             }
-            Item lastItem = new Item();
-            ThemeTileItem lastThemeTileItem = getThemeItemForStyleMode();
-            lastItem.tag = lastThemeTileItem;
-            lastItem.doDisableTint = true;
-            lastItem.doDisableFocus = true;
-            lastItem.iconDrawable = lastThemeTileItem.getIcon(mContext);
-            lastItem.line1 = lastThemeTileItem.getLabel(mContext);
-            items.add(lastItem);
             return items;
         }
 
@@ -312,20 +224,10 @@ public class ThemeTile extends QSTileImpl<BooleanState> {
             ThemeTileItem themeItem = (ThemeTileItem) item.tag;
             showDetail(false);
             if (mMode == Mode.ACCENT) {
-                themeItem.commit_accent(mContext);
+                mActivityStarter.postStartActivityDismissingKeyguard(COLOR_PICKER, 0);
             } else {
                 themeItem.commit_style(mContext);
             }
-        }
-    }
-
-    private ThemeTileItem getThemeItemForStyleMode() {
-        if (ThemeAccentUtils.isUsingDarkTheme(mOverlayManager, mCurrentUserId) || ThemeAccentUtils.isUsingBlackTheme(mOverlayManager, mCurrentUserId)) {
-            return new ThemeTileItem("mx.mdroid.accent.white", R.color.quick_settings_theme_tile_white,
-                    R.string.quick_settings_theme_tile_color_white);
-        } else {
-            return new ThemeTileItem("mx.mdroid.accent.black", R.color.quick_settings_theme_tile_black,
-                    R.string.quick_settings_theme_tile_color_black);
         }
     }
 
