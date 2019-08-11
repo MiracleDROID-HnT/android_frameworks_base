@@ -351,4 +351,9 @@ public abstract class WindowManagerInternal {
      * {@param vr2dDisplayId}.
      */
     public abstract void setVr2dDisplayId(int vr2dDisplayId);
+
+    /**
+     * Long screenshot
+     */
+    public abstract boolean isMinimizedDock();
 }

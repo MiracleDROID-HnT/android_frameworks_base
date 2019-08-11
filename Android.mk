@@ -565,6 +565,10 @@ LOCAL_SRC_FILES += \
 	core/java/android/service/quicksettings/IQSTileService.aidl \
 	telephony/java/com/android/internal/telephony/ISmsSecurityService.aidl \
 	telephony/java/com/android/internal/telephony/ISmsSecurityAgent.aidl \
+	core/java/com/android/internal/custom/longshot/ILongScreenshot.aidl \
+	core/java/com/android/internal/custom/longshot/ILongScreenshotCallback.aidl \
+	core/java/com/android/internal/custom/longshot/ILongScreenshotListener.aidl \
+	core/java/com/android/internal/custom/longshot/ILongScreenshotManager.aidl \
 
 # The following are native binders that need to go with the native component
 # at system/update_engine/binder_bindings/. Use relative path to refer to them.

@@ -281,6 +281,9 @@ import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import com.android.internal.custom.longshot.ILongScreenshotManager;
+import com.android.internal.custom.longshot.LongScreenshotManagerService;
+
 /**
  * WindowManagerPolicy implementation for the Android phone UI.  This
  * introduces a new method suffix, Lp, for an internal lock of the
@@ -394,6 +397,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             "com.android.systemui.screenshot.TakeScreenshotService";
     private static final String SYSUI_SCREENSHOT_ERROR_RECEIVER =
             "com.android.systemui.screenshot.ScreenshotServiceErrorReceiver";
+    private static final String SYSUI_SCREENSHOT_CAPTURE_ERROR_RECEIVER =
+            "com.android.systemui.screenshot.ScreenshotServiceCaptureErrorReceiver";
+
+    // Time until we give up on the screenshot & show an error instead.
+    private final int SCREENSHOT_TIMEOUT_MS = 10000;
 
     /**
      * Keyguard stuff
@@ -2027,7 +2035,26 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         @Override
         public void run() {
-            takeScreenshot(mScreenshotType);
+            boolean longshot;
+            boolean inMultiWindow = mFocusedWindow != null ? mFocusedWindow.isInMultiWindowMode() : false;
+            boolean dockMinimized = mWindowManagerInternal.isMinimizedDock();
+            if (mScreenshotType == 2 || keyguardOn() || !isUserSetupComplete() ||
+                    !isDeviceProvisioned() || ((inMultiWindow && !dockMinimized) || mDisplayRotation != 0)) {
+                longshot = false;
+            } else {
+                longshot = true;
+            }
+            Bundle screenshotBundle = new Bundle();
+            screenshotBundle.putBoolean("longshot", longshot);
+            if (mFocusedWindow != null) {
+                screenshotBundle.putString("focusWindow", mFocusedWindow.getAttrs().packageName);
+            }
+            if (mFocusedWindow != null &&
+                (mFocusedWindow.getAttrs().flags & WindowManager.LayoutParams.FLAG_SECURE) != 0){
+                    notifyScreenshotCaptureError();
+                    return;
+            }
+            takeScreenshot(mScreenshotType, longshot, screenshotBundle);
         }
     }
 
@@ -2070,11 +2097,31 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
         final boolean keyguardShowing = isKeyguardShowingAndNotOccluded();
         mGlobalActions.showDialog(keyguardShowing, isDeviceProvisioned());
+        stopLongshot();
         if (keyguardShowing) {
             // since it took two seconds of long press to bring this up,
             // poke the wake lock so they have some time to see the dialog.
             mPowerManager.userActivity(SystemClock.uptimeMillis(), false);
         }
+    }
+
+    private void stopLongshot() {
+        ILongScreenshotManager shot = ILongScreenshotManager.Stub.asInterface(ServiceManager.getService(Context.LONGSCREENSHOT_SERVICE));
+        if (shot != null) {
+            try {
+                if (shot.isLongshotMode()) {
+                    shot.stopLongshot();
+                }
+            } catch (RemoteException e) {
+                Slog.d(TAG, e.toString());
+            }
+        }
+    }
+
+    @Override
+    public void takeOPScreenshot(int type, int reason) {
+        mScreenshotRunnable.setScreenshotType(type);
+        mHandler.post(mScreenshotRunnable);
     }
 
     boolean isDeviceProvisioned() {
@@ -6587,6 +6634,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     };
 
+    final Runnable mLongshotTimeout = new Runnable() {
+        public void run() {
+            synchronized (mScreenshotLock) {
+                if (mScreenshotConnection != null) {
+                    mContext.unbindService(mScreenshotConnection);
+                    mScreenshotConnection = null;
+                    notifyScreenshotError();
+                }
+            }
+        }
+    };
+
     // Assume this is called from the Handler thread.
     private void takeScreenshot(final int screenshotType) {
         synchronized (mScreenshotLock) {
@@ -6670,6 +6729,114 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // If the service process is killed, then ask it to clean up after itself
         final ComponentName errorComponent = new ComponentName(SYSUI_PACKAGE,
                 SYSUI_SCREENSHOT_ERROR_RECEIVER);
+        Intent errorIntent = new Intent(Intent.ACTION_USER_PRESENT);
+        errorIntent.setComponent(errorComponent);
+        errorIntent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT |
+                Intent.FLAG_RECEIVER_FOREGROUND);
+        mContext.sendBroadcastAsUser(errorIntent, UserHandle.CURRENT);
+    }
+
+    /**
+     * Long screenshot methods
+     */
+    public void takeScreenshot(final int screenshotType, final boolean isLongshot,
+            final Bundle screenshotBundle) {
+        if (screenshotType != WindowManager.TAKE_SCREENSHOT_FULLSCREEN){
+            takeScreenshot(screenshotType);
+            return;
+        }
+        synchronized (mScreenshotLock) {
+            if (mScreenshotConnection != null) {
+                return;
+            }
+            final Intent serviceIntent = new Intent();
+            serviceIntent.setComponent(LongScreenshotManagerService.TAKE_SCREENSHOT_COMPONENT);
+            ServiceConnection conn = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    synchronized (mScreenshotLock) {
+                        if (mScreenshotConnection != this) {
+                            return;
+                        }
+                        Messenger messenger = new Messenger(service);
+                        Message msg = Message.obtain(null, screenshotType);
+                        final ServiceConnection myConn = this;
+                        Handler h = new Handler(mHandler.getLooper()) {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                synchronized (mScreenshotLock) {
+                                    if (msg.what == 2) {
+                                        mHandler.removeCallbacks(mLongshotTimeout);
+                                    } else if (mScreenshotConnection == myConn) {
+                                        mContext.unbindService(mScreenshotConnection);
+                                        mScreenshotConnection = null;
+                                        mHandler.removeCallbacks(mLongshotTimeout);
+                                    }
+                                }
+                            }
+                        };
+                        msg.replyTo = new Messenger(h);
+                        msg.arg1 = msg.arg2 = 0;
+
+                        // Needs delay or else we'll be taking a screenshot of the dialog each time
+                        try {
+                            Thread.sleep(mScreenshotDelay);
+                        } catch (InterruptedException ie) {
+                            // Do nothing
+                        }
+
+                        if (mStatusBar != null && mStatusBar.isVisibleLw())
+                            msg.arg1 = 1;
+                        if (mNavigationBar != null && mNavigationBar.isVisibleLw())
+                            msg.arg2 = 1;
+                        msg.obj = screenshotBundle;
+                        try {
+                            messenger.send(msg);
+                        } catch (RemoteException e) {
+                            Log.e(TAG, "Couldn't take screenshot: " + e);
+                        }
+                    }
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    if (mScreenshotConnection != null) {
+                        mContext.unbindService(mScreenshotConnection);
+                        mScreenshotConnection = null;
+                        mHandler.removeCallbacks(mLongshotTimeout);
+                        notifyScreenshotError();
+                    }
+                }
+            };
+            if (mContext.bindServiceAsUser(serviceIntent, conn,
+                    Context.BIND_AUTO_CREATE | Context.BIND_FOREGROUND_SERVICE_WHILE_AWAKE,
+                    UserHandle.CURRENT)) {
+                mScreenshotConnection = conn;
+                if (isLongshot) {
+                    mHandler.postDelayed(mLongshotTimeout, 120000);
+                } else {
+                    mHandler.postDelayed(mLongshotTimeout, SCREENSHOT_TIMEOUT_MS);
+                }
+            }
+        }
+    }
+
+    public void stopLongshotConnection() {
+        synchronized (mScreenshotLock) {
+            if (mScreenshotConnection != null) {
+                mContext.unbindService(mScreenshotConnection);
+                mScreenshotConnection = null;
+                mHandler.removeCallbacks(mLongshotTimeout);
+            }
+        }
+    }
+
+    public void notifyScreenshotCaptureError() {
+        // If the service process is killed, then ask it to clean up after itself
+        final ComponentName errorComponent = new ComponentName(SYSUI_PACKAGE,
+                SYSUI_SCREENSHOT_CAPTURE_ERROR_RECEIVER);
+        // Broadcast needs to have a valid action.  We'll just pick
+        // a generic one, since the receiver here doesn't care.
         Intent errorIntent = new Intent(Intent.ACTION_USER_PRESENT);
         errorIntent.setComponent(errorComponent);
         errorIntent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT |

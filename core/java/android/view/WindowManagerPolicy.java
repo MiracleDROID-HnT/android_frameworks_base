@@ -1768,4 +1768,11 @@ public interface WindowManagerPolicy {
      * Call screen record from WindowManager.
      */
     void screenRecordAction(int mode);
+
+    /**
+     * Long screenshot
+     * @hide
+     */
+    public void takeOPScreenshot(int type, int reason);
+    public void stopLongshotConnection();
 }
