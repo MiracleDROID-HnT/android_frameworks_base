@@ -29,7 +29,9 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManagerGlobal;
 
 import com.android.systemui.R;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -86,7 +88,11 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
         } catch (InterruptedException ie) {
              // Do nothing
         }
-        takeScreenshot(mRegion ? 2 : 1);
+        try {
+            WindowManagerGlobal.getWindowManagerService().takeOPScreenshot(mRegion ? 2 : 1, 0);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error while trying to takeOPScreenshot.", e);
+        }
     }
 
     @Override
